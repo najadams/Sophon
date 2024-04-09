@@ -1,4 +1,5 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useState } from "react";
+// import { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
@@ -7,6 +8,7 @@ import {
   StockEntry,
   SalesOrders,
   InventoryReports,
+  Customers,
 } from "./views";
 import { Header , Footer, Sidebar} from "./components";
 
@@ -16,9 +18,14 @@ const NoPage = lazy(() =>
 );
 
 function App() {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
+
   return (
     <div style={{ height: "100vh", display: "flex" }}>
-      <Sidebar />
+      <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
       <div style={{ flex: 1 }}>
         <Header />
         <Router>
@@ -26,6 +33,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/products" element={<ProductCatalogue />} />
+              <Route path="/customers" element={<Customers />} />
               <Route path="/stocks" element={<StockEntry />} />
               <Route path="/inventory" element={<InventoryReports />} />
               <Route path="/sales" element={<SalesOrders />} />

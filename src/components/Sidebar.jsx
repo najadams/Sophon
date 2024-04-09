@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
+import { NavLink } from "react-router-dom";
 
-const Sidebar = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
-
-  const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
-  };
+const Sidebar = ({ isExpanded, toggleSidebar }) => {
 
   return (
     <div

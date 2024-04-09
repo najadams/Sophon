@@ -4,5 +4,6 @@ import InventoryReports from "./InventoryReports";
 import SalesOrders from "./SalesOrders";
 import StockEntry from "./StockEntry";
 import NoPage from "./NoPage";
+import Customers from "./Customers";
 
-export { Dashboard, ProductCatalogue, InventoryReports, SalesOrders, StockEntry, NoPage }
+export { Dashboard, ProductCatalogue, Customers, InventoryReports, SalesOrders, StockEntry, NoPage }

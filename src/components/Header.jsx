@@ -42,7 +42,13 @@ export default function Header() {
           label={auth ? "Logout" : "Login"}
         />
       </FormGroup> */}
-      <AppBar position="static" style={{color : 'black', background : 'white' }}>
+      <AppBar
+        position="static"
+        style={{
+          color: "black",
+          background: "white",
+          boxShadow: "0px 3px 5px 2px rgba(0,0,0,0.2)",
+        }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -82,6 +88,8 @@ export default function Header() {
                 onClose={handleClose}>
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Switch account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
               </Menu>
             </div>
           )}
