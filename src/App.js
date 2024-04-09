@@ -10,7 +10,7 @@ import {
   InventoryReports,
   Customers,
 } from "./views";
-import { Header , Footer, Sidebar} from "./components";
+import { Header, Sidebar} from "./components";
 
 // Corrected import statement
 const NoPage = lazy(() =>
@@ -25,23 +25,24 @@ function App() {
 
   return (
     <div style={{ height: "100vh", display: "flex" }}>
-      <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
-      <div style={{ flex: 1 }}>
-        <Header />
-        <Router>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/products" element={<ProductCatalogue />} />
-              <Route path="/customers" element={<Customers />} />
-              <Route path="/stocks" element={<StockEntry />} />
-              <Route path="/inventory" element={<InventoryReports />} />
-              <Route path="/sales" element={<SalesOrders />} />
-              <Route path="*" element={<NoPage />} />
-            </Routes>
-          </Suspense>
+      <Router>
+        <Sidebar isExpanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
+          <div style={{ flex: 1 }}>
+            <Header />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/products" element={<ProductCatalogue />} />
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/stocks" element={<StockEntry />} />
+                  <Route path="/inventory" element={<InventoryReports />} />
+                  <Route path="/sales" element={<SalesOrders />} />
+                  <Route path="*" element={<NoPage />} />
+                </Routes>
+              </Suspense>
+          </div>
         </Router>
-      </div>
     </div>
   );
 }
