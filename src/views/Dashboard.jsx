@@ -1,10 +1,33 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+
+const DummyCard = () => {
+  return (
+    <Card sx={{ minWidth: 400,minHeight: 400, margin: 2, flexGrow: 1 }}>
+      <CardContent>
+        <Typography variant="h5" component="div">
+          Dummy Card
+        </Typography>
+        <Typography variant="body2">This is a dummy card.</Typography>
+      </CardContent>
+    </Card>
+  );
+};
 
 const Dashboard = () => {
-  return <div className="page">Dashboard
-    <div><NavLink to="/products">products</NavLink></div>
-  </div>;
+  return (
+    <div className="page">
+      <div className="heading">Dashboard</div>
+      <div className="content">
+        <DummyCard />
+        <DummyCard />
+        <DummyCard />
+        <DummyCard />
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;

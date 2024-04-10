@@ -197,7 +197,17 @@ header .image-text .header-text {
   margin-right: 5px;
   padding: 20px;
   background-color: white;
-  display: flex;  
   height: 90%;
   overflow-y: scroll;
+}
+
+.content{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: 'center';
+
+}
+
+.heading{
+  font-size: 30px;
 }

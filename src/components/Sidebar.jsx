@@ -43,9 +43,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
             </li>
             <li className="nav-link">
               <NavLink to={"/products"} activeclassname="active">
-                {/* <i className="bx bxs-bar-chart-alt-2 icon"></i> */}
-                {/* <i className="bx bxs-user-check icon"></i> */}
-                <i class="bx bx-cart-alt icon"></i>
+                <i className="bx bx-cart-alt icon"></i>
                 <span className="text nav-text">Mark Attendance</span>
               </NavLink>
             </li>
@@ -64,7 +62,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
             </li>
             <li className="nav-link">
               <NavLink to={"/"} activeclassname="active">
-                <i class="bx bx-cart-add icon"></i>
+                <i className="bx bx-cart-add icon"></i>
                 <span className="text nav-text">Analysis</span>
               </NavLink>
             </li>
