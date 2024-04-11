@@ -2,24 +2,9 @@ import React from 'react'
 import ProductForm from '../components/ProductForm';
 import TableCreater from '../components/TableCreater';
 import AddItem from '../components/AddItem';
+import { Data } from '../store/data'
 
 const ProductCatalogue = () => {
- const Data = [
-   {
-     _id: "1",
-     Name: "John Doe",
-     Role: "Software Engineer",
-     Experience: "5 years",
-     Skills: "React, Node.js",
-   },
-   {
-     _id: "2",
-     Name: "Jane Smith",
-     Role: "Data Scientist",
-     Experience: "3 years",
-     Skills: "Python, R, SQL",
-   },
- ];
   return (
     <div className="page">
       <div className="heading">
