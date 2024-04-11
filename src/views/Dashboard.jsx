@@ -19,7 +19,9 @@ const DummyCard = () => {
 const Dashboard = () => {
   return (
     <div className="page">
-      <div className="heading">Dashboard</div>
+      <div className="heading">
+        <h1>Dashboard</h1>
+      </div>
       <div className="content">
         <DummyCard />
         <DummyCard />

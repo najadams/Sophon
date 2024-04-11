@@ -196,7 +196,7 @@ header .image-text .header-text {
   margin-top: 5px;
   margin-right: 5px;
   padding: 20px;
-  background-color: white;
+  background-color: #ffffffa2;
   height: 90%;
   overflow-y: scroll;
 }
@@ -209,5 +209,17 @@ header .image-text .header-text {
 }
 
 .heading{
-  font-size: 30px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* ==== FORMS ==== */
+.form{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
 }
