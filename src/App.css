@@ -9,7 +9,7 @@
 }
 
 .expanded {
-  width: 250px;
+  width: 200px;
 }
 
 .collapsed {
@@ -223,7 +223,7 @@ header .image-text .header-text {
   margin-bottom: 10px;
   position: sticky;
   top: 0;
-  /* background-color: inherit; To ensure the text behind doesn't show when scrolling */
+  background-color: rgb(255, 255, 255, 0.8); 
 }
 
 /* ==== FORMS ==== */

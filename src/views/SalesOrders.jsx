@@ -1,10 +1,24 @@
-// Sales and Orders: A page to manage customer orders, sales transactions, and order fulfillment status.
 import React from 'react'
+import AddItem from '../components/AddItem';
+import SalesOrderForms from '../components/SaleOrderForms';
 
 const SalesOrders = () => {
   return (
-    <div>SalesOrders</div>
-  )
+    <div className="page">
+      <div className="heading">
+        <div>
+          <h1>Sales Order</h1>
+        </div>
+        <AddItem>
+          <SalesOrderForms />
+        </AddItem>
+      </div>
+
+      <div className="content">
+        {/* <TableCreater tableName={"Stock"} Data={Data} /> */}
+      </div>
+    </div>
+  );
 }
 
 export default SalesOrders

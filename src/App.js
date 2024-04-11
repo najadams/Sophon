@@ -1,5 +1,4 @@
 import { lazy, Suspense, useState } from "react";
-// import { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
@@ -12,7 +11,6 @@ import {
 } from "./views";
 import { Header, Sidebar} from "./components";
 
-// Corrected import statement
 const NoPage = lazy(() =>
   import("./views/NoPage")
 );
