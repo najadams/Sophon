@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
+// import { makeStyles } from "@mui/material/styles";
+// import { makeStyles } from "@mui/styles";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,11 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
+// const useStyles = makeStyles({
+//   table: {
+//     minWidth: 650,
+//   },
+// });
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -26,14 +27,14 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-const TableCreater = () => {
-  const classes = useStyles();
+const TableCreater = ({tableName, Headers, Data}) => {
+//   const classes = useStyles();
 
    return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
+      <Table    aria-label="simple table">
         <TableHead>
-          <TableRow>
+          <TableRow style={{ fontWeight: 'bold', fontSize: 32}}>
             <TableCell>Dessert (100g serving)</TableCell>
             <TableCell align="right">Calories</TableCell>
             <TableCell align="right">Fat (g)</TableCell>
