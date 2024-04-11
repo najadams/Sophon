@@ -1,6 +1,4 @@
-import React from 'react';
-// import { makeStyles } from "@mui/material/styles";
-// import { makeStyles } from "@mui/styles";
+import React, {useState, useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,56 +6,69 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button'
 
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 650,
-//   },
-// });
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+const TableCreater = ({ tableName, Data }) => {
+  const [Headers, setHeaders] = useState([]);
+  // const [loading, setLoading] = useState(true);
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+  useEffect(() => {
+    if (Data.length > 0) {
+      const items = Object.keys(Data[0]);
+      setHeaders(items);
+      // setLoading(false);
+    }
+  }, [Data]);
 
-const TableCreater = ({tableName, Headers, Data}) => {
-//   const classes = useStyles();
+  const handleEdit = (row) => {
+    console.log("Edit", row);
+  };
 
-   return (
+  const handleDelete = (row) => {
+    console.log("Delete", row);
+  };
+
+  return (
     <TableContainer component={Paper}>
-      <Table    aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
-          <TableRow style={{ fontWeight: 'bold', fontSize: 32}}>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat (g)</TableCell>
-            <TableCell align="right">Carbs (g)</TableCell>
-            <TableCell align="right">Protein (g)</TableCell>
+          <TableRow style={{ fontWeight: "bold", fontSize: 32 }}>
+            {Headers.map((header) => (
+              <TableCell align="left">{header}</TableCell>
+            ))}
+            <TableCell align="center">Edit</TableCell>
+            <TableCell align="center">Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.name}
+          {Data.map((row, index) => (
+            <TableRow key={row._id}>
+              {Headers.map((header) => (
+                <TableCell align="left">{row[header]}</TableCell>
+              ))}
+              <TableCell align="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleEdit(row)}>
+                  Edit
+                </Button>
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleDelete(row)}>
+                  Delete
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
 
-export default TableCreater
+export default TableCreater;
