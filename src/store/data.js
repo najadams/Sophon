@@ -280,3 +280,28 @@ export const Data = [
     Skills: "Python, R, SQL",
   },
 ];
+
+
+export const Products = [
+  { id: 1, name: "Product 1", price: 99.99, onhand: 10 },
+  { id: 2, name: "Product 2", price: 79.99, onhand: 20 },
+  { id: 3, name: "Product 3", price: 59.99, onhand: 30 },
+  { id: 4, name: "Product 4", price: 89.99, onhand: 15 },
+  { id: 5, name: "Product 5", price: 120.0, onhand: 5 },
+  { id: 6, name: "Product 6", price: 45.0, onhand: 25 },
+  { id: 7, name: "Product 7", price: 110.5, onhand: 10 },
+  { id: 8, name: "Product 8", price: 60.0, onhand: 30 },
+  { id: 9, name: "Product 9", price: 75.0, onhand: 20 },
+  { id: 10, name: "Product 10", price: 130.0, onhand: 15 },
+  { id: 11, name: "Product 11", price: 55.0, onhand: 25 },
+  { id: 12, name: "Product 12", price: 85.0, onhand: 30 },
+  { id: 13, name: "Product 13", price: 95.0, onhand: 20 },
+  { id: 14, name: "Product 14", price: 100.0, onhand: 15 },
+  { id: 15, name: "Product 15", price: 65.0, onhand: 25 },
+  { id: 16, name: "Product 16", price: 70.0, onhand: 30 },
+  { id: 17, name: "Product 17", price: 80.0, onhand: 20 },
+  { id: 18, name: "Product 18", price: 90.0, onhand: 15 },
+  { id: 19, name: "Product 19", price: 50.0, onhand: 25 },
+  { id: 20, name: "Product 20", price: 40.0, onhand: 30 },
+];
+
