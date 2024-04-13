@@ -53,7 +53,7 @@ const SalesOrderForms = () => {
                             }}
                             renderInput={(params) => (
                               <TextField
-                                style={{ flex: 1, width: 500 }}
+                                style={{ flex: 1, width: 200 }}
                                 {...params}
                                 label="Product Name"
                                 fullWidth
@@ -133,6 +133,24 @@ const SalesOrderForms = () => {
               />
             )}
           </Field>
+
+          <div className="save">
+            <Button
+              variant="contained"
+              color="success"
+              type="button"
+            >
+              Save
+            </Button>
+
+            <Button
+              variant="contained"
+              color="info"
+              type="button"
+            >
+              Save & Print
+            </Button>
+          </div>
         </Form>
       )}
     </Formik>
