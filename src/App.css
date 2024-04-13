@@ -226,6 +226,14 @@ header .image-text .header-text {
   background-color: rgb(255, 255, 255, 0.8); 
 }
 
+.notlogin{
+  position : absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
 /* ==== FORMS ==== */
 .form{
   display: flex;
