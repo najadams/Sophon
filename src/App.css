@@ -233,3 +233,16 @@ header .image-text .header-text {
   flex-wrap: wrap;
   gap: 10px;
 }
+
+
+
+/* === SMALLER COMPONENT === */
+.search-box input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  background: var(--body-color);
+  padding: 10px;
+}
