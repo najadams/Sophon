@@ -1,4 +1,3 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +11,9 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { API_BASE_URL } from "../config";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -35,13 +37,43 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const [error, setError] = useState(null);
+  const navigate = useState()
+
+  // login function
+  const login = async (companyname, password) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/login`, {
+        companyname,
+        password,
+      });
+
+      if (response.status !== 200) {
+        setError("Invalid Credentials");
+        throw new Error( "Login failed");
+      }
+      if (response.status === 2000) {
+        navigate('/dashboard')
+      }
+
+      return response.data
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const companyname = data.get("company")
+    const password = data.get("password")
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      companyname,
+      password
     });
+    const response = await login(companyname, password)
+    const token = response.token
+    window.localStorage.setItem('access_token', token)
   };
 
   return (
@@ -97,10 +129,10 @@ export default function SignIn() {
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="company"
+                  label="Company Name"
+                  name="company"
+                  autoComplete="company"
                   autoFocus
                 />
                 <TextField
@@ -120,7 +152,7 @@ export default function SignIn() {
                 <Button
                   type="submit"
                   fullWidth
-                  variant="contained"
+                  variant="contained" 
                   sx={{ mt: 3, mb: 2 }}>
                   Sign In
                 </Button>
@@ -131,11 +163,14 @@ export default function SignIn() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/register" variant="body2">
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
                 </Grid>
+                <Typography variant="body2" color={"CaptionText"}>
+                  {error}
+                </Typography>
                 <Copyright sx={{ mt: 5 }} />
               </Box>
             </Box>

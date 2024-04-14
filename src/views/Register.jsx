@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +12,9 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+import { API_BASE_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -33,15 +36,49 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function Register() {
-  const handleSubmit = (event) => {
+const Register = () => {
+  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  // Register function
+  const registration = async (companyname, email, password) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/register`, {
+        companyname,
+        email,
+        password,
+      });
+
+      if (response.status !== 200) {
+        throw new Error("Something went wrong. Try again later");
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error(error.message);
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+      } else {
+        setError(error.message);
+      }
+    }
+  };
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const companyname = data.get("companyname");
+    const email = data.get("email");
+    const password = data.get("password");
+    if (!companyname || !email || !password) {
+      setError("fill all fields")
+      return;
+    }
+    const res = await registration(companyname, email, password);
+    if (res.status === 200) {
+      navigate('/login')
+    }
   };
+
 
   return (
     <div className="notlogin">
@@ -96,10 +133,11 @@ export default function Register() {
                   margin="normal"
                   required
                   fullWidth
-                  id="company"
+                  id="companyname"
                   label="Company Name"
-                  name="company"
-                //   autoComplete="email"
+                  name="companyname"
+                  onChange={() => setError(null)}
+                  //   autoComplete="email"
                   autoFocus
                 />
                 <TextField
@@ -110,6 +148,7 @@ export default function Register() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={() => setError(null)}
                 />
                 <TextField
                   margin="normal"
@@ -120,11 +159,9 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={() => setError(null)}
                 />
-                {/* <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                /> */}
+
                 <Button
                   type="submit"
                   fullWidth
@@ -132,18 +169,11 @@ export default function Register() {
                   sx={{ mt: 3, mb: 2 }}>
                   Sign Up
                 </Button>
-                {/* <Grid container>
-                  <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
-                </Grid> */}
+                {error && (
+                  <Typography variant="body2" color="red" align="center">
+                    {error}
+                  </Typography>
+                )}
                 <Copyright sx={{ mt: 5 }} />
               </Box>
             </Box>
@@ -153,3 +183,6 @@ export default function Register() {
     </div>
   );
 }
+
+
+export default  Register

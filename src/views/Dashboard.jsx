@@ -19,7 +19,7 @@
   const Dashboard = () => {
     return (
       <div className="page">
-        <div className="heading">
+        <div className="heading" style={{ background: 'none'}}>
           <h1>Dashboard</h1>
         </div>
         <div className="content">
