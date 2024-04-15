@@ -5,6 +5,15 @@ import { Button, TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { Input } from "@mui/material"; 
 import { Products } from "../store/data";
+import * as Yup from "yup"
+
+const validationSchema = Yup.object().shape({
+  customerName : Yup.string().required("Required"),
+  products: {
+    name: Yup.string().required("Required"),
+    quantity : Yup.number().required('Required')
+  }
+})
 
 const SalesOrderForms = () => {
   return (
@@ -13,12 +22,13 @@ const SalesOrderForms = () => {
         customerName: "",
         products: [{ name: "", quantity: 1 }],
       }}
-      onSubmit={(values) => {
-        // Handle form submission here
-        console.log(values);
+      validatitonSchema={validationSchema}
+      onSubmit={async (values) => {
+        await new Promise((r) => setTimeout(r, 500));
+        alert(JSON.stringify(values, null, 2));
       }}>
       {({ values, handleSubmit }) => (
-        <Form onSubmit={handleSubmit} className="form" style={{ margin: 10 }}>
+        <Form className="form" style={{ margin: 10 }}>
           <Field
             component={TextField}
             type="text"
@@ -138,16 +148,13 @@ const SalesOrderForms = () => {
             <Button
               variant="contained"
               color="success"
-              type="button"
+              onClick={handleSubmit}
+              // type="submit"
             >
               Save
             </Button>
 
-            <Button
-              variant="contained"
-              color="info"
-              type="button"
-            >
+            <Button variant="contained" color="info" type="button">
               Save & Print
             </Button>
           </div>
