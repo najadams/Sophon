@@ -1,18 +1,9 @@
 import { NavLink } from "react-router-dom";
-// import { NavLink } from "react-router-dom";
 
 const Sidebar = ({ isExpanded, toggleSidebar }) => {
-  // const navLinks = ["Dashboard", "Products", "Contact"]; // Add your desired links here
-  // const bxicons = ["bxs-home"]
 
   return (
     <nav className={`sidebar ${isExpanded ? "expanded" : "collapsed"}`}>
-      {/* {navLinks.map((link, index) => (
-        <NavLink key={index} to={`/${link.toLowerCase()}`}>
-          <i className="bx bxs-home icon"></i>  
-          <Button variant="contained">{link}</Button>
-        </NavLink>
-      ))} */}
 
       {/* CODE FOR THE CHEVRON */}
 
@@ -37,7 +28,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
 
             <li className="nav-link">
               <NavLink to={"/sales"} activeclassname="active">
-                <i class="bx bx-receipt icon"></i>
+                <i className="bx bx-receipt icon"></i>
                 <span className="text nav-text">Make Sales</span>
               </NavLink>
             </li>

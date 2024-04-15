@@ -14,6 +14,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { ActionCreators } from "../actions/action";
 
 function Copyright(props) {
   return (
@@ -36,9 +39,10 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+const SignIn = () => {
+  const dispatch = useDispatch()
   const [error, setError] = useState(null);
-  const navigate = useState()
+  const navigate = useNavigate()
 
   // login function
   const login = async (companyname, password) => {
@@ -52,7 +56,7 @@ export default function SignIn() {
         setError("Invalid Credentials");
         throw new Error( "Login failed");
       }
-      if (response.status === 2000) {
+      if (response.status === 200) {
         navigate('/dashboard')
       }
 
@@ -67,12 +71,9 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget);
     const companyname = data.get("company")
     const password = data.get("password")
-    console.log({
-      companyname,
-      password
-    });
     const response = await login(companyname, password)
     const token = response.token
+    dispatch(ActionCreators.setAuthToken(token))
     window.localStorage.setItem('access_token', token)
   };
 
@@ -180,3 +181,5 @@ export default function SignIn() {
     </div>
   );
 }
+
+export default SignIn;
