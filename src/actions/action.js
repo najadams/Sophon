@@ -21,11 +21,7 @@ export const FETCH_ADMIN_REQUEST = "FETCH_ADMIN_REQUEST";
 export const FETCH_ADMIN_SUCCESS = "FETCH_ADMIN_SUCCESS";
 export const FETCH_ADMIN_FAILURE = "FETCH_ADMIN_FAILURE";
 
-export const fetchInventoryRequest = () => ({ type: FETCH_INVENTORY_REQUEST });
-export const fetchInventorySuccess = (inventory) => ({ type: FETCH_INVENTORY_SUCCESS, payload : inventory });
-export const fetchInventoryFailure = (error) => ({ type: FETCH_INVENTORY_FAILURE, payload: error });
 
-export const fetchAdminRequest = () => ({ type: FETCH_ADMIN_REQUEST });
 export const fetchAdminSuccess = (admin) => ({ type: FETCH_ADMIN_SUCCESS, payload : admin });
 export const fetchAdminFailure = (error) => ({ type: FETCH_ADMIN_FAILURE, payload: error });
 
@@ -69,6 +65,18 @@ export const initialStates = {
 
 // Action Creators
 export const ActionCreators = {
+  fetchAdminRequest: () => ({
+    type: FETCH_ADMIN_REQUEST
+  }),
+  fetchInventorySuccess: (inventory) => ({
+    type: FETCH_INVENTORY_SUCCESS,
+    payload: inventory,
+  }),
+  fetchInventoryFailure: (error) => ({
+    type: FETCH_INVENTORY_FAILURE,
+    payload: error,
+  }),
+
   addProduct: (product) => ({
     type: ActionTypes.ADD_PRODUCT,
     payload: product,

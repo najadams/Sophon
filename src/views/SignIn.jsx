@@ -60,11 +60,12 @@ const SignIn = () => {
         navigate('/dashboard')
       }
 
-      window.localStorage.setItem(response.data.token)
       dispatch(ActionCreators.setAuthToken(response.data.token));
+      // dispatch(ActionCreators.);
       window.localStorage.setItem("access_token", response.data.token);
       return response.data
     } catch (error) {
+      setError(error.message)
       console.log(error.message);
     }
   };
