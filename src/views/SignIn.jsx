@@ -60,6 +60,9 @@ const SignIn = () => {
         navigate('/dashboard')
       }
 
+      window.localStorage.setItem(response.data.token)
+      dispatch(ActionCreators.setAuthToken(response.data.token));
+      window.localStorage.setItem("access_token", response.data.token);
       return response.data
     } catch (error) {
       console.log(error.message);
@@ -71,10 +74,8 @@ const SignIn = () => {
     const data = new FormData(event.currentTarget);
     const companyname = data.get("company")
     const password = data.get("password")
-    const response = await login(companyname, password)
-    const token = response.token
-    dispatch(ActionCreators.setAuthToken(token))
-    window.localStorage.setItem('access_token', token)
+    await login(companyname, password);
+    return; 
   };
 
   return (
