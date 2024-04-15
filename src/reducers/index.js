@@ -50,6 +50,23 @@ const usersReducer = (state = initialStates.userState, action) => {
       return [...state, action.payload];
     case ActionTypes.REMOVE_USER:
       return state.filter((user) => user.id !== action.payload);
+    case ActionTypes.FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        users : [...action.payload]
+      };
+    case ActionTypes.FETCH_USER_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error : action.payload
+      };
+    case ActionTypes.FETCH_USER_REQUEST:
+      return {
+        ...state,
+        isLoading : true
+      };
     case ActionTypes.SET_CURRENT_USER:
       return action.payload;
     default:

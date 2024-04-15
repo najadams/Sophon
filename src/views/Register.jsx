@@ -52,6 +52,7 @@ const Register = () => {
         throw new Error("Something went wrong. Try again later");
       }
 
+      navigate('/login')
       return response.data;
     } catch (error) {
       console.error(error.message);
@@ -73,10 +74,8 @@ const Register = () => {
       setError("fill all fields")
       return;
     }
-    const res = await registration(companyname, email, password);
-    if (res.status === 200) {
-      navigate('/login')
-    }
+    await registration(companyname, email, password);
+   
   };
 
 

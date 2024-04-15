@@ -9,21 +9,17 @@ export const ActionTypes = {
   REMOVE_FROM_CART: "REMOVE_FROM_CART",
   COMPLETE_TRANSACTION: "COMPLETE_TRANSACTION",
 
-  ADD_USER: "ADD_USER",
-  REMOVE_USER: "REMOVE_USER",
   SET_CURRENT_USER: "SET_CURRENT_USER",
   ADD_RECEIPT: "ADD_RECEIPT",
-
+  
   SET_AUTH_TOKEN: "SET_AUTH_TOKEN",
+  FETCH_USERS_REQUEST : "FETCH_USERS_REQUEST",
+  FETCH_USERS_SUCCESS : "FETCH_USERS_SUCCESS",
+  FETCH_USERS_FAILURE : "FETCH_USERS_FAILURE",
+  ADD_USER: "ADD_USER",
+  REMOVE_USER: "REMOVE_USER",
 };
 
-export const FETCH_ADMIN_REQUEST = "FETCH_ADMIN_REQUEST";
-export const FETCH_ADMIN_SUCCESS = "FETCH_ADMIN_SUCCESS";
-export const FETCH_ADMIN_FAILURE = "FETCH_ADMIN_FAILURE";
-
-
-export const fetchAdminSuccess = (admin) => ({ type: FETCH_ADMIN_SUCCESS, payload : admin });
-export const fetchAdminFailure = (error) => ({ type: FETCH_ADMIN_FAILURE, payload: error });
 
 // export const makeInCharge = ()
 
@@ -65,11 +61,19 @@ export const initialStates = {
 
 // Action Creators
 export const ActionCreators = {
-  fetchAdminRequest: () => ({
-    type: FETCH_ADMIN_REQUEST
+  fetchUserRequest: () => ({
+    type: ActionTypes.FETCH_USERS_REQUEST
+  }),
+  fetchUserSuccess: (users) => ({
+    type: ActionTypes.FETCH_USERS_SUCCESS,
+    payload: users,
+  }),
+  fetchUserFailure: (error) => ({
+    type: ActionTypes.FETCH_USERS_FAILURE,
+    payload: error,
   }),
   fetchInventorySuccess: (inventory) => ({
-    type: FETCH_INVENTORY_SUCCESS,
+    type: ActionTypes.FETCH_INVENTORY_SUCCESS,
     payload: inventory,
   }),
   fetchInventoryFailure: (error) => ({

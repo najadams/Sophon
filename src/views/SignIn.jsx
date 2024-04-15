@@ -61,12 +61,15 @@ const SignIn = () => {
       }
 
       dispatch(ActionCreators.setAuthToken(response.data.token));
-      // dispatch(ActionCreators.);
+      dispatch(ActionCreators.fetchUserRequest())
+      dispatch(ActionCreators.fetchUserSuccess(response.data.users))
+      console.log(response.data.users)
       window.localStorage.setItem("access_token", response.data.token);
       return response.data
     } catch (error) {
-      setError(error.message)
-      console.log(error.message);
+      setError(error.response.data.message)
+      dispatch(ActionCreators.fetchUserFailure(error.response.data.message))
+      console.log(error.response.data.message);
     }
   };
 
@@ -75,7 +78,11 @@ const SignIn = () => {
     const data = new FormData(event.currentTarget);
     const companyname = data.get("company")
     const password = data.get("password")
-    await login(companyname, password);
+    if (!companyname || !password) {
+      setError("fill all fields");
+      return;
+    }
+    await login(companyname.toLocaleLowerCase(), password);
     return; 
   };
 
@@ -171,7 +178,7 @@ const SignIn = () => {
                     </Link>
                   </Grid>
                 </Grid>
-                <Typography variant="body2" color={"CaptionText"}>
+                <Typography variant="body2" align="center" color="red">
                   {error}
                 </Typography>
                 <Copyright sx={{ mt: 5 }} />
