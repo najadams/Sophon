@@ -1,7 +1,7 @@
-import { initialState } from "../actions/action";
+import { initialStates } from "../actions/action";
 import { FETCH_INVENTORY_FAILURE, FETCH_INVENTORY_SUCCESS, FETCH_INVENTORY_REQUEST } from "../actions/action";
 
-export const inventoryReducer = (state = initialState, action) => {
+export const inventoryReducer = (state = initialStates.products, action) => {
     switch (action.type) {
         case FETCH_INVENTORY_REQUEST:
             return {
