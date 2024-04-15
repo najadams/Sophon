@@ -1,4 +1,4 @@
-import { ActionTypes, initialStates } from "../actions/action";
+import { ActionCreators, ActionTypes, initialStates } from "../actions/action";
 
 const productsReducer = (state = initialStates.productState, action) => {
   switch (action.type) {
@@ -17,19 +17,26 @@ const cartReducer = (state = initialStates.cartState, action) => {
       return [...state, action.payload];
     case ActionTypes.REMOVE_FROM_CART:
       return state.filter((item) => item.id !== action.payload);
+    case ActionTypes.COMPLETE_TRANSACTION:
+      return {
+        ...state,
+        transactionCompleted : true
+      };
     default:
       return state;
   }
 };
 
-const transactionsReducer = (state = initialStates.transactionState, action) => {
+const customersReducer = (state = initialStates.customerState, action) => {
   switch (action.type) {
-    case ActionTypes.COMPLETE_TRANSACTION:
+    case ActionCreators.addCustomer:
       return [...state, action.payload];
+    case ActionTypes.REMOVE_PRODUCT:
+      return state.filter((customer) => customer.id !== action.payload);
     default:
       return state;
   }
-};
+}
 
 const authReducer = (state = initialStates.authState, action) => {
   switch (action.type) {
@@ -83,4 +90,4 @@ const receiptsReducer = (state = initialStates.receiptState, action) => {
   }
 };
 
-export {productsReducer, cartReducer, transactionsReducer, authReducer, usersReducer, receiptsReducer}
+export {productsReducer, cartReducer,customersReducer, authReducer, usersReducer, receiptsReducer}

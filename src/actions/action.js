@@ -18,6 +18,9 @@ export const ActionTypes = {
   FETCH_USERS_FAILURE : "FETCH_USERS_FAILURE",
   ADD_USER: "ADD_USER",
   REMOVE_USER: "REMOVE_USER",
+
+  ADD_CUSTOMER: "ADD_CUSTOMER",
+  REMOVE_CUSTOMER : "REMOVE_CUSTOMER",
 };
 
 
@@ -42,6 +45,11 @@ export const initialStates = {
     isLoading: false, // Loading state for users
     error: null, // Error state for users
   },
+  customerState: {
+    customers: [], // List of users
+    isLoading: false, // Loading state for users
+    error: null, // Error state for users
+  },
   receiptState: {
     receipts: [], // List of receipts
     isLoading: false, // Loading state for receipts
@@ -52,9 +60,6 @@ export const initialStates = {
     isLoading: false, // Loading state for authentication
     error: null, // Error state for authentication
   },
-  transactionState: {
-    isCompleted : false
-  }
 };
 
 
@@ -88,6 +93,14 @@ export const ActionCreators = {
   removeProduct: (productId) => ({
     type: ActionTypes.REMOVE_PRODUCT,
     payload: productId,
+  }),
+  addCustomer: (customer) => ({
+    type: ActionTypes.ADD_CUSTOMER,
+    payload: customer,
+  }),
+  removeCustomer: (customerId) => ({
+    type: ActionTypes.REMOVE_CUSTOMER,
+    payload: customerId,
   }),
   addToCart: (item) => ({
     type: ActionTypes.ADD_TO_CART,
