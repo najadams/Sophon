@@ -43,7 +43,6 @@ const AddItem = ({ children }) => {
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Add</Button>
         </DialogActions>
       </Dialog>
     </div>

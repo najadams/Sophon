@@ -13,17 +13,19 @@ const validationSchema = Yup.object().shape({
   companyName: Yup.string().required("Required"),
 });
 
-const CustomerForm = () => (
+const CustomerForm = ({ data = null }) => (
   <div>
     <h1>Customer Information</h1>
     <Formik
-      initialValues={{
-        name: "",
-        phone: "",
-        email: "",
-        address: "",
-        companyName: "",
-      }}
+      initialValues={
+        data || {
+          name: "",
+          phone: "",
+          email: "",
+          address: "",
+          companyName: "",
+        }
+      }
       validationSchema={validationSchema}
       onSubmit={async (values) => {
         await new Promise((r) => setTimeout(r, 500));

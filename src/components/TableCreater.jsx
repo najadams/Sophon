@@ -15,20 +15,18 @@ import CustomerForm from './CustomerForm'
 
   
 const TableCreater = ({ tableName, Data, type='product' }) => {
-  const content = {
-    product: <ProductForm />,
-    customer: <CustomerForm />,
-    default: <ProductForm />,
-  };
+  // const content = {
+  //   product: <ProductForm />,
+  //   customer: <CustomerForm />,
+  //   default: <ProductForm />,
+  // };
 
   const [Headers, setHeaders] = useState([]);
-  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (Data.length > 0) {
       const items = Object.keys(Data[0]);
       setHeaders(items);
-      // setLoading(false);
     }
   }, [Data]);
 
@@ -65,8 +63,13 @@ const TableCreater = ({ tableName, Data, type='product' }) => {
                 <TableCell align="left">{row[header]}</TableCell>
               ))}
               <TableCell align="center">
-                <EditButton>
-                  {content[type]}
+                <EditButton values={row}>
+                  {console.log(row)}
+                  {type === 'product' ? (
+                    <ProductForm data={row} />
+                  ) : (
+                      <CustomerForm data={row} />
+                  )}
                 </EditButton>
               </TableCell>
               <TableCell align="right">

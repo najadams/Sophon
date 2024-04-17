@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Field, Form } from "formik";
 import { TextField } from "formik-material-ui";
 import Button from "@mui/material/Button";
@@ -9,7 +9,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { Typography, Snackbar } from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
   onHand: Yup.number().required("Required"),
 });
 
-const ProductForm = () => {
+const ProductForm = ({data}) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,16 +42,24 @@ const ProductForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (data) {
+      console.log("data")
+    }
+  })
+
   return (
     <div>
       <h1>Product Information</h1>
       <Formik
-        initialValues={{
-          name: "",
-          costPrice: "",
-          salesPrice: "",
-          onHand: "",
-        }}
+        initialValues={
+          data || {
+            name: "",
+            costPrice: "",
+            salesPrice: "",
+            onHand: "",
+          }
+        }
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
@@ -98,8 +106,8 @@ const ProductForm = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  resetForm()
-                  setDone(false)  
+                  resetForm();
+                  setDone(false);
                 }}>
                 Product Added! Click to Add New Product
               </Button>
@@ -129,12 +137,12 @@ const ProductForm = () => {
         <CheckCircleIcon />
       </Snackbar> */}
       <Snackbar
-        
         open={open}
         autoHideDuration={2000}
         onClose={() => setOpen(false)}
         message="Product added succesfully"
-        anchorOrigin={{ vertical: "top", horizontal: "center" }} />
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     </div>
   );
 };
