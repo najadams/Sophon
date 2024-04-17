@@ -4,6 +4,9 @@ import { TextField } from "formik-material-ui";
 import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import LinearProgress from "@mui/material/LinearProgress";
+import axios from "axios";
+import { API_BASE_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -12,7 +15,22 @@ const validationSchema = Yup.object().shape({
   onHand: Yup.number().required("Required"),
 });
 
-const ProductForm = () => (
+
+const ProductForm = () => {
+  const navigate = useNavigate();
+
+  const addProduct = async({name, costPrice, salesPrice, onHand}) => {
+    const product = await axios.post(`${API_BASE_URL}/api/product/`, {
+      name,
+      costprice: costPrice,
+      salesprice: salesPrice,
+      onhand : onHand,
+    });
+    if (product.status === 201) {
+      navigate('/products')
+    }
+  }
+  return (
   <div>
     <h1>Product Information</h1>
     <Formik
@@ -24,10 +42,12 @@ const ProductForm = () => (
         // VendorDetails: { companyName: "", supplierName: "", phone: "" },
       }}
       validationSchema={validationSchema}
-      onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
-      }}>
+      // onSubmit={async (values) => {
+      //   await new Promise((r) => setTimeout(r, 500));
+      //   alert(JSON.stringify(values, null, 2));
+        // }}
+        onSubmit={addProduct}
+      >
       {({ submitForm, isSubmitting }) => (
         <Form className="form">
           <Field component={TextField} name="name" type="text" label="Name" />
@@ -69,13 +89,13 @@ const ProductForm = () => (
             onClick={submitForm}
             // type="submit"
           >
-            Submit
+            Add New Product
           </Button>
         </Form>
       )}
     </Formik>
   </div>
-);
+)};
 
 
 export default ProductForm
