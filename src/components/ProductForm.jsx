@@ -101,7 +101,7 @@ const ProductForm = () => {
                   resetForm()
                   setDone(false)  
                 }}>
-                Product Added
+                Product Added! Click to Add New Product
               </Button>
             ) : (
               <Button
@@ -129,6 +129,7 @@ const ProductForm = () => {
         <CheckCircleIcon />
       </Snackbar> */}
       <Snackbar
+        
         open={open}
         autoHideDuration={2000}
         onClose={() => setOpen(false)}

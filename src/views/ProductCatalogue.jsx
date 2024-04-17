@@ -17,7 +17,7 @@ const ProductCatalogue = () => {
       </div>
 
       <div className="content">
-        <TableCreater tableName={'Stock'} Data={Data} />
+        <TableCreater tableName={'Stock'} Data={Data} type='product' />
       </div>
     </div>
   );
