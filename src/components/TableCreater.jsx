@@ -7,9 +7,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button'
+// import axios from 'axios';
+// import { API_BASE_URL } from '../config';
+import EditButton from './EditButton';
+import ProductForm from './ProductForm';
+import CustomerForm from './CustomerForm'
 
+  
+const TableCreater = ({ tableName, Data, type='product' }) => {
+  const content = {
+    product: <ProductForm />,
+    customer: <CustomerForm />,
+    default: <ProductForm />,
+  };
 
-const TableCreater = ({ tableName, Data }) => {
   const [Headers, setHeaders] = useState([]);
   // const [loading, setLoading] = useState(true);
 
@@ -21,9 +32,15 @@ const TableCreater = ({ tableName, Data }) => {
     }
   }, [Data]);
 
-  const handleEdit = (row) => {
-    console.log("Edit", row);
-  };
+  // const handleEdit = async (row) => {
+  //    try {
+  //      const item = await axios.patch(`${API_BASE_URL}/api/${type}/:id`, (row));
+  //      console.log(row)
+
+  //   } catch (error) {
+  //     console.log(error.response.data.message);
+  //   }
+  // };
 
   const handleDelete = (row) => {
     console.log("Delete", row);
@@ -48,12 +65,9 @@ const TableCreater = ({ tableName, Data }) => {
                 <TableCell align="left">{row[header]}</TableCell>
               ))}
               <TableCell align="center">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleEdit(row)}>
-                  Edit
-                </Button>
+                <EditButton>
+                  {content[type]}
+                </EditButton>
               </TableCell>
               <TableCell align="right">
                 <Button
