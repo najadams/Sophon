@@ -17,7 +17,7 @@ const Customers = () => {
       </div>
 
       <div className="content">
-        <TableCreater Data={Data} />
+        <TableCreater Data={Data} type='customer' />
       </div>
     </div>
   );
