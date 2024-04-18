@@ -2,7 +2,7 @@ import React from 'react'
 import ProductForm from '../components/ProductForm';
 import TableCreater from '../components/TableCreater';
 import AddItem from '../components/AddItem';
-import { Data } from '../store/data'
+import { Products } from '../store/data'
 
 const ProductCatalogue = () => {
   return (
@@ -17,7 +17,7 @@ const ProductCatalogue = () => {
       </div>
 
       <div className="content">
-        <TableCreater tableName={'Stock'} Data={Data} type='product' />
+        <TableCreater tableName={'Stock'} Data={Products} type='product' />
       </div>
     </div>
   );

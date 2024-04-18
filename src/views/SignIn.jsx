@@ -63,7 +63,6 @@ const SignIn = () => {
       dispatch(ActionCreators.setAuthToken(response.data.token));
       dispatch(ActionCreators.fetchUserRequest())
       dispatch(ActionCreators.fetchUserSuccess(response.data.users))
-      console.log(response.data.users)
       window.localStorage.setItem("access_token", response.data.token);
       return response.data
     } catch (error) {

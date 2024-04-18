@@ -19,7 +19,13 @@ const DummyCard = () => {
 
 const Widgets = ({ title, count }) => {
   return (
-    <Card sx={{ minWidth: 200, Height: 30, margin: 1 }}>
+    <Card
+      sx={{
+        minWidth: 200,
+        Height: 30,
+        backgroundColor: "#c5c9d2",
+        margin: 1,
+      }}>
       <CardContent>
         <Typography variant="h5" component="div">
           {title}
