@@ -6,6 +6,7 @@
   height: 100vh;
   background-color: var(--sidebar-color);
   color: whitesmoke;
+  /* color: white; */
 }
 
 .expanded {
@@ -27,7 +28,7 @@ nav .content {
 
 
 .menu-bar{
-  padding-top: 50px;
+  padding-top: 70px;
 }
 
 
@@ -37,7 +38,6 @@ nav .content {
 
 .sidebar.collapsed {
   width: 50px;
-  /* background: #000; */
 }
 .sidebar.collapsed .text {
   opacity: 0;
@@ -50,7 +50,7 @@ nav .content {
 
 /* ====== Reusable CSS  ====== */
 .sidebar .text {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--text-color);
   transition: var(--trans-05);
