@@ -35,7 +35,7 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <div style={{ height: "100vh", display: "flex" }}>
-            <Router>
+            <Router >
               <Sidebar
                 isExpanded={isSidebarExpanded}
                 toggleSidebar={toggleSidebar}
