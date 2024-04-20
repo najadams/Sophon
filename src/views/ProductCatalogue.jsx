@@ -10,7 +10,8 @@ const fetchProducts = async (companyId) => {
   try {
     const response = await axios.get(`/api/products/${companyId}`);
     const data = response.data.products.map((item, index) => ({
-      id: index + 1,
+      id: item._id,
+      index : index + 1,
       name: item.name,
       costPrice: item.costprice,
       salesPrice: item.salesprice,
