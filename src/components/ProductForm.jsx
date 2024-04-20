@@ -71,8 +71,6 @@ const ProductForm = ({ data }) => {
     }
   };
 
-  console.log(companyId)
-
   return (
     <div>
       <h1>Product Information</h1>
@@ -163,7 +161,7 @@ const ProductForm = ({ data }) => {
         open={open}
         autoHideDuration={5000}
         onClose={() => setOpen(false)}
-        message="Product added successfully"
+        message= {!data ? "Product added successfully" : "Product Changed Successfully"}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
     </div>
