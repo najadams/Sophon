@@ -11,8 +11,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import axios from '../config/'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -45,32 +44,39 @@ const SignIn = () => {
   const navigate = useNavigate()
 
   // login function
-  const login = async (companyname, password) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/login`, {
-        companyname,
-        password,
-      });
+ const login = async (companyname, password) => {
+   try {
+     const response = await axios.post(`/login`, {
+       companyname,
+       password,
+     });
 
-      if (response.status !== 200) {
-        setError("Invalid Credentials");
-        throw new Error( "Login failed");
-      }
-      if (response.status === 200) {
-        navigate('/dashboard')
-      }
+     if (response.status !== 200) {
+       setError("Invalid Credentials");
+       throw new Error("Login failed");
+     }
 
-      dispatch(ActionCreators.setAuthToken(response.data.token));
-      dispatch(ActionCreators.fetchUserRequest())
-      dispatch(ActionCreators.fetchUserSuccess(response.data.users))
-      window.localStorage.setItem("access_token", response.data.token);
-      return response.data
-    } catch (error) {
-      setError(error.response.data.message)
-      dispatch(ActionCreators.fetchUserFailure(error.response.data.message))
-      console.log(error.response.data.message);
-    }
-  };
+     dispatch(ActionCreators.setAuthToken(response.data.token));
+     window.localStorage.setItem("access_token", response.data.token);
+     navigate("/dashboard");
+
+     // Dispatch fetchUserSuccess after setting the auth token and navigating
+     dispatch(ActionCreators.fetchUserRequest());
+     dispatch(ActionCreators.fetchUserSuccess(response.data.company.workers));
+     console.log(response.data.company.workers);
+
+     return response.data;
+   } catch (error) {
+     setError(error.response?.data?.message || "An error occurred");
+     dispatch(
+       ActionCreators.fetchUserFailure(
+         error.response?.data?.message || "An error occurred"
+       )
+     );
+     console.error(error.response?.data?.message || error.message);
+   }
+ };
+
 
   const handleSubmit = async(event) => {
     event.preventDefault();
