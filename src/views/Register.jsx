@@ -12,8 +12,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import axios from "../config/";
 import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
@@ -26,9 +25,8 @@ function Copyright(props) {
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Sophon
-      </Link>{" "}
+      </Link>
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }
@@ -42,7 +40,7 @@ const Register = () => {
   // Register function
   const registration = async (companyname, email, password) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/register`, {
+      const response = await axios.post(`/register`, {
         companyname,
         email,
         password,
@@ -74,7 +72,7 @@ const Register = () => {
       setError("fill all fields")
       return;
     }
-    await registration(companyname, email, password);
+    await registration(companyname.toLowerCase(), email, password);
    
   };
 
