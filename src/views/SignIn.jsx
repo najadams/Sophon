@@ -60,6 +60,7 @@ const SignIn = () => {
 
      dispatch(ActionCreators.setAuthToken(token));
      window.localStorage.setItem("access_token", token);
+     dispatch(ActionCreators.loginCompany())
      navigate("/dashboard");
 
      // Dispatch fetchUserSuccess after setting the auth token and navigating

@@ -12,6 +12,16 @@ const companyReducer = (state = initialStates.companyState, action) => {
         ...state,
         error : action.payload
       }
+    case ActionTypes.LOGIN:
+      return {
+        ...state,
+        isLoggedIn : true
+      }
+    case ActionTypes.LOGOUT:
+      return {
+        ...state,
+        isLoggedIn : false
+      }
     default:
       return state
   }

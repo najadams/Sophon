@@ -22,11 +22,15 @@ export const ActionTypes = {
 
   ADD_CUSTOMER: "ADD_CUSTOMER",
   REMOVE_CUSTOMER: "REMOVE_CUSTOMER",
+
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
 };
 
 export const initialStates = {
   companyState: {
     data: {},
+    isLoggedIn : false,
     error: null,
   },
   productState: {
@@ -64,6 +68,12 @@ export const initialStates = {
 };
 
 export const ActionCreators = {
+  loginCompany: () => ({
+    type : ActionTypes.LOGIN
+  }),
+  logoutCompany: () => ({
+    type : ActionTypes.LOGOUT
+  }),
   fetchCompanySuccess: (data) => ({
     type: ActionTypes.FETCH_COMPANY_SUCCESS,
     payload : data

@@ -13,7 +13,7 @@ import {
 } from "./views";
 import { Header, Sidebar } from "./components";
 import store, {persistor} from "./store/store";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { PersistGate } from "redux-persist/integration/react";
 
@@ -28,7 +28,8 @@ function App() {
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
-
+  const isLoggedIn = useSelector((state) => state.company.isLoggedIn);
+  // const isLoggedIn = false
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
@@ -43,15 +44,28 @@ function App() {
                 <Header />
                 <Suspense fallback={<div>Loading...</div>}>
                   <Routes>
-                    <Route path="/" element={<Dashboard />} />
+                    {/* <Route path="/" element={<Dashboard />} /> */}
                     <Route path="/login" element={<SignIn />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/products" element={<ProductCatalogue />} />
-                    <Route path="/customers" element={<Customers />} />
-                    <Route path="/stocks" element={<StockEntry />} />
-                    <Route path=" /inventory" element={<InventoryReports />} />
-                    <Route path="/sales" element={<SalesOrders />} />
+                    {isLoggedIn ? (
+                      <>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route
+                          path="/products"
+                          element={<ProductCatalogue />}
+                        />
+                        <Route path="/customers" element={<Customers />} />
+                        <Route path="/stocks" element={<StockEntry />} />
+                        <Route
+                          path="/inventory"
+                          element={<InventoryReports />}
+                        />
+                        <Route path="/sales" element={<SalesOrders />} />
+                      </>
+                    ) : (
+                        <Route path="*" element={<SignIn />} />
+                    )}
+                    {/* <Route element={<PrivateRoutes />} /> */}
                     <Route path="*" element={<NoPage />} />
                   </Routes>
                 </Suspense>
