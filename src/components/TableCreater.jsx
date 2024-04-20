@@ -27,12 +27,10 @@ const TableCreater = ({ tableName, Data, type = "product" }) => {
   );
 
   const deleteProduct = async (id) => {
-    const product = axios.delete(`/api/product/${id}`);
-    console.log(product.data);
+    axios.delete(`/api/product/${id}`);
   };
   const deleteCustomer = async (id) => {
-    const customer = axios.delete(`/api/customer/${id}`);
-    console.log(customer.data);
+    axios.delete(`/api/customer/${id}`);
   };
   const handleDelete = (row, type) => {
     if (type === 'products') {

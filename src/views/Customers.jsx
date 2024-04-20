@@ -1,18 +1,22 @@
 import React from "react";
 import { useQuery } from "react-query";
-import ProductForm from "../components/ProductForm";
 import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
 import axios from "../config/index";
 import { useSelector } from "react-redux";
+import CustomerForm from "../components/CustomerForm";
 
 const fetchCustomers = async (companyId) => {
   try {
     const response = await axios.get(`/api/customers/${companyId}`);
     const data = response.data.customers.map((item, index) => ({
-      id: index + 1,
-      name: `${item.firstname}  ${item.lastname}`,
+      id : item._id,
+      index : index + 1,
       company: item.company,
+      name: item.name,
+      phone : item.phone,
+      email: item.email,
+      address : item.address ? item.address : 'None'
       
     }));
     return data;
@@ -39,13 +43,13 @@ const Customers = () => {
           <h1>Customers</h1>
         </div>
         <AddItem>
-          <ProductForm />
+          <CustomerForm />
         </AddItem>
       </div>
 
       <div className="content">
         {customers.length > 0 ? (
-          <TableCreater tableName={"Stock"} Data={customers} type="product" />
+          <TableCreater tableName={"Customers"} Data={customers} type="customers" />
         ) : (
           <div className="content">
             <h2>Add Customers to Get Started</h2>
