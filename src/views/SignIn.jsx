@@ -56,21 +56,26 @@ const SignIn = () => {
        throw new Error("Login failed");
      }
 
-     dispatch(ActionCreators.setAuthToken(response.data.token));
-     window.localStorage.setItem("access_token", response.data.token);
+      const { companydata, token } = response.data;
+
+     dispatch(ActionCreators.setAuthToken(token));
+    //  dispatch(ActionCreators.fetchCompanySuccess(response.data.company))
+     console.log(companydata)
+     window.localStorage.setItem("access_token", token);
      navigate("/dashboard");
 
      // Dispatch fetchUserSuccess after setting the auth token and navigating
+     dispatch(ActionCreators.fetchInventorySuccess(companydata))
      dispatch(ActionCreators.fetchUserRequest());
-     dispatch(ActionCreators.fetchUserSuccess(response.data.company.workers));
-     console.log(response.data.company.workers);
+     dispatch(ActionCreators.fetchUserSuccess(companydata.workers));
+     console.log(companydata.workers);
 
      return response.data;
    } catch (error) {
-     setError(error.response?.data?.message || "An error occurred");
+     setError( "An error occurred");
      dispatch(
        ActionCreators.fetchUserFailure(
-         error.response?.data?.message || "An error occurred"
+         "An error occurred"
        )
      );
      console.error(error.response?.data?.message || error.message);
