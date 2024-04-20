@@ -12,9 +12,10 @@ import {
   Register,
 } from "./views";
 import { Header, Sidebar } from "./components";
-import store from "./store/store";
+import store, {persistor} from "./store/store";
 import { Provider } from "react-redux";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { PersistGate } from "redux-persist/integration/react";
 
 const NoPage = lazy(() =>
   import("./views/NoPage")
@@ -31,31 +32,33 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <div style={{ height: "100vh", display: "flex" }}>
-          <Router>
-            <Sidebar
-              isExpanded={isSidebarExpanded}
-              toggleSidebar={toggleSidebar}
-            />
-            <div style={{ flex: 1 }}>
-              <Header />
-              <Suspense fallback={<div>Loading...</div>}>
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/login" element={<SignIn />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/products" element={<ProductCatalogue />} />
-                  <Route path="/customers" element={<Customers />} />
-                  <Route path="/stocks" element={<StockEntry />} />
-                  <Route path=" /inventory" element={<InventoryReports />} />
-                  <Route path="/sales" element={<SalesOrders />} />
-                  <Route path="*" element={<NoPage />} />
-                </Routes>
-              </Suspense>
-            </div>
-          </Router>
-        </div>
+        <PersistGate loading={null} persistor={persistor}>
+          <div style={{ height: "100vh", display: "flex" }}>
+            <Router>
+              <Sidebar
+                isExpanded={isSidebarExpanded}
+                toggleSidebar={toggleSidebar}
+              />
+              <div style={{ flex: 1 }}>
+                <Header />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/login" element={<SignIn />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/products" element={<ProductCatalogue />} />
+                    <Route path="/customers" element={<Customers />} />
+                    <Route path="/stocks" element={<StockEntry />} />
+                    <Route path=" /inventory" element={<InventoryReports />} />
+                    <Route path="/sales" element={<SalesOrders />} />
+                    <Route path="*" element={<NoPage />} />
+                  </Routes>
+                </Suspense>
+              </div>
+            </Router>
+          </div>
+        </PersistGate>
       </Provider>
     </QueryClientProvider>
   );

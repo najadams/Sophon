@@ -1,23 +1,39 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { thunk } from "redux-thunk";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // Import storage
+import {thunk} from "redux-thunk"; 
 import { combineReducers } from "redux";
-import { cartReducer,customersReducer, productsReducer, usersReducer, receiptsReducer, companyReducer } from "../reducers";
+import {
+  cartReducer,
+  customersReducer,
+  productsReducer,
+  usersReducer,
+  receiptsReducer,
+  companyReducer,
+} from "../reducers";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
 
 const rootReducer = combineReducers({
-  company : companyReducer, 
+  company: companyReducer,
   products: productsReducer,
   cart: cartReducer,
   workers: usersReducer,
   receipts: receiptsReducer,
-  customers : customersReducer
+  customers: customersReducer,
 });
 
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ;
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose ;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  persistedReducer,
+  composeEnhancers(applyMiddleware(thunk)) // Add a missing comma here
 );
 
-export default store
+export default store;
+export const persistor = persistStore(store)
