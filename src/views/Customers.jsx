@@ -1,10 +1,29 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import CustomerForm from '../components/CustomerForm'
 import AddItem from '../components/AddItem'
 import TableCreater from '../components/TableCreater';
-import { Data } from '../store/data'
+import axios from '../config/index';
 
 const Customers = () => {
+  const [customers, setCustomers] = useState(null)
+  useEffect(() => {
+    const getCustomers = async () => {
+      const results = await axios.get(`/api/customers`);
+      setCustomers(
+        results.data.customers.map((items) => {
+          return {
+            name: items.name,
+            costPrice: items.costprice,
+            salesPrice: items.salesprice,
+            onHand: items.onhand,
+          };
+        })
+      );
+      return;
+    };
+    getCustomers();
+  }, []);
+
   return (
     <div className="page">
       <div className="heading">
@@ -17,7 +36,7 @@ const Customers = () => {
       </div>
 
       <div className="content">
-        <TableCreater Data={Data} type='customer' />
+        {/* <TableCreater Data={customers} type='customer' /> */}
       </div>
     </div>
   );

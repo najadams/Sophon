@@ -38,7 +38,7 @@ const Widgets = ({ title, count }) => {
 
 const Dashboard = () => {
   const productCount = useSelector(state => state.products.products.length)
-  const userCount = useSelector(state => state.users.users.length)
+  const userCount = useSelector(state => state.workers.users.length)
   const customerCount = useSelector(state => state.customers.customers.length)
   return (
     <div className="page">
