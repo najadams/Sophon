@@ -59,16 +59,13 @@ const SignIn = () => {
       const { companydata, token } = response.data;
 
      dispatch(ActionCreators.setAuthToken(token));
-    //  dispatch(ActionCreators.fetchCompanySuccess(response.data.company))
-     console.log(companydata)
      window.localStorage.setItem("access_token", token);
      navigate("/dashboard");
 
      // Dispatch fetchUserSuccess after setting the auth token and navigating
-     dispatch(ActionCreators.fetchInventorySuccess(companydata))
+     dispatch(ActionCreators.fetchCompanySuccess(companydata))
      dispatch(ActionCreators.fetchUserRequest());
      dispatch(ActionCreators.fetchUserSuccess(companydata.workers));
-     console.log(companydata.workers);
 
      return response.data;
    } catch (error) {

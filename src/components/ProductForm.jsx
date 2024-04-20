@@ -18,59 +18,60 @@ const validationSchema = Yup.object().shape({
   onHand: Yup.number().required("Required"),
 });
 
-const ProductForm = ({data}) => {
+const ProductForm = ({ data }) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
+  const companyId = useSelector((state) => state.company.data.id);
   const handleClose = useContext(DialogContext);
-  const companyId = useSelector((state) => state.company.name)
   const dispatch = useDispatch();
 
-   const updateProduct = async ({ _id, name, costPrice, salesPrice, onHand }) => {
-     try {
-       const product = await axios.patch(
-         `/api/product/${data.id}`,
-         {
-           id : _id,
-           name,
-           costprice: costPrice,
-           salesprice: salesPrice,
-           onhand: onHand,
-         }
-       );
-       if (product.status === 200) {
-         setOpen(true);
-         setTimeout(() => {
-           handleClose(); // close the dialog
-         }, 2000);
-        }
-     } catch (error) {
-       setError(error.response.data.message);
-     }
-   };
+  const updateProduct = async ({
+    _id,
+    name,
+    costPrice,
+    salesPrice,
+    onHand,
+  }) => {
+    try {
+      const product = await axios.patch(`/api/product/${data.id}`, {
+        id: _id,
+        name,
+        costprice: costPrice,
+        salesprice: salesPrice,
+        onhand: onHand,
+      });
+      if (product.status === 200) {
+        setOpen(true);
+        setTimeout(() => {
+          handleClose(); // close the dialog
+        }, 2000);
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "An error occurred");
+    }
+  };
 
-  const addProduct = async ({companyId, name, costPrice, salesPrice, onHand }) => {
+  const addProduct = async ({ name, costPrice, salesPrice, onHand }) => {
     try {
       const product = await axios.post(`/api/product/`, {
         companyId,
         name,
         costprice: costPrice,
         salesprice: salesPrice,
-        onhand : onHand,
+        onhand: onHand,
       });
       if (product.status === 201) {
         setDone(true);
         setOpen(true);
-        // dispatch(ActionCreators.addProduct(product));
         dispatch(ActionCreators.fetchInventorySuccess(product));
-
       }
     } catch (error) {
-      setError(error.response.data.message);
-      dispatch(ActionCreators.fetchUserFailure(error.response.data.message))
+      setError(error.response?.data?.message || "An error occurred");
     }
-  }
+  };
 
+  console.log(companyId)
 
   return (
     <div>
@@ -90,7 +91,9 @@ const ProductForm = ({data}) => {
           if (data) {
             updateProduct(values).finally(() => setSubmitting(false));
           } else {
-            addProduct(values).finally(() => setSubmitting(false));
+            addProduct({ ...values, companyId }).finally(() =>
+              setSubmitting(false)
+            );
           }
         }}>
         {({ submitForm, isSubmitting, handleChange, resetForm }) => (
@@ -160,7 +163,7 @@ const ProductForm = ({data}) => {
         open={open}
         autoHideDuration={5000}
         onClose={() => setOpen(false)}
-        message="Product added succesfully"
+        message="Product added successfully"
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
     </div>

@@ -4,25 +4,32 @@ import ProductForm from "../components/ProductForm";
 import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
 import axios from "../config/index";
+import { useSelector } from "react-redux";
 
-const fetchProducts = async () => {
-  const response = await axios.get(`/api/products`);
-  const data = response.data.products.map((items, index) => ({
-    id: index + 1,
-    name: items.name,
-    costPrice: items.costprice,
-    salesPrice: items.salesprice,
-    onHand: items.onhand,
-  }));
-  return data;
+const fetchProducts = async (companyId) => {
+  try {
+    const response = await axios.get(`/api/products/${companyId}`);
+    const data = response.data.products.map((item, index) => ({
+      id: index + 1,
+      name: item.name,
+      costPrice: item.costprice,
+      salesPrice: item.salesprice,
+      onHand: item.onhand,
+    }));
+    return data;
+  } catch (error) {
+    throw new Error("Failed to fetch products");
+  }
 };
 
+
 const ProductCatalogue = () => {
+  const companyId = useSelector((state) => state.company.data.id)
   const {
     data: products,
     isLoading,
     isError,
-  } = useQuery("products", fetchProducts);
+  } = useQuery(["api/products", companyId], () =>  fetchProducts(companyId));
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching data</div>;
@@ -39,10 +46,10 @@ const ProductCatalogue = () => {
       </div>
 
       <div className="content">
-        {products ? (
+        {products.length > 0 ? (
           <TableCreater tableName={"Stock"} Data={products} type="product" />
         ) : (
-          <div className="nocontent">
+          <div className="content">
             <h2>Add Products to Get Started</h2>
           </div>
         )}

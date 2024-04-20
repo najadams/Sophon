@@ -64,8 +64,9 @@ export const initialStates = {
 };
 
 export const ActionCreators = {
-  fetchCompanySuccess: () => ({
+  fetchCompanySuccess: (data) => ({
     type: ActionTypes.FETCH_COMPANY_SUCCESS,
+    payload : data
   }),
   fetchCompanyFailure: () => ({
     type: ActionTypes.FETCH_COMPANY_FAILURE,
