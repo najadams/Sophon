@@ -200,6 +200,7 @@ header .image-text .header-text {
   background-color: #ffffffa2;
   height: 90%;
   overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .content{
@@ -209,12 +210,6 @@ header .image-text .header-text {
 
 }
 
-/* .heading{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-} */
 .heading{
   z-index: 100;
   display: flex;

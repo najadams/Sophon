@@ -1,5 +1,22 @@
 import { ActionTypes, initialStates } from "../actions/action";
 
+const companyReducer = (state = initialStates.companyState, action) => {
+  switch (action.type) {
+    case ActionTypes.FETCH_COMPANY_SUCCESS:
+      return {
+        ...state,
+        data : action.payload
+      }
+    case ActionTypes.FETCH_COMPANY_FAILURE:
+      return {
+        ...state,
+        error : action.payload
+      }
+    default:
+      return state
+  }
+}
+
 const productsReducer = (state = initialStates.productState, action) => {
   switch (action.type) {
     case ActionTypes.ADD_PRODUCT:
@@ -130,4 +147,5 @@ export {
   authReducer,
   usersReducer,
   receiptsReducer,
+  companyReducer
 };

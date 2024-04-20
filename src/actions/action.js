@@ -1,9 +1,10 @@
-export const FETCH_INVENTORY_REQUEST = "FETCH_INVENTORY_REQUEST";
-export const FETCH_INVENTORY_SUCCESS = "FETCH_INVENTORY_SUCCESS";
-export const FETCH_INVENTORY_FAILURE = "FETCH_INVENTORY_FAILURE";
-
 export const ActionTypes = {
+  FETCH_COMPANY_SUCCESS: "FETCH_COMPANY_SUCCESS",
+  FETCH_COMPANY_FAILURE: "FETCH_COMPANY_FAILURE",
   ADD_PRODUCT: "ADD_PRODUCT",
+  FETCH_INVENTORY_SUCCESS: "FETCH_INVENTORY_SUCCESS",
+  FETCH_INVENTORY_REQUEST : "FETCH_INVENTORY_REQUEST",
+  FETCH_INVENTORY_FAILURE : "FETCH_INVENTORY_FAILURE",
   REMOVE_PRODUCT: "REMOVE_PRODUCT",
   ADD_TO_CART: "ADD_TO_CART",
   REMOVE_FROM_CART: "REMOVE_FROM_CART",
@@ -11,47 +12,47 @@ export const ActionTypes = {
 
   SET_CURRENT_USER: "SET_CURRENT_USER",
   ADD_RECEIPT: "ADD_RECEIPT",
-  
+
   SET_AUTH_TOKEN: "SET_AUTH_TOKEN",
-  FETCH_USERS_REQUEST : "FETCH_USERS_REQUEST",
-  FETCH_USERS_SUCCESS : "FETCH_USERS_SUCCESS",
-  FETCH_USERS_FAILURE : "FETCH_USERS_FAILURE",
+  FETCH_USERS_REQUEST: "FETCH_USERS_REQUEST",
+  FETCH_USERS_SUCCESS: "FETCH_USERS_SUCCESS",
+  FETCH_USERS_FAILURE: "FETCH_USERS_FAILURE",
   ADD_USER: "ADD_USER",
   REMOVE_USER: "REMOVE_USER",
 
   ADD_CUSTOMER: "ADD_CUSTOMER",
-  REMOVE_CUSTOMER : "REMOVE_CUSTOMER",
+  REMOVE_CUSTOMER: "REMOVE_CUSTOMER",
 };
 
-
-// export const makeInCharge = ()
-
-
 export const initialStates = {
+  companyState: {
+    data: {},
+    error: null,
+  },
   productState: {
-    products: [], // List of products
+    products: [],
     isLoading: false, // Loading state for products
     error: null, // Error state for products
   },
   cartState: {
-    cart: [], // List of products in the cart
+    cart: [],
     transactionComplete: false, // Transaction status
     isLoading: false, // Loading state for cart
     error: null, // Error state for cart
   },
   userState: {
-    users: [], // List of users
+    users: [],
     currentUser: null, // Current logged in user
     isLoading: false, // Loading state for users
     error: null, // Error state for users
   },
   customerState: {
-    customers: [], // List of users
+    customers: [],
     isLoading: false, // Loading state for users
     error: null, // Error state for users
   },
   receiptState: {
-    receipts: [], // List of receipts
+    receipts: [],
     isLoading: false, // Loading state for receipts
     error: null, // Error state for receipts
   },
@@ -62,12 +63,15 @@ export const initialStates = {
   },
 };
 
-
-
-// Action Creators
 export const ActionCreators = {
+  fetchCompanySuccess: () => ({
+    type: ActionTypes.FETCH_COMPANY_SUCCESS,
+  }),
+  fetchCompanyFailure: () => ({
+    type: ActionTypes.FETCH_COMPANY_FAILURE,
+  }),
   fetchUserRequest: () => ({
-    type: ActionTypes.FETCH_USERS_REQUEST
+    type: ActionTypes.FETCH_USERS_REQUEST,
   }),
   fetchUserSuccess: (users) => ({
     type: ActionTypes.FETCH_USERS_SUCCESS,
@@ -82,7 +86,7 @@ export const ActionCreators = {
     payload: inventory,
   }),
   fetchInventoryFailure: (error) => ({
-    type: FETCH_INVENTORY_FAILURE,
+    type: ActionTypes.FETCH_INVENTORY_FAILURE,
     payload: error,
   }),
 

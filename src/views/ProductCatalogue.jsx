@@ -3,7 +3,6 @@ import { useQuery } from "react-query";
 import ProductForm from "../components/ProductForm";
 import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
-import { API_BASE_URL } from "../config";
 import axios from "../config/index";
 
 const fetchProducts = async () => {

@@ -31,7 +31,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
                 <i className="bx bx-receipt icon"></i>
                 <span className="text nav-text">Make Sales</span>
               </NavLink>
-            </li>
+            </li>  
             <li className="nav-link">
               <NavLink to={"/customers"} activeclassname="active">
                 <i className="bx bxs-user-plus icon"></i>

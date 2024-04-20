@@ -1,14 +1,13 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { inventoryReducer } from "../reducers/inventoryReducers";
 import { thunk } from "redux-thunk";
 import { combineReducers } from "redux";
-import { cartReducer,customersReducer, productsReducer, usersReducer, receiptsReducer } from "../reducers";
+import { cartReducer,customersReducer, productsReducer, usersReducer, receiptsReducer, companyReducer } from "../reducers";
 
 const rootReducer = combineReducers({
-  inventory: inventoryReducer,
+  company : companyReducer, 
   products: productsReducer,
   cart: cartReducer,
-  users: usersReducer,
+  workers: usersReducer,
   receipts: receiptsReducer,
   customers : customersReducer
 });

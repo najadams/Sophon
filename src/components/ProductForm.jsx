@@ -5,11 +5,10 @@ import { TextField } from "formik-material-ui";
 import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import LinearProgress from "@mui/material/LinearProgress";
-import axios from "axios";
-import { API_BASE_URL } from "../config";
+import axios from "../config";
 import { Typography, Snackbar } from "@mui/material";
 import { DialogContext } from "../context/context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActionCreators } from "../actions/action";
 
 const validationSchema = Yup.object().shape({
@@ -24,12 +23,13 @@ const ProductForm = ({data}) => {
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = useContext(DialogContext);
+  const companyId = useSelector((state) => state.company.name)
   const dispatch = useDispatch();
 
    const updateProduct = async ({ _id, name, costPrice, salesPrice, onHand }) => {
      try {
        const product = await axios.patch(
-         `${API_BASE_URL}/api/product/${data.id}`,
+         `/api/product/${data.id}`,
          {
            id : _id,
            name,
@@ -49,9 +49,10 @@ const ProductForm = ({data}) => {
      }
    };
 
-  const addProduct = async({name, costPrice, salesPrice, onHand}) => {
+  const addProduct = async ({companyId, name, costPrice, salesPrice, onHand }) => {
     try {
-      const product = await axios.post(`${API_BASE_URL}/api/product/`, {
+      const product = await axios.post(`/api/product/`, {
+        companyId,
         name,
         costprice: costPrice,
         salesprice: salesPrice,
@@ -60,11 +61,13 @@ const ProductForm = ({data}) => {
       if (product.status === 201) {
         setDone(true);
         setOpen(true);
-        dispatch(ActionCreators.addProduct(product));
+        // dispatch(ActionCreators.addProduct(product));
+        dispatch(ActionCreators.fetchInventorySuccess(product));
 
       }
     } catch (error) {
       setError(error.response.data.message);
+      dispatch(ActionCreators.fetchUserFailure(error.response.data.message))
     }
   }
 

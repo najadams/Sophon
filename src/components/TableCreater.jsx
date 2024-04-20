@@ -1,20 +1,17 @@
-import React, {useState, useEffect} from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button'
-// import axios from 'axios';
-// import { API_BASE_URL } from '../config';
-import EditButton from './EditButton';
-import ProductForm from './ProductForm';
-import CustomerForm from './CustomerForm'
+import React, { useState, useEffect } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import EditButton from "./EditButton";
+import ProductForm from "./ProductForm";
+import CustomerForm from "./CustomerForm";
 
-  
-const TableCreater = ({ tableName, Data, type='product' }) => {
+const TableCreater = ({ tableName, Data, type = "product" }) => {
   // const content = {
   //   product: <ProductForm />,
   //   customer: <CustomerForm />,
@@ -64,11 +61,10 @@ const TableCreater = ({ tableName, Data, type='product' }) => {
               ))}
               <TableCell align="center">
                 <EditButton values={row}>
-                  {console.log(row)}
-                  {type === 'product' ? (
+                  {type === "product" ? (
                     <ProductForm data={row} />
                   ) : (
-                      <CustomerForm data={row} />
+                    <CustomerForm data={row} />
                   )}
                 </EditButton>
               </TableCell>
