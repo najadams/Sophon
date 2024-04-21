@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -12,21 +12,30 @@ import ProductForm from "./ProductForm";
 import CustomerForm from "./CustomerForm";
 import axios from '../config'
 import { useQueryClient, useMutation } from "react-query";
+import { tableActions } from "../config/Funtions";
 
-
-const TableCreater = ({ tableName, Data, type = "product" }) => {
+const TableCreater = ({ companyId, type }) => {
   const [Headers, setHeaders] = useState([]);
+  const [Data, setData] = useState([]);
 
-  useEffect(
-    (id) => {
-      if (Data.length > 0) {
-        // Extract all keys except 'id' from the first data item
-        const items = Object.keys(Data[0]).filter((key) => key !== "id");
-        setHeaders(items);
+  const fetchData = useCallback(async () => {
+    try {
+      let data;
+      if (type === "customers") {
+        data = await tableActions.fetchCustomers(companyId);
+      } else if (type === "products") {
+        data = await tableActions.fetchProducts(companyId);
       }
-    },
-    [Data]
-  );
+      setHeaders(Object.keys(data[0]).filter((key) => key !== "id"));
+      setData(data);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  }, [companyId, type]);
+  useEffect(() => {
+
+    fetchData();
+  }, [fetchData]);
 
   // Inside your TableCreater component
   const queryClient = useQueryClient();
@@ -35,7 +44,8 @@ const TableCreater = ({ tableName, Data, type = "product" }) => {
     (id) => axios.delete(`/api/product/${id}`),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("api/product");
+        queryClient.invalidateQueries(["api/products"]);
+        fetchData();
       },
       onError: (error) => {
         console.error("Failed to delete product:", error);
@@ -47,21 +57,23 @@ const TableCreater = ({ tableName, Data, type = "product" }) => {
     (id) => axios.delete(`/api/customer/${id}`),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("api/customer");
+        queryClient.invalidateQueries(["api/customers", companyId]);
+        fetchData();
       },
       onError: (error) => {
-        console.error("Failed to delete product:", error);
+        console.error("Failed to delete customer:", error);
       },
     }
   );
 
-  const handleDelete = (row, type) => {
-    if (type === "products") {
+  const handleDelete = (row,) => {
+    if (type === 'products') {
+      window.alert("coco")
       deleteProductMutation.mutate(row.id);
     } else {
       deleteCustomerMutation.mutate(row.id);
     }
-    console.log("Delete", row.id);
+    console.log("Delete", row.name);
   };
 
   const capitalizeFirstLetter = (str) => {
@@ -97,7 +109,7 @@ const TableCreater = ({ tableName, Data, type = "product" }) => {
                 ))}
                 <TableCell align="center">
                   <EditButton values={row}>
-                    {type === "product" ? (
+                    {type === "products" ? (
                       <ProductForm data={row} />
                     ) : (
                       <CustomerForm data={row} />
