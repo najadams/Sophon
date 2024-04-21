@@ -1,12 +1,14 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery,useMutation } from "react-query";
 import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
 import axios from "../config/index";
 import { useSelector } from "react-redux";
 import CustomerForm from "../components/CustomerForm";
+import { useQueryClient } from "react-query";
 
-const fetchCustomers = async (companyId) => {
+
+export const fetchCustomers = async (companyId) => {
   try {
     const response = await axios.get(`/api/customers/${companyId}`);
     const data = response.data.customers.map((item, index) => ({
@@ -26,7 +28,16 @@ const fetchCustomers = async (companyId) => {
 };
 
 const Customers = () => {
+  const queryClient = useQueryClient()
   const companyId = useSelector((state) => state.company.data.id);
+  const mutation = useMutation(
+    (newCustomer) => axios.post("/api/customer", newCustomer),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("api/customers");
+      },
+    }
+  );
   const {
     data: customers,
     isLoading,

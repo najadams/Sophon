@@ -11,6 +11,8 @@ import EditButton from "./EditButton";
 import ProductForm from "./ProductForm";
 import CustomerForm from "./CustomerForm";
 import axios from '../config'
+import { useQueryClient, useMutation } from "react-query";
+
 
 const TableCreater = ({ tableName, Data, type = "product" }) => {
   const [Headers, setHeaders] = useState([]);
@@ -26,27 +28,48 @@ const TableCreater = ({ tableName, Data, type = "product" }) => {
     [Data]
   );
 
-  const deleteProduct = async (id) => {
-    axios.delete(`/api/product/${id}`);
-  };
-  const deleteCustomer = async (id) => {
-    axios.delete(`/api/customer/${id}`);
-  };
+  // Inside your TableCreater component
+  const queryClient = useQueryClient();
+
+  const deleteProductMutation = useMutation(
+    (id) => axios.delete(`/api/product/${id}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("api/product");
+      },
+      onError: (error) => {
+        console.error("Failed to delete product:", error);
+      },
+    }
+  );
+
+  const deleteCustomerMutation = useMutation(
+    (id) => axios.delete(`/api/customer/${id}`),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("api/customer");
+      },
+      onError: (error) => {
+        console.error("Failed to delete product:", error);
+      },
+    }
+  );
+
   const handleDelete = (row, type) => {
-    if (type === 'products') {
-      deleteProduct(row.id);
+    if (type === "products") {
+      deleteProductMutation.mutate(row.id);
     } else {
-      deleteCustomer(row.id)
+      deleteCustomerMutation.mutate(row.id);
     }
     console.log("Delete", row.id);
   };
 
- const capitalizeFirstLetter = (str) => {
-   if (typeof str === "string") {
-     return str.charAt(0).toUpperCase() + str.slice(1);
-   }
-   return str;
- };
+  const capitalizeFirstLetter = (str) => {
+    if (typeof str === "string") {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    return str;
+  };
 
   return (
     <TableContainer component={Paper}>
