@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from '../config/'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
@@ -38,10 +38,17 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const SignIn = () => {
+const SignIn = ( {isLoggedIn }) => {
   const dispatch = useDispatch()
   const [error, setError] = useState(null);
   const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/dashboard')
+    }
+  })
 
   // login function
  const login = async (companyname, password) => {

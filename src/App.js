@@ -29,7 +29,6 @@ function App() {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
   const isLoggedIn = useSelector((state) => state.company.isLoggedIn);
-  // const isLoggedIn = false
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
@@ -45,7 +44,8 @@ function App() {
                 <Suspense fallback={<div>Loading...</div>}>
                   <Routes>
                     {/* <Route path="/" element={<Dashboard />} /> */}
-                    <Route path="/login" element={<SignIn />} />
+                    <Route  path="/" element={<SignIn isLoggedIn={isLoggedIn} />} />
+                    <Route  path="/login" element={<SignIn isLoggedIn={isLoggedIn} />} />
                     <Route path="/register" element={<Register />} />
                     {isLoggedIn ? (
                       <>

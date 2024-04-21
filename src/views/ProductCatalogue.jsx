@@ -48,7 +48,7 @@ const ProductCatalogue = () => {
 
       <div className="content">
         {products.length > 0 ? (
-          <TableCreater tableName={"Stock"} Data={products} type="product" />
+          <TableCreater companyId={companyId} type="products" />
         ) : (
           <div className="content">
             <h2>Add Products to Get Started</h2>

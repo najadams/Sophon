@@ -54,9 +54,9 @@ const Dashboard = () => {
             flexDirection: "row-reverse",
           }}>
           
-          <Widgets title={"Employees"} count={userCount-1} />
+          <Widgets title={"Employees"} count={userCount} />
           <Widgets title={"Products"} count={productCount} />
-          <Widgets title={"Customers"} count={customerCount} />
+          <Widgets title={"Customers"} count={0} />
         </div>
         <DummyCard />
         <DummyCard />

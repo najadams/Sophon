@@ -55,19 +55,7 @@ export const tableActions = {
     }
   },
 
-  addCustomer: async ({
-    companyId,
-    name,
-    phone,
-    email,
-    address,
-    company,
-    setDone,
-    setError,
-    setOpen,
-    dispatch,
-    ActionCreators,
-  }) => {
+  addCustomer: async ({ companyId, name, phone, email, address, company }) => {
     try {
       const customer = await axios.post(`/api/customer/`, {
         belongsTo: companyId,
@@ -78,12 +66,11 @@ export const tableActions = {
         company: company,
       });
       if (customer.status === 201) {
-        setDone(true);
-        setOpen(true);
-        dispatch(ActionCreators.addCustomer(customer));
+        return customer;
       }
     } catch (error) {
-      setError(error.response?.data?.message || "An error occurred");
+      console.log(error);
+      return error.response?.data?.message || "An error occurred";
     }
   },
 };
