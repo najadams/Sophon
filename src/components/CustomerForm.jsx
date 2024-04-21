@@ -47,16 +47,21 @@ const CustomerForm = ({ data = null }) => {
           setSubmitting(true);
           try {
             let error;
+            let customer;
             if (data) {
               error = await tableActions.updateCustomer(values);
             } else {
-              error = await tableActions.addCustomer({
+              const result = await tableActions.addCustomer({
                 ...values,
                 companyId,
-                setDone,
-                dispatch,
-                ActionCreators,
               });
+              if (typeof result === "string") {
+                error = result;
+              } else {
+                customer = result;
+                dispatch(ActionCreators.addCustomer(customer));
+                setDone(true);
+              }
             }
             if (error) {
               setError(error); // Set the error state if there's an error
