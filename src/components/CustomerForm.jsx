@@ -9,6 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useSelector, useDispatch } from "react-redux";
 import axios from '../config'
 import { ActionCreators } from "../actions/action";
+import { tableActions } from "../config/Functions";
 
 
 const validationSchema = Yup.object().shape({
@@ -27,53 +28,6 @@ const CustomerForm = ({ data = null }) => {
   const handleClose = useContext(DialogContext);
   const dispatch = useDispatch();
 
-   const updateCustomer = async ({
-     _id,
-     name,
-     phone,
-     email,
-     address,
-     company
-   }) => {
-     try {
-       const customer = await axios.patch(`/api/product/${data.id}`, {
-         id: _id,
-         name,
-         phone,
-         email,
-         address,
-         company
-       });
-       if (customer.status === 200) {
-         setOpen(true);
-         setTimeout(() => {
-           handleClose(); // close the dialog
-         }, 2000);
-       }
-     } catch (error) {
-       setError(error.response?.data?.message || "An error occurred");
-     }
-   };
-
-   const addCustomer = async ({ companyId, name, phone, email, address, company}) => {
-     try {
-       const customer = await axios.post(`/api/customer/`, {
-         belongsTo : companyId,
-         name,
-         phone,
-         email,
-         address,
-         company : company,
-       });
-       if (customer.status === 201) {
-         setDone(true);
-         setOpen(true);
-         dispatch(ActionCreators.addCustomer(customer));
-       }
-     } catch (error) {
-       setError(error.response?.data?.message || "An error occurred");
-     }
-   };
 
   return (
     <div>
@@ -89,14 +43,33 @@ const CustomerForm = ({ data = null }) => {
           }
         }
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true);
-          if (data) {
-            updateCustomer(values).finally(() => setSubmitting(false));
-          } else {
-            addCustomer({ ...values, companyId }).finally(() =>
-              setSubmitting(false)
-            );
+          try {
+            let error;
+            if (data) {
+              error = await tableActions.updateCustomer(values);
+            } else {
+              error = await tableActions.addCustomer({
+                ...values,
+                companyId,
+                setDone,
+                dispatch,
+                ActionCreators,
+              });
+            }
+            if (error) {
+              setError(error); // Set the error state if there's an error
+            } else {
+              setOpen(true); // Open the Snackbar on success
+              setTimeout(() => {
+                handleClose(); // Close the Snackbar after a delay
+              }, 2000);
+            }
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setSubmitting(false);
           }
         }}>
         {({ submitForm, isSubmitting, handleChange, resetForm }) => (
@@ -108,6 +81,10 @@ const CustomerForm = ({ data = null }) => {
               name="phone"
               type="text"
               label="Phone"
+              onChange={(e) => {
+                handleChange(e);
+                setError(null);
+              }}
             />
             <br />
             <Field
@@ -115,6 +92,10 @@ const CustomerForm = ({ data = null }) => {
               type="email"
               label="Email"
               name="email"
+              onChange={(e) => {
+                handleChange(e);
+                setError(null);
+              }}
             />
             <br />
             <Field
@@ -122,6 +103,10 @@ const CustomerForm = ({ data = null }) => {
               type="text"
               label="Address"
               name="address"
+              onChange={(e) => {
+                handleChange(e);
+                setError(null);
+              }}
             />
             <br />
             <Field
@@ -129,6 +114,10 @@ const CustomerForm = ({ data = null }) => {
               type="text"
               label="Company Name"
               name="company"
+              onChange={(e) => {
+                handleChange(e);
+                setError(null);
+              }}
             />
             <br />
             {isSubmitting && <LinearProgress />}
@@ -167,7 +156,9 @@ const CustomerForm = ({ data = null }) => {
         autoHideDuration={5000}
         onClose={() => setOpen(false)}
         message={
-          !data ? "Customer added successfully" : "Customer Changed Successfully"
+          !data
+            ? "Customer added successfully"
+            : "Customer Changed Successfully"
         }
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
