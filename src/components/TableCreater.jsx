@@ -10,9 +10,9 @@ import Button from "@mui/material/Button";
 import EditButton from "./EditButton";
 import ProductForm from "./ProductForm";
 import CustomerForm from "./CustomerForm";
-import axios from '../config'
+import axios from "../config";
 import { useQueryClient, useMutation } from "react-query";
-import { tableActions } from "../config/Funtions";
+import { tableActions } from "../config/Functions";
 
 const TableCreater = ({ companyId, type }) => {
   const [Headers, setHeaders] = useState([]);
@@ -33,7 +33,6 @@ const TableCreater = ({ companyId, type }) => {
     }
   }, [companyId, type]);
   useEffect(() => {
-
     fetchData();
   }, [fetchData]);
 
@@ -66,9 +65,9 @@ const TableCreater = ({ companyId, type }) => {
     }
   );
 
-  const handleDelete = (row,) => {
-    if (type === 'products') {
-      window.alert("coco")
+  const handleDelete = (row) => {
+    if (type === "products") {
+      window.alert("coco");
       deleteProductMutation.mutate(row.id);
     } else {
       deleteCustomerMutation.mutate(row.id);
