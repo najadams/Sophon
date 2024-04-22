@@ -73,4 +73,47 @@ export const tableActions = {
       return error.response?.data?.message || "An error occurred";
     }
   },
+
+  updateProduct : async ({
+    id,
+    name,
+    costPrice,
+    salesPrice,
+    onHand,
+  }) => {
+    try {
+      const product = await axios.patch(`/api/product/${id}`, {
+        id,
+        name,
+        costprice: costPrice,
+        salesprice: salesPrice,
+        onhand: onHand,
+      });
+      if (product.status === 200) {
+        return null;
+      }
+    } catch (error) {
+      console.log(error)
+      return error.response?.data?.message || "An error occurred";
+    }
+  },
+
+ addProduct : async ({ companyId, name, costPrice, salesPrice, onHand }) => {
+    try {
+      const product = await axios.post(`/api/product/`, {
+        companyId,
+        name,
+        costprice: costPrice,
+        salesprice: salesPrice,
+        onhand: onHand,
+      });
+      if (product.status === 201) {
+        return product;
+      }
+    } catch (error) {
+      console.log(error)
+      return error.response?.data?.message || "An error occurred";
+    }
+  },
+
 };

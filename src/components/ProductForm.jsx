@@ -5,11 +5,11 @@ import { TextField } from "formik-material-ui";
 import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import LinearProgress from "@mui/material/LinearProgress";
-import axios from "../config";
 import { Typography, Snackbar } from "@mui/material";
 import { DialogContext } from "../context/context";
 import { useDispatch, useSelector } from "react-redux";
 import { ActionCreators } from "../actions/action";
+import { tableActions } from "../config/Functions";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -26,51 +26,7 @@ const ProductForm = ({ data }) => {
   const handleClose = useContext(DialogContext);
   const dispatch = useDispatch();
 
-  const updateProduct = async ({
-    _id,
-    name,
-    costPrice,
-    salesPrice,
-    onHand,
-  }) => {
-    try {
-      const product = await axios.patch(`/api/product/${data.id}`, {
-        id: _id,
-        name,
-        costprice: costPrice,
-        salesprice: salesPrice,
-        onhand: onHand,
-      });
-      if (product.status === 200) {
-        setOpen(true);
-        setTimeout(() => {
-          handleClose(); // close the dialog
-        }, 2000);
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || "An error occurred");
-    }
-  };
-
-  const addProduct = async ({ name, costPrice, salesPrice, onHand }) => {
-    try {
-      const product = await axios.post(`/api/product/`, {
-        companyId,
-        name,
-        costprice: costPrice,
-        salesprice: salesPrice,
-        onhand: onHand,
-      });
-      if (product.status === 201) {
-        setDone(true);
-        setOpen(true);
-        dispatch(ActionCreators.fetchInventorySuccess(product));
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || "An error occurred");
-    }
-  };
-
+  
   return (
     <div>
       <h1>Product Information</h1>
@@ -84,14 +40,38 @@ const ProductForm = ({ data }) => {
           }
         }
         validationSchema={validationSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true);
-          if (data) {
-            updateProduct(values).finally(() => setSubmitting(false));
-          } else {
-            addProduct({ ...values, companyId }).finally(() =>
-              setSubmitting(false)
-            );
+          try {
+            let error;
+            let product;
+            if (data) {
+              error = await tableActions.updateProduct(values);
+            } else {
+              const result = await tableActions.addProduct({
+                ...values,
+                companyId,
+              });
+              if (typeof result === "string") {
+                error = result;
+              } else {
+                product = result;
+                dispatch(ActionCreators.fetchInventorySuccess(product));
+                setDone(true);
+              }
+            }
+            if (error) {
+              setError(error); // Set the error state if there's an error
+            } else {
+              setOpen(true); // Open the Snackbar on success
+              setTimeout(() => {
+                handleClose(); // Close the Snackbar after a delay
+              }, 2000);
+            }
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setSubmitting(false);
           }
         }}>
         {({ submitForm, isSubmitting, handleChange, resetForm }) => (
@@ -161,7 +141,9 @@ const ProductForm = ({ data }) => {
         open={open}
         autoHideDuration={5000}
         onClose={() => setOpen(false)}
-        message= {!data ? "Product added successfully" : "Product Changed Successfully"}
+        message={
+          !data ? "Product added successfully" : "Product Changed Successfully"
+        }
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
     </div>

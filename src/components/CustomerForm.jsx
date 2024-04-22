@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import * as Yup from "yup";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useSelector, useDispatch } from "react-redux";
-import axios from '../config'
 import { ActionCreators } from "../actions/action";
 import { tableActions } from "../config/Functions";
 
