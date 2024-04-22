@@ -19,14 +19,13 @@ const validationSchema = Yup.object().shape({
   company: Yup.string().required("Required"),
 });
 
-const CustomerForm = ({ data }) => {
+const CustomerForm = ({ data, editMutation }) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
   const companyId = useSelector((state) => state.company.data.id);
   const handleClose = useContext(DialogContext);
   const dispatch = useDispatch();
-
 
   return (
     <div>
@@ -66,6 +65,7 @@ const CustomerForm = ({ data }) => {
               setError(error); // Set the error state if there's an error
             } else {
               setOpen(true); // Open the Snackbar on success
+              editMutation.mutate(values)
               setTimeout(() => {
                 handleClose(); // Close the Snackbar after a delay
               }, 2000);
@@ -167,6 +167,7 @@ const CustomerForm = ({ data }) => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
     </div>
-  );};
+  );
+};
 
 export default CustomerForm;

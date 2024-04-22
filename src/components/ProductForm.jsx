@@ -10,7 +10,6 @@ import { DialogContext } from "../context/context";
 import { useDispatch, useSelector } from "react-redux";
 import { ActionCreators } from "../actions/action";
 import { tableActions } from "../config/Functions";
-import { useMutation } from "react-query";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
