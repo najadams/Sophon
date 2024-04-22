@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { DialogContext } from "../context/context";
 
-const EditButton = ({ children }) => {
+const EditButton = ({ children   }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {

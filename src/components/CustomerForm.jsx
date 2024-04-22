@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
   company: Yup.string().required("Required"),
 });
 
-const CustomerForm = ({ data = null }) => {
+const CustomerForm = ({ data }) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);

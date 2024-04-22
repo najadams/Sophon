@@ -10,6 +10,7 @@ import { DialogContext } from "../context/context";
 import { useDispatch, useSelector } from "react-redux";
 import { ActionCreators } from "../actions/action";
 import { tableActions } from "../config/Functions";
+import { useMutation } from "react-query";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -18,7 +19,7 @@ const validationSchema = Yup.object().shape({
   onHand: Yup.number().required("Required"),
 });
 
-const ProductForm = ({ data }) => {
+const ProductForm = ({ data , editMutation }) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
@@ -64,6 +65,7 @@ const ProductForm = ({ data }) => {
               setError(error); // Set the error state if there's an error
             } else {
               setOpen(true); // Open the Snackbar on success
+              editMutation.mutate(values)
               setTimeout(() => {
                 handleClose(); // Close the Snackbar after a delay
               }, 2000);

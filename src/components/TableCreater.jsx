@@ -65,6 +65,34 @@ const TableCreater = ({ companyId, type }) => {
     }
   );
 
+  const editProductMutation = useMutation(
+    (values) => axios.patch(`/api/product/${values.id}`, values),
+    {
+      onSuccess: () => {
+        console.log("first")
+        queryClient.invalidateQueries(["api/products", companyId]);
+        fetchData();
+      },
+      onError: (error) => {
+        console.error("Failed to edit product:", error);
+      },
+    }
+  );
+
+  const editCustomerMutation = useMutation(
+    (values) => axios.patch(`/api/customer/${values.id}`, values),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["api/customers", companyId]);
+        fetchData();
+      },
+      onError: (error) => {
+        console.error("Failed to edit customer:", error);
+      },
+    }
+  );
+
+
   const handleDelete = (row) => {
     if (type === "products") {
       window.alert("coco");
@@ -109,9 +137,15 @@ const TableCreater = ({ companyId, type }) => {
                 <TableCell align="center">
                   <EditButton values={row}>
                     {type === "products" ? (
-                      <ProductForm data={row} />
+                      <ProductForm
+                        editMutation={editProductMutation}
+                        data={row}
+                      />
                     ) : (
-                      <CustomerForm data={row} />
+                      <CustomerForm
+                        editMutation={editCustomerMutation}
+                        data={row}
+                      />
                     )}
                   </EditButton>
                 </TableCell>
