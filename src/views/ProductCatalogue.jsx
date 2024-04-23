@@ -5,6 +5,7 @@ import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
 import axios from "../config/index";
 import { useSelector } from "react-redux";
+import SearchField from "../components/SearchField";
 
 const fetchProducts = async (companyId) => {
   try {
@@ -41,6 +42,7 @@ const ProductCatalogue = () => {
         <div>
           <h1>Products</h1>
         </div>
+        <SearchField />
         <AddItem>
           <ProductForm />
         </AddItem>
