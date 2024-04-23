@@ -115,5 +115,9 @@ export const tableActions = {
       return error.response?.data?.message || "An error occurred";
     }
   },
+ 
+  addReceipt: async () => {
+   
+ }
 
 };
