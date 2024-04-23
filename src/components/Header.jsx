@@ -1,4 +1,4 @@
-import * as React from "react";
+import React , {useState} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,18 +19,23 @@ import Logout from "@mui/icons-material/Logout";
 // import Avatar from "@mui/material/Avatar";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import { useDispatch } from "react-redux";
+import { ActionCreators } from "../actions/action";
+import { useNavigate } from "react-router-dom";
 
-export default function Header() {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  // const handleChange = (event) => {
-  //   setAuth(event.target.checked);
-  // };
+export default function Header({ isLoggedIn }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const logout = () => {
+    dispatch(ActionCreators.logoutCompany())
+    navigate("/login")
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -38,18 +43,6 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={auth}
-              onChange={handleChange}
-              aria-label="login switch"
-            />
-          }
-          label={auth ? "Logout" : "Login"}
-        />
-      </FormGroup> */}
       <AppBar
         position="static"
         style={{
@@ -58,18 +51,18 @@ export default function Header() {
           boxShadow: "0px 3px 5px 2px rgba(0,0,0,0.2)",
         }}>
         <Toolbar>
-          <IconButton
-            size="large"
+          {/* <IconButton
+            size="medium"
             edge="start"
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}>
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <h3>Sophon</h3>
           </Typography>
-          {auth && (
+          {isLoggedIn && (
             <div>
               <Tooltip title="Profile">
                 <IconButton
@@ -107,7 +100,7 @@ export default function Header() {
                   <ListItemIcon>
                     <PersonAdd fontSize="small" />
                   </ListItemIcon>
-                  Add another account
+                  Add an Employee account
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>
@@ -115,7 +108,7 @@ export default function Header() {
                   </ListItemIcon>
                   Settings
                 </MenuItem>
-                <MenuItem onClick={() => setAuth(false)}>
+                <MenuItem onClick={() => logout()}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>

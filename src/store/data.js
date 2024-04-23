@@ -93,7 +93,7 @@ export const Data = [
 
 
 export const Products = [
-  { id: 1, name: "Product 1", costPrice: 99.99, salesPrice : 1234, onHand: 10 },
+  { id: 1, name: "Product 111", costPrice: 99.99, salesPrice : 1234, onHand: 10 },
   { id: 2, name: "Product 2", costPrice: 79.99, salesPrice : 1234, onHand: 20 },
   { id: 3, name: "Product 3", costPrice: 59.99, salesPrice : 1234, onHand: 30 },
   { id: 4, name: "Product 4", costPrice: 89.99, salesPrice : 1234, onHand: 15 },

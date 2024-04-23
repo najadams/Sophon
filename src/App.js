@@ -40,7 +40,7 @@ function App() {
                 toggleSidebar={toggleSidebar}
               />
               <div style={{ flex: 1 }}>
-                <Header />
+                <Header isLoggedIn={isLoggedIn} />
                 <Suspense fallback={<div>Loading...</div>}>
                   <Routes>
                     {/* <Route path="/" element={<Dashboard />} /> */}

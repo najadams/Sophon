@@ -14,24 +14,28 @@ import axios from "../config";
 import { useQueryClient, useMutation } from "react-query";
 import { tableActions } from "../config/Functions";
 
-const TableCreater = ({ companyId, type }) => {
+const TableCreater = ({ companyId,data,  type }) => {
   const [Headers, setHeaders] = useState([]);
   const [Data, setData] = useState([]);
 
-  const fetchData = useCallback(async () => {
-    try {
-      let data;
-      if (type === "customers") {
-        data = await tableActions.fetchCustomers(companyId);
-      } else if (type === "products") {
-        data = await tableActions.fetchProducts(companyId);
+    const fetchData = useCallback(async () => {
+      try {
+        let fetchedData;
+        if (data) {
+          fetchedData = data;
+        } else {
+          if (type === "customers") {
+            fetchedData = await tableActions.fetchCustomers(companyId);
+          } else if (type === "products") {
+            fetchedData = await tableActions.fetchProducts(companyId);
+          }
+        }
+        setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
       }
-      setHeaders(Object.keys(data[0]).filter((key) => key !== "id"));
-      setData(data);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    }
-  }, [companyId, type]);
+    }, [companyId, type, data]);
   useEffect(() => {
     fetchData();
   }, [fetchData]);
