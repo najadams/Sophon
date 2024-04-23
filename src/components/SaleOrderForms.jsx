@@ -1,39 +1,52 @@
 import React from "react";
 import { Formik, Field, FieldArray, Form } from "formik";
 import { Button, TextField } from "@mui/material";
-// import { Autocomplete } from "formik-material-ui";
 import { Autocomplete } from "@mui/material";
-import { Input } from "@mui/material"; 
-import { Products } from "../store/data";
-import * as Yup from "yup"
+import { Input } from "@mui/material";
+import { Products, Data } from "../store/data";
+import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  customerName : Yup.string().required("Required"),
-  products: {
-    name: Yup.string().required("Required"),
-    quantity : Yup.number().required('Required')
-  }
-})
+  customerName: Yup.string().required("Required"),
+  products: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required("Required"),
+      quantity: Yup.number().required("Required"),
+    })
+  ),
+});
 
 const SalesOrderForms = () => {
+  const customerOptions = Data.map((c) => c.companyName);
   return (
     <Formik
       initialValues={{
         customerName: "",
-        products: [{ name: "", quantity: 1 }],
+        products: [{ name: "", quantity: 1, totalPrice: 0 }],
+        totalCost : ""
       }}
-      validatitonSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={async (values) => {
         await new Promise((r) => setTimeout(r, 500));
         alert(JSON.stringify(values, null, 2));
       }}>
-      {({ values, handleSubmit }) => (
+      {({ values, handleSubmit, setFieldValue }) => (
         <Form className="form" style={{ margin: 10 }}>
           <Field
-            component={TextField}
-            type="text"
-            name={`customerName`}
-            label="Customer Name"
+            name="customerName"
+            component={({ field, form }) => (
+              <Autocomplete
+                {...field}
+                options={customerOptions}
+                value={field.value}
+                onChange={(event, newValue) => {
+                  form.setFieldValue(field.name, newValue || "");
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Customer Name" fullWidth />
+                )}
+              />
+            )}
           />
           <FieldArray name="products">
             {({ push }) => (
@@ -41,18 +54,8 @@ const SalesOrderForms = () => {
                 style={{ display: "flex", gap: 10, flexDirection: "column" }}>
                 {values.products.map((product, index) => {
                   const productOptions = Products.map((p) => p.name);
-                  const selectedProduct = Products.find(
-                    (p) => p.name === product.name
-                  );
-                  const totalPrice =
-                    product.quantity * (selectedProduct?.price || 0);
                   return (
-                    <div
-                      key={index}
-                      style={{
-                        display: "flex",
-                        gap: 10,
-                      }}>
+                    <div key={index} style={{ display: "flex", gap: 10 }}>
                       <Field name={`products.${index}.name`}>
                         {({ field, form }) => (
                           <Autocomplete
@@ -60,6 +63,15 @@ const SalesOrderForms = () => {
                             value={product.name}
                             onChange={(event, newValue) => {
                               form.setFieldValue(field.name, newValue);
+                              const selectedProduct = Products.find(
+                                (p) => p.name === newValue
+                              );
+                              const newTotalPrice =
+                                product.quantity * selectedProduct?.salesPrice;
+                              setFieldValue(
+                                `products.${index}.totalPrice`,
+                                newTotalPrice
+                              );
                             }}
                             renderInput={(params) => (
                               <TextField
@@ -81,16 +93,35 @@ const SalesOrderForms = () => {
                         label="Quantity"
                         type="number"
                         validate={(value) => {
-                          if (value > selectedProduct?.onhand) {
+                          const selectedProduct = Products.find(
+                            (p) => p.name === product.name
+                          );
+                          if (value > selectedProduct?.onHand) {
                             return "Quantity cannot exceed available stock";
                           }
                         }}
+                        onChange={(event) => {
+                          const newValue = parseInt(event.target.value);
+                          setFieldValue(`products.${index}.quantity`, newValue);
+                          const selectedProduct = Products.find(
+                            (p) => p.name === product.name
+                          );
+                          const newTotalPrice =
+                            newValue * selectedProduct?.salesPrice;
+                          setFieldValue(
+                            `products.${index}.totalPrice`,
+                            newTotalPrice
+                          );
+                        }}
                       />
-                      <Field name={`products.${index}.price`}>
+                      <Field name={`products.${index}.salesPrice`}>
                         {({ field }) => (
                           <Input
-                            value={selectedProduct?.price}
-                            label="Price"
+                            value={
+                              Products.find((p) => p.name === product.name)
+                                ?.salesPrice
+                            }
+                            label="Sales Price"
                             readOnly
                             inputProps={{
                               style: { textAlign: "right" },
@@ -102,7 +133,7 @@ const SalesOrderForms = () => {
                       <Field name={`products.${index}.totalPrice`}>
                         {({ field }) => (
                           <Input
-                            value={totalPrice}
+                            value={product.totalPrice}
                             label="Total Price"
                             readOnly
                             inputProps={{
@@ -118,7 +149,9 @@ const SalesOrderForms = () => {
                   variant="contained"
                   color="secondary"
                   type="button"
-                  onClick={() => push({ name: "", quantity: 1 })}>
+                  onClick={() =>
+                    push({ name: "", quantity: 1, totalPrice: 0 })
+                  }>
                   Add Product
                 </Button>
               </div>
@@ -128,14 +161,11 @@ const SalesOrderForms = () => {
             {({ field }) => (
               <Input
                 value={values.products.reduce(
-                  (sum, product) =>
-                    sum +
-                    product.quantity *
-                      (Products.find((p) => p.name === product.name)?.price ||
-                        0),
+                  (sum, product) => sum + product?.totalPrice,
                   0
                 )}
                 label="Total"
+                name="totalCost"
                 readOnly
                 inputProps={{
                   style: { textAlign: "right" },
@@ -164,4 +194,4 @@ const SalesOrderForms = () => {
   );
 };
 
-export default SalesOrderForms
+export default SalesOrderForms;
