@@ -18,6 +18,15 @@ export const tableActions = {
       throw new Error("Failed to fetch customers");
     }
   },
+  fetchCustomersNames: async (companyId) => {
+    try {
+      const response = await axios.get(`/api/customers/${companyId}`);
+      const data = response.data.customers.map((item) => item.name);
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch customers");
+    }
+  },
 
   fetchProducts: async (companyId) => {
     try {
@@ -29,6 +38,20 @@ export const tableActions = {
         costPrice: item.costprice,
         salesPrice: item.salesprice,
         onHand: item.onhand,
+      }));
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch products");
+    }
+  },
+  fetchProductNames: async (companyId) => {
+    try {
+      const response = await axios.get(`/api/products/${companyId}`);
+      const data = response.data.products.map((item) => ({
+        id: item._id,
+        name: item.name,
+        salesPrice: item.salesprice,
+        onhand: item.onhand,
       }));
       return data;
     } catch (error) {
@@ -74,13 +97,7 @@ export const tableActions = {
     }
   },
 
-  updateProduct : async ({
-    id,
-    name,
-    costPrice,
-    salesPrice,
-    onHand,
-  }) => {
+  updateProduct: async ({ id, name, costPrice, salesPrice, onHand }) => {
     try {
       const product = await axios.patch(`/api/product/${id}`, {
         id,
@@ -93,12 +110,12 @@ export const tableActions = {
         return null;
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return error.response?.data?.message || "An error occurred";
     }
   },
 
- addProduct : async ({ companyId, name, costPrice, salesPrice, onHand }) => {
+  addProduct: async ({ companyId, name, costPrice, salesPrice, onHand }) => {
     try {
       const product = await axios.post(`/api/product/`, {
         companyId,
@@ -111,13 +128,54 @@ export const tableActions = {
         return product;
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return error.response?.data?.message || "An error occurred";
     }
   },
- 
-  addReceipt: async () => {
-   
- }
+  addWorker: async ({
+    companyId,
+    firstname,
+    lastname,
+    password,
+    adminstatus,
+  }) => {
+    try {
+      const product = await axios.post(`/api/product/`, {
+        companyId,
+        adminstatus,
+        firstname,
+        lastname,
+        password,
+      });
+      if (product.status === 201) {
+        return product;
+      }
+    } catch (error) {
+      console.log(error);
+      return error.response?.data?.message || "An error occurred";
+    }
+  },
 
+  addReceipt: async (values, companyId, workerId) => {
+    try {
+      const response = await axios.post("/api/receipt/", {
+        ...values,
+        companyId: companyId,
+        workerId: workerId,
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        // Successful response
+        return response.data; // You can return any data you receive from the server
+      } else {
+        // Handle unexpected status codes
+        console.error("Unexpected status code:", response.status);
+        return "Unexpected status code";
+      }
+    } catch (error) {
+      // Handle errors
+      console.error("Error:", error);
+      return error.response?.data?.message || "An error occurred";
+    }
+  },
 };

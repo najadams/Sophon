@@ -6,9 +6,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AddItem = ({ children }) => {
   const [open, setOpen] = useState(false);
+  const matchesMobile = useMediaQuery("(max-width:600px)");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,8 +34,8 @@ const AddItem = ({ children }) => {
         onClose={handleClose}
         PaperProps={{
           style: {
-            width: "80%",
-            height: "80%",
+            width: matchesMobile ? "100%" : "80%", // Set width based on screen size
+            height: matchesMobile ? "100%" : "80%", // Set height based on screen size
             margin: "auto",
             maxWidth: "none",
             maxHeight: "none",

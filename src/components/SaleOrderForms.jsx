@@ -48,11 +48,10 @@ const SalesOrderForms = ({customerOptions, Products}) => {
             0
           );
           values.total = total;
-          console.log(values);
-          window.alert(JSON.stringify(values, null, 2));
-          setSubmitting(true);
           try {
-            await tableActions.addReceipt(values);
+          console.log(values)
+          setSubmitting(true);
+            await tableActions.addReceipt(values, companyId, workerId);
           } catch (error) {
             console.log(error);
           }
