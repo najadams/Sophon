@@ -44,7 +44,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
                 <span className="text nav-text">Stock</span>
               </NavLink>
             </li>
-
+{/* 
             <li className="nav-link">
               <NavLink to={"/stocks"} activeclassname="active">
                 <i className="bx bxs-user-plus icon"></i>
@@ -68,7 +68,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
                 <i className="bx bxs-bell icon"></i>
                 <span className="text nav-text">Notifications</span>
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

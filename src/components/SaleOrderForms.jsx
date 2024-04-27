@@ -1,26 +1,19 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { Formik, Field, FieldArray, Form } from "formik";
 import { Button, TextField, Typography } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { Input } from "@mui/material";
-import { Products, Data } from "../store/data";
 import * as Yup from "yup";
+// import {Products} from '../store/data'
 import { tableActions } from "../config/Functions";
 import { useSelector } from "react-redux";
 import { DialogContext } from "../context/context";
+import { useQuery } from "react-query";
+import axios from '../config/index'
 
 
 const validationSchema = Yup.object().shape({
-  customerName: Yup.string()
-    .required("Customer name is required")
-    .test(
-      "is-valid-customer",
-      "Customer name must be selected from the list",
-      (value) => {
-        // Check if the customer name is included in the list of options
-        return Data.map((c) => c.companyName).includes(value);
-      }
-    ),
+  customerName: Yup.string().required("Customer name is required"),
   products: Yup.array().of(
     Yup.object().shape({
       name: Yup.string().required("Product name is required"),
@@ -34,33 +27,12 @@ const validationSchema = Yup.object().shape({
 });
 
 
-const SalesOrderForms = () => {
+const SalesOrderForms = ({customerOptions, Products}) => {
   const workerId = useSelector((state) => state.workers.currentUser);
-  const handleClose = useContext(DialogContext)
-  const companyId = useSelector((state) => state.company.data.id)
-  const [error, setError] = useState(null)
-  const customerOptions = Data.map((c) => c.companyName);
-
-    useEffect(() => {
-      // Fetch customer details from MongoDB database
-      const fetchCustomers = async () => {
-        try {
-          const response = await fetch("/api/customers"); // Adjust the endpoint URL according to your backend setup
-          if (response.ok) {
-            const data = await response.json();
-            setCustomerOptions(data.customers); // Assuming customers are returned in the form { companyName: "Company Name" }
-          } else {
-            throw new Error("Failed to fetch customers");
-          }
-        } catch (error) {
-          console.error("Error fetching customers:", error);
-          setError("Failed to fetch customers");
-        }
-      };
-
-      fetchCustomers();
-    }, []);
-
+  const handleClose = useContext(DialogContext);
+  const companyId = useSelector((state) => state.company.data.id);
+  const [error, setError] = useState(null);
+  
   return (
     <div>
       <Formik
@@ -71,18 +43,21 @@ const SalesOrderForms = () => {
         }}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          const total = values.products.reduce((sum, product) => sum + product?.totalPrice, 0)
-          values.total = total
-          console.log(values)
-          window.alert(JSON.stringify(values, null, 2)); 
+          const total = values.products.reduce(
+            (sum, product) => sum + product?.totalPrice,
+            0
+          );
+          values.total = total;
+          console.log(values);
+          window.alert(JSON.stringify(values, null, 2));
           setSubmitting(true);
           try {
-            await tableActions.addReceipt(values)
+            await tableActions.addReceipt(values);
           } catch (error) {
-            console.log(error)
+            console.log(error);
           }
-          console.log(values)
-         }}>
+          console.log(values);
+        }}>
         {({ values, handleSubmit, setFieldValue, resetForm }) => (
           <Form className="form" style={{ margin: 10 }}>
             <Field name="customerName">
@@ -232,9 +207,8 @@ const SalesOrderForms = () => {
                     type="button"
                     onClick={() => {
                       push({ name: "", quantity: 1, totalPrice: 0, price: 0 });
-                      console.log("first")
-                    }
-                    }
+                      console.log("first");
+                    }}
                     disabled={
                       values.products.length > 0 &&
                       !Object.values(
@@ -267,8 +241,7 @@ const SalesOrderForms = () => {
                 variant="contained"
                 color="success"
                 onClick={handleSubmit}
-                type="submit"
-              >
+                type="submit">
                 Save
               </Button>
 

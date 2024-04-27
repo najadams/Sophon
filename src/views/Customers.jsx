@@ -6,15 +6,33 @@ import { useSelector } from "react-redux";
 import CustomerForm from "../components/CustomerForm";
 import { tableActions } from "../config/Functions";
 import SearchField from "../components/SearchField";
+import axios from '../config'
 
 const Customers = () => {
   const companyId = useSelector((state) => state.company.data.id);
+  const fetchCustomers = async (companyId) => {
+    try {
+      const response = await axios.get(`/api/customers/${companyId}`);
+      const data = response.data.customers.map((item, index) => ({
+        id: item._id,
+        index: index + 1,
+        company: item.company,
+        name: item.name,
+        phone: item.phone,
+        email: item.email,
+        address: item.address ? item.address : "None",
+      }));
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch customers");
+    }
+  }
   const {
     data: customers,
     isLoading,
     isError,
   } = useQuery(["api/customers", companyId], () =>
-    tableActions.fetchCustomers(companyId)
+    fetchCustomers(companyId)
   );
 
   if (isLoading) return <div>Loading...</div>;
