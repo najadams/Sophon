@@ -5,7 +5,7 @@ export const SidebarContext = createContext();
 
 // Create a provider component
 export const SidebarProvider = ({ children }) => {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
 
   return (
     <SidebarContext.Provider
