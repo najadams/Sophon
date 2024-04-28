@@ -188,6 +188,9 @@ header .image-text .header-text {
   .sidebar.collapsed{
     display: none;
   }
+  .chevron{
+    display: none;
+  }
   .sidebar{
     display: block;
     width: 100%;
@@ -198,6 +201,9 @@ header .image-text .header-text {
 }
 @media screen and (max-width : 1120px) {
   .sidebar.collapsed{
+    display: none;
+  }
+  .chevron{
     display: none;
   }
   .sidebar{
