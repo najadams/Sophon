@@ -1,16 +1,15 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Field, FieldArray, Form } from "formik";
 import { Button, TextField, Typography } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { Input } from "@mui/material";
 import * as Yup from "yup";
-// import {Products} from '../store/data'
 import { tableActions } from "../config/Functions";
 import { useSelector } from "react-redux";
 import { DialogContext } from "../context/context";
 import { useQuery } from "react-query";
-import axios from '../config/index'
-
+import axios from "../config/index";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const validationSchema = Yup.object().shape({
   customerName: Yup.string().required("Customer name is required"),
@@ -23,16 +22,16 @@ const validationSchema = Yup.object().shape({
       price: Yup.number().required("Price is required"),
     })
   ),
-  total: Yup.number().required(), 
+  total: Yup.number().required(),
 });
 
-
-const SalesOrderForms = ({customerOptions, Products}) => {
+const SalesOrderForms = ({ customerOptions, Products }) => {
   const workerId = useSelector((state) => state.workers.currentUser);
   const handleClose = useContext(DialogContext);
   const companyId = useSelector((state) => state.company.data.id);
   const [error, setError] = useState(null);
-  
+  const matchesMobile = useMediaQuery("(max-width:600px)");
+
   return (
     <div>
       <Formik
@@ -49,8 +48,8 @@ const SalesOrderForms = ({customerOptions, Products}) => {
           );
           values.total = total;
           try {
-          console.log(values)
-          setSubmitting(true);
+            console.log(values);
+            setSubmitting(true);
             await tableActions.addReceipt(values, companyId, workerId);
           } catch (error) {
             console.log(error);
@@ -91,11 +90,15 @@ const SalesOrderForms = ({customerOptions, Products}) => {
             <FieldArray name="products">
               {({ push, remove }) => (
                 <div
-                  style={{ display: "flex", gap: 10, flexDirection: "column" }}>
+                  style={{
+                    display: "flex",
+                    gap: matchesMobile ? 20 : 10,
+                    flexDirection: matchesMobile ? "column" : "row",
+                  }}>
                   {values.products.map((product, index) => {
                     const productOptions = Products.map((p) => p.name);
                     return (
-                      <div key={index} style={{ display: "flex", gap: 10 }}>
+                      <div key={index}>
                         <Field name={`products.${index}.name`}>
                           {({ field, form }) => (
                             <Autocomplete
@@ -120,10 +123,9 @@ const SalesOrderForms = ({customerOptions, Products}) => {
                               }}
                               renderInput={(params) => (
                                 <TextField
-                                  style={{ flex: 1, width: 200 }}
                                   {...params}
                                   label="Product Name"
-                                  fullWidth
+                                  fullWidth={matchesMobile}
                                 />
                               )}
                               autoSelect // Automatically select the first option
@@ -132,7 +134,12 @@ const SalesOrderForms = ({customerOptions, Products}) => {
                         </Field>
 
                         <Field
-                          style={{ paddingRight: 10, flex: 1 }}
+                          style={{
+                            paddingRight: 10,
+                            // flex: 1,
+                            marginTop: matchesMobile ? 10 : 0,
+                            width: matchesMobile ? "50%" : "auto",
+                          }}
                           as={TextField}
                           name={`products.${index}.quantity`}
                           label="Quantity"
@@ -141,7 +148,7 @@ const SalesOrderForms = ({customerOptions, Products}) => {
                             const selectedProduct = Products.find(
                               (p) => p.name === product.name
                             );
-                            if (value > selectedProduct?.onHand) {
+                            if (value > selectedProduct?.onhand) {
                               return "Quantity cannot exceed available stock";
                             }
                           }}
@@ -205,8 +212,12 @@ const SalesOrderForms = ({customerOptions, Products}) => {
                     color="secondary"
                     type="button"
                     onClick={() => {
-                      push({ name: "", quantity: 1, totalPrice: 0, price: 0 });
-                      console.log("first");
+                      push({
+                        name: "",
+                        quantity: 1,
+                        totalPrice: 0,
+                        price: 0,
+                      });
                     }}
                     disabled={
                       values.products.length > 0 &&
