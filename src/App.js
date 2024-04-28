@@ -16,7 +16,8 @@ import store, {persistor} from "./store/store";
 import { Provider, useSelector } from "react-redux";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { PersistGate } from "redux-persist/integration/react";
-import Settings  from "./views/Settings";
+import Settings from "./views/Settings";
+import { useSidebar } from "./context/context";
 
 const NoPage = lazy(() =>
   import("./views/NoPage")
@@ -25,7 +26,7 @@ const NoPage = lazy(() =>
 const queryClient = new QueryClient()
 
 function App() {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  const { isSidebarExpanded, setIsSidebarExpanded } = useSidebar();
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
