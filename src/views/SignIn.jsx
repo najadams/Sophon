@@ -38,46 +38,46 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const SignIn = ( {isLoggedIn }) => {
+const SignIn = ({ isLoggedIn }) => {
   const dispatch = useDispatch()
   const [error, setError] = useState(null);
   const navigate = useNavigate()
 
-
+  
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/dashboard')
+      navigate("/dashboard");
     }
-  })
-
+  }, [isLoggedIn, navigate]);
+  
   // login function
  const login = async (companyname, password) => {
    try {
      const response = await axios.post(`/login`, {
        companyname,
        password,
-     });
-
-     if (response.status !== 200) {
-       setError("Invalid Credentials");
-       throw new Error("Login failed");
-     }
-
+      });
+      
+      if (response.status !== 200) {
+        setError("Invalid Credentials");
+        throw new Error("Login failed");
+      }
+      
       const { companydata, token } = response.data;
-
-     dispatch(ActionCreators.setAuthToken(token));
+      
+      dispatch(ActionCreators.setAuthToken(token));
      window.localStorage.setItem("access_token", token);
      dispatch(ActionCreators.loginCompany())
      navigate("/dashboard");
-
+     
      // Dispatch fetchUserSuccess after setting the auth token and navigating
      dispatch(ActionCreators.fetchCompanySuccess(companydata))
      dispatch(ActionCreators.fetchUserRequest());
      dispatch(ActionCreators.fetchUserSuccess(companydata.workers));
-
+     
      return response.data;
-   } catch (error) {
-     setError( "An error occurred");
+    } catch (error) {
+      setError( "An error occurred");
      dispatch(
        ActionCreators.fetchUserFailure(
          "An error occurred"

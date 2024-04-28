@@ -1,14 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import { Formik, Field, FieldArray, Form } from "formik";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography, Snackbar } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { Input } from "@mui/material";
 import * as Yup from "yup";
 import { tableActions } from "../config/Functions";
 import { useSelector } from "react-redux";
-import { DialogContext } from "../context/context";
-import { useQuery } from "react-query";
-import axios from "../config/index";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const validationSchema = Yup.object().shape({
@@ -27,9 +24,9 @@ const validationSchema = Yup.object().shape({
 
 const SalesOrderForms = ({ customerOptions, Products }) => {
   const workerId = useSelector((state) => state.workers.currentUser);
-  const handleClose = useContext(DialogContext);
   const companyId = useSelector((state) => state.company.data.id);
   const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery("(max-width:600px)");
 
   return (
@@ -53,6 +50,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
             await tableActions.addReceipt(values, companyId, workerId);
           } catch (error) {
             console.log(error);
+            setError(error)
           }
           console.log(values);
         }}>
@@ -86,124 +84,139 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
               }}
             </Field>
 
-            <hr style={{ height: 5, backgroundColor: "black" }} />
+            <hr
+              style={{ height: 5, backgroundColor: "black", marginBottom: 20 }}
+            />
             <FieldArray name="products">
               {({ push, remove }) => (
                 <div
-                  style={{
-                    display: "flex",
-                    gap: matchesMobile ? 20 : 10,
-                    flexDirection: matchesMobile ? "column" : "row",
-                  }}>
+                  style={{ display: "flex", gap: 10, flexDirection: "column" }}>
                   {values.products.map((product, index) => {
                     const productOptions = Products.map((p) => p.name);
                     return (
-                      <div key={index}>
-                        <Field name={`products.${index}.name`}>
-                          {({ field, form }) => (
-                            <Autocomplete
-                              options={productOptions}
-                              value={product.name}
-                              onChange={(event, newValue) => {
-                                form.setFieldValue(field.name, newValue);
-                                const selectedProduct = Products.find(
-                                  (p) => p.name === newValue
-                                );
-                                const newTotalPrice =
-                                  product.quantity *
-                                  selectedProduct?.salesPrice;
-                                setFieldValue(
-                                  `products.${index}.totalPrice`,
-                                  newTotalPrice
-                                );
-                                setFieldValue(
-                                  `products.${index}.price`,
-                                  selectedProduct?.salesPrice || 0
-                                ); // Update price
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label="Product Name"
-                                  fullWidth={matchesMobile}
-                                />
-                              )}
-                              autoSelect // Automatically select the first option
-                            />
-                          )}
-                        </Field>
-
-                        <Field
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flex: 1,
+                          gap: 10,
+                          flexWrap: "wrap",
+                          flexDirection: matchesMobile ? "column" : "row",
+                        }}>
+                        <div
                           style={{
-                            paddingRight: 10,
-                            // flex: 1,
-                            marginTop: matchesMobile ? 10 : 0,
-                            width: matchesMobile ? "50%" : "auto",
-                          }}
-                          as={TextField}
-                          name={`products.${index}.quantity`}
-                          label="Quantity"
-                          type="number"
-                          validate={(value) => {
-                            const selectedProduct = Products.find(
-                              (p) => p.name === product.name
-                            );
-                            if (value > selectedProduct?.onhand) {
-                              return "Quantity cannot exceed available stock";
-                            }
-                          }}
-                          onChange={(event) => {
-                            const newValue = parseInt(event.target.value);
-                            setFieldValue(
-                              `products.${index}.quantity`,
-                              newValue
-                            );
-                            const selectedProduct = Products.find(
-                              (p) => p.name === product.name
-                            );
-                            const newTotalPrice =
-                              newValue * selectedProduct?.salesPrice;
-                            setFieldValue(
-                              `products.${index}.totalPrice`,
-                              newTotalPrice
-                            );
-                          }}
-                        />
-                        <Field name={`products.${index}.price`}>
-                          {({ field }) => (
-                            <Input
-                              value={
-                                Products.find((p) => p.name === product.name)
-                                  ?.salesPrice
-                              }
-                              label="Price"
-                              readOnly
-                              inputProps={{
-                                style: { textAlign: "right" },
-                              }}
-                            />
-                          )}
-                        </Field>
+                            display: "flex",
+                            flex: 1,
+                            flexDirection: "row",
+                            gap: "1rem",
+                          }}>
+                          <Field name={`products.${index}.name`}>
+                            {({ field, form }) => (
+                              <Autocomplete
+                                options={productOptions}
+                                value={product.name}
+                                onChange={(event, newValue) => {
+                                  form.setFieldValue(field.name, newValue);
+                                  const selectedProduct = Products.find(
+                                    (p) => p.name === newValue
+                                  );
+                                  const newTotalPrice =
+                                    product.quantity *
+                                    selectedProduct?.salesPrice;
+                                  setFieldValue(
+                                    `products.${index}.totalPrice`,
+                                    newTotalPrice
+                                  );
+                                  setFieldValue(
+                                    `products.${index}.price`,
+                                    selectedProduct?.salesPrice || 0
+                                  ); // Update price
+                                }}
+                                renderInput={(params) => (
+                                  <TextField
+                                    style={{
+                                      flex: 1,
+                                      width: matchesMobile ? 200 : 300,
+                                    }}
+                                    {...params}
+                                    label="Product Name"
+                                    fullWidth
+                                  />
+                                )}
+                                autoSelect // Automatically select the first option
+                              />
+                            )}
+                          </Field>
 
-                        <Field name={`products.${index}.totalPrice`}>
-                          {({ field }) => (
-                            <Input
-                              value={product.totalPrice}
-                              label="Total Price"
-                              readOnly
-                              inputProps={{
-                                style: { textAlign: "right" },
-                              }}
-                            />
-                          )}
-                        </Field>
-                        <Button
-                          style={{ height: "80%", marginTop: 20 }}
-                          variant="contained"
-                          color="error"
-                          onClick={() => remove(index)}>
-                          Remove
-                        </Button>
+                          <Field
+                            style={{ paddingRight: 10, flex: 1, width: 150 }}
+                            as={TextField}
+                            name={`products.${index}.quantity`}
+                            label="Quantity"
+                            type="number"
+                            validate={(value) => {
+                              const selectedProduct = Products.find(
+                                (p) => p.name === product.name
+                              );
+                              if (value > selectedProduct?.onHand) {
+                                return "Quantity cannot exceed available stock";
+                              }
+                            }}
+                            onChange={(event) => {
+                              const newValue = parseInt(event.target.value);
+                              setFieldValue(
+                                `products.${index}.quantity`,
+                                newValue
+                              );
+                              const selectedProduct = Products.find(
+                                (p) => p.name === product.name
+                              );
+                              const newTotalPrice =
+                                newValue * selectedProduct?.salesPrice;
+                              setFieldValue(
+                                `products.${index}.totalPrice`,
+                                newTotalPrice
+                              );
+                            }}
+                          />
+                        </div>
+                        <div style={{ display: "flex", flex: 1, gap: 10 }}>
+                          <Field name={`products.${index}.price`}>
+                            {({ field }) => (
+                              <Input
+                                value={
+                                  Products.find((p) => p.name === product.name)
+                                    ?.salesPrice
+                                }
+                                label="Price"
+                                readOnly
+                                inputProps={{
+                                  style: { textAlign: "right" },
+                                }}
+                              />
+                            )}
+                          </Field>
+
+                          <Field name={`products.${index}.totalPrice`}>
+                            {({ field }) => (
+                              <Input
+                                value={product.totalPrice}
+                                label="Total Price"
+                                readOnly
+                                inputProps={{
+                                  style: { textAlign: "right" },
+                                }}
+                              />
+                            )}
+                          </Field>
+                          <Button
+                            style={{ height: "80%", marginTop: 10 }}
+                            variant="contained"
+                            color="error"
+                            onClick={() => remove(index)}>
+                            Remove
+                          </Button>
+                        </div>
                       </div>
                     );
                   })}
@@ -212,12 +225,8 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                     color="secondary"
                     type="button"
                     onClick={() => {
-                      push({
-                        name: "",
-                        quantity: 1,
-                        totalPrice: 0,
-                        price: 0,
-                      });
+                      push({ name: "", quantity: 1, totalPrice: 0, price: 0 });
+                      console.log("first");
                     }}
                     disabled={
                       values.products.length > 0 &&
@@ -264,9 +273,18 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
       </Formik>
       {error && (
         <Typography align="center" color="red">
-          {error}
+          { error }
         </Typography>
       )}
+      <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={() => setOpen(false)}
+        message={
+           "Sales successfully Recorded"
+        }
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      />
     </div>
   );
 };

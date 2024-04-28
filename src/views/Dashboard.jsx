@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { ActionCreators } from "../actions/action";
 
 const DummyCard = () => {
   return (
@@ -18,6 +20,18 @@ const DummyCard = () => {
 };
 
 const Widgets = ({ title, count }) => {
+  const dispatch = useDispatch()
+   const adminId = useSelector((state) => {
+     if (state?.company?.data?.workers) {
+       return state?.company?.data?.workers[0]?._id;
+     }
+     return null;
+   });
+  
+  useEffect(() => {
+    dispatch(ActionCreators.setCurrentUser(adminId));
+  })
+  
   return (
     <Card
       sx={{
