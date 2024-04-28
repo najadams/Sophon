@@ -11,7 +11,6 @@ export const tableActions = {
         name: item.name,
         phone: item.phone,
         email: item.email,
-        address: item.address ? item.address : "None",
       }));
       return data;
     } catch (error) {
