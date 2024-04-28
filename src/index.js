@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import store, { persistor } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { SidebarContext, SidebarProvider } from './context/context';
+import { SidebarProvider } from './context/context';
 
 const breakpoints = {
   values: {
@@ -17,6 +17,7 @@ const breakpoints = {
     lg: 1280,
     xl: 1920,
     custom: 2000, // Add your custom breakpoint
+    mymd: 1120,
   },
 };
 

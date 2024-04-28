@@ -95,32 +95,32 @@ const TableCreater = ({ companyId,data,  type }) => {
       },
     }
   );
-  const addProductMutation = useMutation(
-    (values) => axios.post(`/api/product`, values),
-    {
-      onSuccess: () => {
-        console.log("first")
-        queryClient.invalidateQueries(["api/products", companyId]);
-        fetchData();
-      },
-      onError: (error) => {
-        console.error("Failed to edit product:", error);
-      },
-    }
-  );
+  // const addProductMutation = useMutation(
+  //   (values) => axios.post(`/api/product`, values),
+  //   {
+  //     onSuccess: () => {
+  //       console.log("first")
+  //       queryClient.invalidateQueries(["api/products", companyId]);
+  //       fetchData();
+  //     },
+  //     onError: (error) => {
+  //       console.error("Failed to edit product:", error);
+  //     },
+  //   }
+  // );
 
-  const addCustomerMutation = useMutation(
-    (values) => axios.post(`/api/customer`, values),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["api/customers", companyId]);
-        fetchData();
-      },
-      onError: (error) => {
-        console.error("Failed to edit customer:", error);
-      },
-    }
-  );
+  // const addCustomerMutation = useMutation(
+  //   (values) => axios.post(`/api/customer`, values),
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries(["api/customers", companyId]);
+  //       fetchData();
+  //     },
+  //     onError: (error) => {
+  //       console.error("Failed to edit customer:", error);
+  //     },
+  //   }
+  // );
 
 
   const handleDelete = (row) => {

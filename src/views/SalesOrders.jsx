@@ -3,7 +3,7 @@ import AddItem from '../components/AddItem';
 import SalesOrderForms from '../components/SaleOrderForms';
 import SearchField from '../components/SearchField';
 import { useSelector } from 'react-redux';
-import TableCreater from '../components/TableCreater';
+// import TableCreater from '../components/TableCreater';
 import { tableActions } from '../config/Functions';
 
 const SalesOrders = () => {

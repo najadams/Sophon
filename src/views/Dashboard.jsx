@@ -5,7 +5,6 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { Box } from "@mui/material";
 
 const DummyCard = () => {
@@ -84,7 +83,7 @@ const Dashboard = () => {
           }}>
           <Widgets title={"Employees"} count={userCount} />
           <Widgets title={"Products"} count={productCount} />
-          <Widgets title={"Customers"} count={0} />
+          <Widgets title={"Customers"} count={customerCount} />
         </div>
         <DummyCard />
         <DummyCard />

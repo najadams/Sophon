@@ -25,6 +25,8 @@ export default function Header({ isLoggedIn }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { isSidebarExpanded, setIsSidebarExpanded } = useSidebar();
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -35,15 +37,15 @@ export default function Header({ isLoggedIn }) {
     navigate("/login");
   };
 
-  const toggleSidbar = () => {
-    
-  }
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -61,6 +63,7 @@ export default function Header({ isLoggedIn }) {
               edge="start"
               color="inherit"
               aria-label="menu"
+              onClick={() => toggleSidebar()}
               sx={{ mr: 2 }}>
               <MenuIcon  />
             </IconButton>

@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import CustomerForm from "../components/CustomerForm";
 import { tableActions } from "../config/Functions";
 import SearchField from "../components/SearchField";
-import axios from '../config'
 
 const Customers = () => {
   const companyId = useSelector((state) => state.company.data.id);
