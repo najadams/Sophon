@@ -16,6 +16,7 @@ import store, {persistor} from "./store/store";
 import { Provider, useSelector } from "react-redux";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { PersistGate } from "redux-persist/integration/react";
+import Settings  from "./views/Settings";
 
 const NoPage = lazy(() =>
   import("./views/NoPage")
@@ -43,7 +44,6 @@ function App() {
                 <Header isLoggedIn={isLoggedIn} />
                 <Suspense fallback={<div>Loading...</div>}>
                   <Routes>
-                    {/* <Route path="/" element={<Dashboard />} /> */}
                     <Route  path="/" element={<SignIn isLoggedIn={isLoggedIn} />} />
                     <Route  path="/login" element={<SignIn isLoggedIn={isLoggedIn} />} />
                     <Route path="/register" element={<Register />} />
@@ -54,6 +54,7 @@ function App() {
                           path="/products"
                           element={<ProductCatalogue />}
                         />
+                        <Route path="/settings" element={<Settings />} />
                         <Route path="/customers" element={<Customers />} />
                         <Route path="/stocks" element={<StockEntry />} />
                         <Route
