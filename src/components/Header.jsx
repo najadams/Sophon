@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
+import { useSidebar } from "../context/context";
 
 export default function Header({ isLoggedIn }) {
   const dispatch = useDispatch();
@@ -33,6 +34,10 @@ export default function Header({ isLoggedIn }) {
     dispatch(ActionCreators.logoutCompany());
     navigate("/login");
   };
+
+  const toggleSidbar = () => {
+    
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -57,7 +62,7 @@ export default function Header({ isLoggedIn }) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}>
-              <MenuIcon />
+              <MenuIcon  />
             </IconButton>
           )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>

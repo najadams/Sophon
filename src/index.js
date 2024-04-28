@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import store, { persistor } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { SidebarContext, SidebarProvider } from './context/context';
 
 const breakpoints = {
   values: {
@@ -30,7 +31,9 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ThemeProvider theme={theme}>
-          <App />
+          <SidebarProvider>
+            <App />
+          </SidebarProvider>
         </ThemeProvider>
       </PersistGate>
     </Provider>
