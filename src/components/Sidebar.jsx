@@ -44,31 +44,6 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
                 <span className="text nav-text">Stock</span>
               </NavLink>
             </li>
-{/* 
-            <li className="nav-link">
-              <NavLink to={"/stocks"} activeclassname="active">
-                <i className="bx bxs-user-plus icon"></i>
-                <span className="text nav-text">Create Class</span>
-              </NavLink>
-            </li>
-            <li className="nav-link">
-              <NavLink to={"/lecturer/analytics"} activeclassname="active">
-                <i className="bx bxs-pie-chart-alt-2 icon"></i>
-                <span className="text nav-text">Analysis</span>
-              </NavLink>
-            </li>
-            <li className="nav-link">
-              <NavLink to={"/"} activeclassname="active">
-                <i className="bx bx-cart-add icon"></i>
-                <span className="text nav-text">Analysis</span>
-              </NavLink>
-            </li>
-            <li className="nav-link">
-              <NavLink to={"/lecturer/analytics"} activeclassname="active">
-                <i className="bx bxs-bell icon"></i>
-                <span className="text nav-text">Notifications</span>
-              </NavLink>
-            </li> */}
           </ul>
         </div>
       </div>
