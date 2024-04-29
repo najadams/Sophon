@@ -62,6 +62,10 @@ const SignIn = ({ isLoggedIn }) => {
         setError("Invalid Credentials");
         throw new Error("Login failed");
       }
+      if (response.status === '401') {
+        setError("Company Doesn't Exist");
+        throw new Error("Login failed");
+      }
       
       const { companydata, token } = response.data;
       
@@ -77,12 +81,8 @@ const SignIn = ({ isLoggedIn }) => {
      
      return response.data;
     } catch (error) {
-      setError( "An error occurred");
-     dispatch(
-       ActionCreators.fetchUserFailure(
-         "An error occurred"
-       )
-     );
+      setError(error.response?.data?.message || "An error occurred");
+     dispatch(ActionCreators.fetchUserFailure(error.response?.data?.message || "Error during login"));
      console.error(error.response?.data?.message || error.message);
    }
  };

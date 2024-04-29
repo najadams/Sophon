@@ -5,6 +5,7 @@ import SearchField from '../components/SearchField';
 import { useSelector } from 'react-redux';
 // import TableCreater from '../components/TableCreater';
 import { tableActions } from '../config/Functions';
+import CollapsibleTable from '../components/CollapsibleTable';
 
 const SalesOrders = () => {
   const companyId = useSelector(state => state.company.data.id)
@@ -77,6 +78,7 @@ const SalesOrders = () => {
             <h2>No Sales Made yet</h2>
           </div>
         )} */}
+        <CollapsibleTable />
       </div>
     </div>
   );
