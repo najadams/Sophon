@@ -83,7 +83,7 @@ const CustomerForm = ({ data, editMutation }) => {
             <Field
               component={TextField}
               name="phone"
-              type="text"
+              type="number"
               label="Phone"
               onChange={(e) => {
                 handleChange(e);

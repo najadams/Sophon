@@ -181,7 +181,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                             }}
                           />
                         </div>
-                        <div style={{ display: "flex", flex: 1, gap: 10 }}>
+                        <div style={{ display: "flex", flex: 1, gap: 10, }}>
                           <Field name={`products.${index}.price`}>
                             {({ field }) => (
                               <Input
