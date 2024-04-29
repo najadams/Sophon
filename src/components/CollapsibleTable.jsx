@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
@@ -13,8 +13,6 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import axios from '../config/'
-import { useSelector } from "react-redux";
 
 function Row({ row }) {
   const [open, setOpen] = useState(false);
@@ -30,9 +28,19 @@ function Row({ row }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row._id}
+        <TableCell
+          component="th"
+          scope="row"
+          style={{  width: "30%" }}
+        >
+          {row.customerName}
         </TableCell>
+        <TableCell
+          align="left"
+          >
+          {row.workerName}
+        </TableCell>{" "}
+        {/* Add this line */}
         <TableCell align="right">{row.total}</TableCell>
         <TableCell align="right">{row.detail.length}</TableCell>
       </TableRow>
@@ -71,34 +79,21 @@ function Row({ row }) {
   );
 }
 
+
 Row.propTypes = {
   row: PropTypes.object.isRequired,
 };
 
-export default function CollapsibleTable() {
-  const [receipts, setReceipts] = useState([]);
-  const companyId = useSelector((state) => state.company.data.id)
-
-  useEffect(() => {
-    const fetchReceipts = async () => {
-      try {
-        const response = await axios.get(`/api/receipts/${companyId}`); // Replace with your API endpoint
-        setReceipts(response.data);
-      } catch (error) {
-        console.error("Error fetching receipts:", error);
-      }
-    };
-
-    fetchReceipts();
-  }, [companyId]);
-
+export default function CollapsibleTable({ receipts}) {
+  
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Receipt ID</TableCell>
+            <TableCell>Customer Name</TableCell>
+            <TableCell>Worker Name</TableCell>
             <TableCell align="right">Total</TableCell>
             <TableCell align="right">Items Count</TableCell>
           </TableRow>
