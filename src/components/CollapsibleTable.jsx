@@ -39,8 +39,7 @@ function Row({ row }) {
           align="left"
           >
           {row.workerName}
-        </TableCell>{" "}
-        {/* Add this line */}
+        </TableCell>
         <TableCell align="right">{row.total}</TableCell>
         <TableCell align="right">{row.detail.length}</TableCell>
       </TableRow>
