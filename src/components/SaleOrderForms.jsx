@@ -45,16 +45,17 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
           );
           values.total = total;
           try {
-            console.log(values);
             setSubmitting(true);
             await tableActions.addReceipt(values, companyId, workerId);
+            setOpen(true); 
           } catch (error) {
             console.log(error);
-            setError(error)
+            setError(error);
+          } finally {
+            setSubmitting(false);
           }
-          console.log(values);
         }}>
-        {({ values, handleSubmit, setFieldValue, resetForm }) => (
+        {({ values, submitForm, setFieldValue, isSubmitting, resetForm }) => (
           <Form className="form" style={{ margin: 10 }}>
             <Field name="customerName">
               {({ field, form }) => {
@@ -259,7 +260,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleSubmit}
+                onClick={submitForm}
                 type="submit">
                 Save
               </Button>
@@ -273,16 +274,14 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
       </Formik>
       {error && (
         <Typography align="center" color="red">
-          { error }
+          {error}
         </Typography>
       )}
       <Snackbar
         open={open}
         autoHideDuration={5000}
         onClose={() => setOpen(false)}
-        message={
-           "Sales successfully Recorded"
-        }
+        message={"Sales successfully Recorded"}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       />
     </div>
