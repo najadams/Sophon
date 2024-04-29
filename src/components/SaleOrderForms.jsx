@@ -261,7 +261,8 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                 variant="contained"
                 color="success"
                 onClick={submitForm}
-                type="submit">
+              // type="submit"
+              >
                 Save
               </Button>
 
