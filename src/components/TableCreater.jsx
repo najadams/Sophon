@@ -39,7 +39,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const TableCreater = ({ companyId, data, type }) => {
   const [Headers, setHeaders] = useState([]);
   const [Data, setData] = useState([]);
-  const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const isSmallScreen = useMediaQuery("(max-width:1120px)");
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
 
   const fetchData = useCallback(async () => {
     try {
@@ -136,63 +137,71 @@ const TableCreater = ({ companyId, data, type }) => {
   };
 
   return (
-    <TableContainer component={Paper} style={{ overflowX: "auto" }}>
-      <Table
-        sx={{ minWidth: 650 }}
-        size={isSmallScreen ? "small" : "medium"}
-        aria-label="a dense table"
-        dense={isSmallScreen}
-      stickyHeader>
-        <TableHead style={{ fontWeight: "bold", fontSize: 40 }}>
-          <TableRow>
-            {Headers.map((header, index) => (
-              <StyledTableCell key={index} align="left">
-                {header}
-              </StyledTableCell>
-            ))}
-            <StyledTableCell align="center">Edit</StyledTableCell>
-            <StyledTableCell align="center">Delete</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Data.map((row) => {
-            return (
-              <StyledTableRow key={row.id}>
-                {/* Exclude ID from rendering */}
-                {Headers.map((header) => (
-                  <TableCell align="left">
-                    {capitalizeFirstLetter(row[header])}
+    <Paper sx={{ width: "100%", overflowX: "hidden", overflowY: "hidden" }}>
+      <TableContainer
+        component={Paper}
+        style={{
+          overflowX: isMobile && "hidden",
+          maxHeight: isSmallScreen ? 400 : "auto", // Set max height for small screens
+          overflowY: isSmallScreen ? "auto" : "hidden", // Enable vertical scroll for small screens
+        }}>
+        <Table
+          sx={{ minWidth: 650 }}
+          size={isSmallScreen ? "small" : "medium"}
+          dense={isSmallScreen} // Make table dense for small screens
+          stickyHeader
+          aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {Headers.map((header, index) => (
+                <StyledTableCell key={index} align="left">
+                  {header}
+                </StyledTableCell>
+              ))}
+              <StyledTableCell align="center">Edit</StyledTableCell>
+              <StyledTableCell align="center">Delete</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody className="table__body">
+            {Data.map((row) => {
+              return (
+                <StyledTableRow key={row.id}>
+                  {/* Exclude ID from rendering */}
+                  {Headers.map((header) => (
+                    <TableCell align="left">
+                      {capitalizeFirstLetter(row[header])}
+                    </TableCell>
+                  ))}
+                  <TableCell align="center">
+                    <EditButton values={row}>
+                      {type === "products" ? (
+                        <ProductForm
+                          editMutation={editProductMutation}
+                          data={row}
+                        />
+                      ) : (
+                        <CustomerForm
+                          editMutation={editCustomerMutation}
+                          data={row}
+                        />
+                      )}
+                    </EditButton>
                   </TableCell>
-                ))}
-                <TableCell align="center">
-                  <EditButton values={row}>
-                    {type === "products" ? (
-                      <ProductForm
-                        editMutation={editProductMutation}
-                        data={row}
-                      />
-                    ) : (
-                      <CustomerForm
-                        editMutation={editCustomerMutation}
-                        data={row}
-                      />
-                    )}
-                  </EditButton>
-                </TableCell>
-                <TableCell align="right">
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleDelete(row)}>
-                    Delete
-                  </Button>
-                </TableCell>
-              </StyledTableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                  <TableCell align="right">
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleDelete(row)}>
+                      Delete
+                    </Button>
+                  </TableCell>
+                </StyledTableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 
