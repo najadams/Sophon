@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -13,29 +13,53 @@ import CustomerForm from "./CustomerForm";
 import axios from "../config";
 import { useQueryClient, useMutation } from "react-query";
 import { tableActions } from "../config/Functions";
+import { useMediaQuery } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-const TableCreater = ({ companyId,data,  type }) => {
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontSize: "16px",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: "14px",
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
+
+const TableCreater = ({ companyId, data, type }) => {
   const [Headers, setHeaders] = useState([]);
   const [Data, setData] = useState([]);
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
-    const fetchData = useCallback(async () => {
-      try {
-        let fetchedData;
-        if (data) {
-          fetchedData = data;
-        } else {
-          if (type === "customers") {
-            fetchedData = await tableActions.fetchCustomers(companyId);
-          } else if (type === "products") {
-            fetchedData = await tableActions.fetchProducts(companyId);
-          }
+  const fetchData = useCallback(async () => {
+    try {
+      let fetchedData;
+      if (data) {
+        fetchedData = data;
+      } else {
+        if (type === "customers") {
+          fetchedData = await tableActions.fetchCustomers(companyId);
+        } else if (type === "products") {
+          fetchedData = await tableActions.fetchProducts(companyId);
         }
-        setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
-        setData(fetchedData);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
       }
-    }, [companyId, type, data]);
+      setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
+      setData(fetchedData);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  }, [companyId, type, data]);
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
@@ -73,7 +97,6 @@ const TableCreater = ({ companyId,data,  type }) => {
     (values) => axios.patch(`/api/product/${values.id}`, values),
     {
       onSuccess: () => {
-        console.log("first")
         queryClient.invalidateQueries(["api/products", companyId]);
         fetchData();
       },
@@ -95,37 +118,9 @@ const TableCreater = ({ companyId,data,  type }) => {
       },
     }
   );
-  // const addProductMutation = useMutation(
-  //   (values) => axios.post(`/api/product`, values),
-  //   {
-  //     onSuccess: () => {
-  //       console.log("first")
-  //       queryClient.invalidateQueries(["api/products", companyId]);
-  //       fetchData();
-  //     },
-  //     onError: (error) => {
-  //       console.error("Failed to edit product:", error);
-  //     },
-  //   }
-  // );
-
-  // const addCustomerMutation = useMutation(
-  //   (values) => axios.post(`/api/customer`, values),
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(["api/customers", companyId]);
-  //       fetchData();
-  //     },
-  //     onError: (error) => {
-  //       console.error("Failed to edit customer:", error);
-  //     },
-  //   }
-  // );
-
 
   const handleDelete = (row) => {
     if (type === "products") {
-      window.alert("coco");
       deleteProductMutation.mutate(row.id);
     } else {
       deleteCustomerMutation.mutate(row.id);
@@ -141,23 +136,28 @@ const TableCreater = ({ companyId,data,  type }) => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+    <TableContainer component={Paper} style={{ overflowX: "auto" }}>
+      <Table
+        sx={{ minWidth: 650 }}
+        size={isSmallScreen ? "small" : "medium"}
+        aria-label="a dense table"
+        dense={isSmallScreen}
+      stickyHeader>
         <TableHead style={{ fontWeight: "bold", fontSize: 40 }}>
           <TableRow>
             {Headers.map((header, index) => (
-              <TableCell key={index} align="left">
+              <StyledTableCell key={index} align="left">
                 {header}
-              </TableCell>
+              </StyledTableCell>
             ))}
-            <TableCell align="center">Edit</TableCell>
-            <TableCell align="center">Delete</TableCell>
+            <StyledTableCell align="center">Edit</StyledTableCell>
+            <StyledTableCell align="center">Delete</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {Data.map((row) => {
             return (
-              <TableRow key={row.id}>
+              <StyledTableRow key={row.id}>
                 {/* Exclude ID from rendering */}
                 {Headers.map((header) => (
                   <TableCell align="left">
@@ -187,7 +187,7 @@ const TableCreater = ({ companyId,data,  type }) => {
                     Delete
                   </Button>
                 </TableCell>
-              </TableRow>
+              </StyledTableRow>
             );
           })}
         </TableBody>
