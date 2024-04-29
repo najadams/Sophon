@@ -34,7 +34,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
       <Formik
         initialValues={{
           customerName: "",
-          products: [{ name: "", quantity: 1, totalPrice: 0, price: 0 }],
+          products: [{ name: "", quantity: '', totalPrice: 0, price: 0 }],
           total: 0,
         }}
         validationSchema={validationSchema}
@@ -226,7 +226,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                     color="secondary"
                     type="button"
                     onClick={() => {
-                      push({ name: "", quantity: 1, totalPrice: 0, price: 0 });
+                      push({ name: "", quantity: '', totalPrice: 0, price: 0 });
                       console.log("first");
                     }}
                     disabled={
