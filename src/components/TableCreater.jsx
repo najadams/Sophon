@@ -15,6 +15,7 @@ import { useQueryClient, useMutation } from "react-query";
 import { tableActions } from "../config/Functions";
 import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useQuery } from "react-query";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,9 +62,36 @@ const TableCreater = ({ companyId, data, type }) => {
     }
   }, [companyId, type, data]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+ const {
+   data: fetchedData,
+   isError,
+   error,
+ } = useQuery(
+   [type, companyId], // Unique key for the query
+   async () => {
+     if (data) {
+       return data;
+     } else {
+       if (type === "customers") {
+         return await tableActions.fetchCustomers(companyId);
+       } else if (type === "products") {
+         return await tableActions.fetchProducts(companyId);
+       }
+     }
+   },
+   {
+     staleTime: 1000 * 60 * 5, // The data will be considered fresh for 5 minutes
+     cacheTime: 1000 * 60 * 30, // The data will be cached for 30 minutes
+     retry: 1, // Retry once if the data fetching fails
+   }
+ );
+
+ useEffect(() => {
+   if (fetchedData) {
+     setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
+     setData(fetchedData);
+   }
+ }, [fetchedData]);
 
   // Inside your TableCreater component
   const queryClient = useQueryClient();
