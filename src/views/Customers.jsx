@@ -5,7 +5,6 @@ import AddItem from "../components/AddItem";
 import { useSelector } from "react-redux";
 import CustomerForm from "../components/CustomerForm";
 import { tableActions } from "../config/Functions";
-import SearchField from "../components/SearchField";
 
 const Customers = () => {
   const companyId = useSelector((state) => state.company.data.id);
@@ -26,7 +25,6 @@ const Customers = () => {
         <div>
           <h1>Customers</h1>
         </div>
-        <SearchField />
         <AddItem>
           <CustomerForm />
         </AddItem>

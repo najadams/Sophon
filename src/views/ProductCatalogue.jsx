@@ -5,7 +5,6 @@ import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
 import axios from "../config/index";
 import { useSelector } from "react-redux";
-import SearchField from "../components/SearchField";
 
 const fetchProducts = async (companyId) => {
   try {
@@ -36,13 +35,13 @@ const ProductCatalogue = () => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching data</div>;
 
+
   return (
     <div className="page">
       <div className="heading">
         <div>
           <h1>Products</h1>
         </div>
-        <SearchField />
         <AddItem>
           <ProductForm />
         </AddItem>
@@ -50,7 +49,10 @@ const ProductCatalogue = () => {
 
       <div className="content">
         {products.length > 0 ? (
-          <TableCreater companyId={companyId} type="products" />
+          <TableCreater
+            companyId={companyId}
+            type="products"
+          />
         ) : (
           <div className="content">
             <h2>Add Products to Get Started</h2>

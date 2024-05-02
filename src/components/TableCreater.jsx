@@ -16,6 +16,7 @@ import { tableActions } from "../config/Functions";
 import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useQuery } from "react-query";
+import SearchField from "./SearchField";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,6 +41,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const TableCreater = ({ companyId, data, type }) => {
   const [Headers, setHeaders] = useState([]);
   const [Data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // State to hold search term
   const isSmallScreen = useMediaQuery("(max-width:1120px)");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
 
@@ -62,36 +64,36 @@ const TableCreater = ({ companyId, data, type }) => {
     }
   }, [companyId, type, data]);
 
- const {
-   data: fetchedData,
-   isError,
-   error,
- } = useQuery(
-   [type, companyId], // Unique key for the query
-   async () => {
-     if (data) {
-       return data;
-     } else {
-       if (type === "customers") {
-         return await tableActions.fetchCustomers(companyId);
-       } else if (type === "products") {
-         return await tableActions.fetchProducts(companyId);
-       }
-     }
-   },
-   {
-     staleTime: 1000 * 60 * 5, // The data will be considered fresh for 5 minutes
-     cacheTime: 1000 * 60 * 30, // The data will be cached for 30 minutes
-     retry: 1, // Retry once if the data fetching fails
-   }
- );
+  const {
+    data: fetchedData,
+    isError,
+    error,
+  } = useQuery(
+    [type, companyId], // Unique key for the query
+    async () => {
+      if (data) {
+        return data;
+      } else {
+        if (type === "customers") {
+          return await tableActions.fetchCustomers(companyId);
+        } else if (type === "products") {
+          return await tableActions.fetchProducts(companyId);
+        }
+      }
+    },
+    {
+      staleTime: 1000 * 60 * 5, // The data will be considered fresh for 5 minutes
+      cacheTime: 1000 * 60 * 30, // The data will be cached for 30 minutes
+      retry: 1, // Retry once if the data fetching fails
+    }
+  );
 
- useEffect(() => {
-   if (fetchedData) {
-     setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
-     setData(fetchedData);
-   }
- }, [fetchedData]);
+  useEffect(() => {
+    if (fetchedData) {
+      setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
+      setData(fetchedData);
+    }
+  }, [fetchedData]);
 
   // Inside your TableCreater component
   const queryClient = useQueryClient();
@@ -165,10 +167,13 @@ const TableCreater = ({ companyId, data, type }) => {
   };
 
   if (isError) {
-    return (
-      {error}
-    )
+    return { error };
   }
+
+  // Filter data based on search term
+  const filteredData = Data.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Paper sx={{ width: "100%", overflowX: "hidden", overflowY: "hidden" }}>
@@ -179,6 +184,7 @@ const TableCreater = ({ companyId, data, type }) => {
           maxHeight: isSmallScreen ? 400 : "auto", // Set max height for small screens
           overflowY: isSmallScreen ? "auto" : "hidden", // Enable vertical scroll for small screens
         }}>
+        <SearchField onSearch={setSearchTerm} /> {/* Search field */}
         <Table
           sx={{ minWidth: 650 }}
           size={isSmallScreen ? "small" : "medium"}
@@ -197,7 +203,7 @@ const TableCreater = ({ companyId, data, type }) => {
             </TableRow>
           </TableHead>
           <TableBody className="table__body">
-            {Data.map((row) => {
+            {filteredData.map((row) => {
               return (
                 <StyledTableRow key={row.id}>
                   {/* Exclude ID from rendering */}

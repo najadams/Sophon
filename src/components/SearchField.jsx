@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SearchField = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
     event.preventDefault();
     onSearch(searchTerm);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      onSearch(searchTerm);
+    }
   };
 
   return (
@@ -18,6 +25,7 @@ const SearchField = ({ onSearch }) => {
         borderRadius: 20,
         padding: 10,
         boxShadow: 1,
+        maxWidth : 200
       }}>
       <i
         className="bx bx-search-alt icon"
@@ -28,6 +36,7 @@ const SearchField = ({ onSearch }) => {
         placeholder="Search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
     </form>
   );
