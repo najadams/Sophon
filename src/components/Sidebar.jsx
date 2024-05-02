@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
 
 const Sidebar = ({ isExpanded, toggleSidebar }) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
 
   return (
     <nav className={`sidebar ${isExpanded ? "expanded" : "collapsed"}`}>
@@ -18,7 +20,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
 
       <div className="menu-bar">
         <div className="menu">
-          <ul className="menu-links">
+          <ul className="menu-links" onClick={() => {isMobile && toggleSidebar()}}>
             <li className="nav-link">
               <NavLink to={"/dashboard"} activeclassname="active">
                 <i className="bx bxs-home icon"></i>
