@@ -5,7 +5,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
+import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -13,6 +13,28 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import {styled } from '@mui/material/styles'
+
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontSize: "16px",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: "14px",
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 function Row({ row }) {
   const [open, setOpen] = useState(false);
@@ -60,13 +82,13 @@ function Row({ row }) {
                 </TableHead>
                 <TableBody>
                   {row.detail.map((item) => (
-                    <TableRow key={item.name}>
+                    <StyledTableRow key={item.name}>
                       <TableCell component="th" scope="row">
                         {item.name}
                       </TableCell>
                       <TableCell align="right">{item.quantity}</TableCell>
                       <TableCell align="right">{item.totalPrice}</TableCell>
-                    </TableRow>
+                    </StyledTableRow>
                   ))}
                 </TableBody>
               </Table>
@@ -91,10 +113,10 @@ export default function CollapsibleTable({ receipts}) {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Customer Name</TableCell>
-            <TableCell>Worker Name</TableCell>
-            <TableCell align="right">Total</TableCell>
-            <TableCell align="right">Items Count</TableCell>
+            <StyledTableCell>Customer Name</StyledTableCell>
+            <StyledTableCell>Worker Name</StyledTableCell>
+            <StyledTableCell align="right">Total</StyledTableCell>
+            <StyledTableCell align="right">Items Count</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

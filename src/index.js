@@ -21,9 +21,42 @@ const breakpoints = {
   },
 };
 
+const mycolors = {
+  values: {
+    primary: {
+      main: "#1976d2", // a nice shade of blue
+    },
+    secondary: {
+      main: "#dc004e", // a vibrant pink/red
+    },
+    error: {
+      main: "#f44336", // red for errors
+    },
+    warning: {
+      main: "#ff9800", // orange for warnings
+    },
+    info: {
+      main: "#2196f3", // a different shade of blue for general information
+    },
+    success: {
+      main: "#4caf50", // green for success messages
+    },
+    text: {
+      primary: "#333333", // dark grey for primary text
+      secondary: "#757575", // light grey for secondary text
+    },
+    background: {
+      default: "#f5f5f5", // light grey for backgrounds
+      paper: "#ffffff", // white for paper backgrounds
+    },
+  },
+};
+
+
 // Create a custom theme with the updated breakpoints
 const theme = createTheme({
   breakpoints: breakpoints,
+  mycolors
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
