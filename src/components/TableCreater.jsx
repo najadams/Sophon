@@ -164,6 +164,12 @@ const TableCreater = ({ companyId, data, type }) => {
     return str;
   };
 
+  if (isError) {
+    return (
+      {error}
+    )
+  }
+
   return (
     <Paper sx={{ width: "100%", overflowX: "hidden", overflowY: "hidden" }}>
       <TableContainer
