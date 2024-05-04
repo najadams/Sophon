@@ -6,8 +6,9 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
 import { Box } from "@mui/material";
+import SlidingCard from "../components/SlidingCard";
 
-const DummyCard = () => {
+const DummyCard = ({children, title}) => {
   return (
     <Box
       sx={{
@@ -19,9 +20,9 @@ const DummyCard = () => {
       <Card sx={{ width: "100%", height: "100%" }}>
         <CardContent>
           <Typography variant="h5" component="div">
-            Dummy Card
+           {title}
           </Typography>
-          <Typography variant="body2">This is a dummy card.</Typography>
+          <Typography variant="body2">Customer Analysis</Typography>
         </CardContent>
       </Card>
     </Box>
@@ -44,16 +45,17 @@ const Widgets = ({ title, count }) => {
   return (
     <Card
       sx={{
-        width: { xs: "55%", sm: "120px", lg : '250px' },
-        height: { xs: "auto", sm: "90px", lg : '150px' },
+        width: { xs: "90px", sm: "120px", lg : '150px' },
+        height: { xs: "auto", sm: "80px", lg : '100px' },
         backgroundColor: "#c5c9d2",
         margin: 1,
+        padding: 0
       }}>
       <CardContent>
-        <Typography variant={{ lg :"h5", sm : 'h6' }} component="div">
+        <Typography variant='body' component="div">
           {title}
         </Typography>
-        <Typography variant="h3">{count}</Typography>
+        <Typography variant="h4">{count}</Typography>
       </CardContent>
     </Card>
   );
@@ -85,9 +87,11 @@ const Dashboard = () => {
           <Widgets title={"Products"} count={productCount} />
           <Widgets title={"Customers"} count={customerCount} />
         </div>
-        <DummyCard />
-        <DummyCard />
-        <DummyCard />
+        <DummyCard title={"Overall Sales Analysis"} />
+        <DummyCard title={"Most Selling Product"} />
+        <DummyCard title={" Customer Analysis"} />
+        <DummyCard title={"Profit Analysis"} />
+        <SlidingCard />
       </div>
     </div>
   );
