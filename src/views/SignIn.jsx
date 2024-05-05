@@ -39,6 +39,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const SignIn = ({ isLoggedIn }) => {
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const [error, setError] = useState(null);
   const navigate = useNavigate()
@@ -90,15 +91,18 @@ const SignIn = ({ isLoggedIn }) => {
 
   const handleSubmit = async(event) => {
     event.preventDefault();
+    setLoading(true)
     setError(null)
     const data = new FormData(event.currentTarget);
     const companyname = data.get("company")
     const password = data.get("password")
     if (!companyname || !password) {
       setError("fill all fields");
+      setLoading(false)
       return;
     }
-    await login(companyname.toLocaleLowerCase().strip(), password);
+    await login(companyname.toLocaleLowerCase().trim(), password);
+    setLoading(false)
     return; 
   };
 
@@ -178,9 +182,10 @@ const SignIn = ({ isLoggedIn }) => {
                 <Button
                   type="submit"
                   fullWidth
-                  variant="contained" 
-                  sx={{ mt: 3, mb: 2 }}>
-                  Sign In
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={loading}>
+                  {loading ? "Loading..." : "Sign In"}
                 </Button>
                 <Grid container>
                   <Grid item xs>

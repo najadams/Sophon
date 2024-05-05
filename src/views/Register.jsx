@@ -35,6 +35,7 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   // Register function
@@ -62,7 +63,8 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
+    setLoading(true)
     event.preventDefault();
     setError(null)
     const data = new FormData(event.currentTarget);
@@ -71,10 +73,11 @@ const Register = () => {
     const password = data.get("password");
     if (!companyname || !email || !password) {
       setError("fill all fields")
+      setLoading(false)
       return;
     }
-    await registration(companyname.toLowerCase().strip(), email.strip(), password);
-   
+    await registration(companyname.toLowerCase().trim(), email.trim(), password);
+   setLoading(false)
   };
 
 
@@ -164,8 +167,10 @@ const Register = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}>
-                  Sign Up
+                  sx={{ mt: 3, mb: 2 }}
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : "Sign Up"}
                 </Button>
                 {error && (
                   <Typography variant="body2" color="red" align="center">
