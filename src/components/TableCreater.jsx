@@ -22,7 +22,7 @@ import { ActionCreators } from "../actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.mycolors.tablestyle.default,
     color: theme.palette.primary.contrastText,
     fontSize: "16px",
   },
@@ -237,7 +237,7 @@ const TableCreater = ({ companyId, data, type }) => {
                   <TableCell align="right">
                     <Button
                       variant="contained"
-                      color="secondary"
+                      sx={{ bgcolor: (theme) => theme.mycolors.secondary.main }}
                       onClick={() => handleDelete(row)}>
                       Delete
                     </Button>

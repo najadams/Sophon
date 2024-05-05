@@ -49,6 +49,9 @@ const mycolors = {
       default: "#f5f5f5", // light grey for backgrounds
       paper: "#ffffff", // white for paper backgrounds
     },
+    tablestyle: {
+      default: "#262626;",
+    },
   },
 };
 
@@ -56,7 +59,7 @@ const mycolors = {
 // Create a custom theme with the updated breakpoints
 const theme = createTheme({
   breakpoints: breakpoints,
-  mycolors
+  mycolors : mycolors.values,
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
