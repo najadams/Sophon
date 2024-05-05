@@ -202,7 +202,7 @@ const TableCreater = ({ companyId, data, type }) => {
             <TableRow>
               {Headers.map((header, index) => (
                 <StyledTableCell key={index} align="left">
-                  {header}
+                  {header.toUpperCase()}
                 </StyledTableCell>
               ))}
               <StyledTableCell align="center">Edit</StyledTableCell>
@@ -237,7 +237,15 @@ const TableCreater = ({ companyId, data, type }) => {
                   <TableCell align="right">
                     <Button
                       variant="contained"
-                      sx={{ bgcolor: (theme) => theme.mycolors.secondary.main }}
+                      sx={{
+                        bgcolor: (theme) => theme.mycolors.secondary.main,
+                        "&:hover": {
+                          bgcolor: (theme) => theme.mycolors.secondary.main, // Keep the same color on hover
+                          boxShadow: '5px',
+                          transform: "scale(1.05)", // Scale the button up by 10% on hover
+                          // transition: 'ease-in-out'
+                        },
+                      }}
                       onClick={() => handleDelete(row)}>
                       Delete
                     </Button>

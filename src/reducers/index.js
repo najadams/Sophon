@@ -35,14 +35,19 @@ const productsReducer = (state = initialStates.productState, action) => {
         numProducts: state.numProducts + 1,
       };
     case ActionTypes.REMOVE_PRODUCT:
-      return {
-        ...state,
-       numProducts : state.numProducts  - 1
-      };
+      if (state.numProducts > 1) {
+        return {
+          ...state,
+          numProducts: state.numProducts - 1,
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
 };
+
 
 const cartReducer = (state = initialStates.cartState, action) => {
   switch (action.type) {
@@ -74,10 +79,14 @@ const customersReducer = (state = initialStates.customerState, action) => {
         numCustomers: state.numCustomers + 1,
       };
     case ActionTypes.REMOVE_CUSTOMER:
-      return {
-        ...state,
-        numCustomers: state.numCustomers - 1,
-      };
+      if (state.numCustomers > 1) {
+        return {
+          ...state,
+          numCustomers: state.numCustomers - 1,
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
