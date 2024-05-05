@@ -98,7 +98,7 @@ const SignIn = ({ isLoggedIn }) => {
       setError("fill all fields");
       return;
     }
-    await login(companyname.toLocaleLowerCase(), password);
+    await login(companyname.toLocaleLowerCase().strip(), password);
     return; 
   };
 

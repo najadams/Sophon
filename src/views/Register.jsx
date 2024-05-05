@@ -73,7 +73,7 @@ const Register = () => {
       setError("fill all fields")
       return;
     }
-    await registration(companyname.toLowerCase(), email, password);
+    await registration(companyname.toLowerCase().strip(), email.strip(), password);
    
   };
 
