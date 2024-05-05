@@ -62,11 +62,15 @@ const Widgets = ({ title, count }) => {
 };
 
 const Dashboard = () => {
-  const productCount = useSelector((state) => state.products.products.length);
+  const productCount = useSelector((state) => state.products.numProducts);
   const userCount = useSelector((state) => state.workers.users.length);
   const customerCount = useSelector(
-    (state) => state.customers.customers.length
+    (state) => state.customers.numCustomers
   );
+
+  useEffect(() => {
+    console.log(productCount)
+  },[productCount])
   
 
   return (

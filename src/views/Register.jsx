@@ -64,6 +64,7 @@ const Register = () => {
 
   const handleSubmit = async(event) => {
     event.preventDefault();
+    setError(null)
     const data = new FormData(event.currentTarget);
     const companyname = data.get("companyname");
     const email = data.get("email");

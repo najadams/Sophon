@@ -90,6 +90,7 @@ const SignIn = ({ isLoggedIn }) => {
 
   const handleSubmit = async(event) => {
     event.preventDefault();
+    setError(null)
     const data = new FormData(event.currentTarget);
     const companyname = data.get("company")
     const password = data.get("password")
