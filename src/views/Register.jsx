@@ -168,10 +168,16 @@ const Register = () => {
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
-                  disabled={loading}
-                >
+                  disabled={loading}>
                   {loading ? "Loading..." : "Sign Up"}
                 </Button>
+                <Grid container>
+                  <Grid item>
+                    <Link href="/login" variant="body2">
+                      {"Already have an account? Sign In"}
+                    </Link>
+                  </Grid>
+                </Grid>
                 {error && (
                   <Typography variant="body2" color="red" align="center">
                     {error}
