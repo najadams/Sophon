@@ -11,6 +11,11 @@ import EditButton from "./EditButton";
 import ProductForm from "./ProductForm";
 import CustomerForm from "./CustomerForm";
 import axios from "../config";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { useQueryClient, useMutation } from "react-query";
 import { tableActions } from "../config/Functions";
 import { useMediaQuery } from "@mui/material";
@@ -44,9 +49,10 @@ const TableCreater = ({ companyId, data, type }) => {
   const [Headers, setHeaders] = useState([]);
   const [Data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // State to hold search term
+  const [deleteRow, setDeleteRow] = useState(null); // State to hold row to delete
   const isSmallScreen = useMediaQuery("(max-width:1120px)");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const fetchData = useCallback(async () => {
     try {
@@ -63,11 +69,25 @@ const TableCreater = ({ companyId, data, type }) => {
       if (fetchedData && fetchedData.length > 0) {
         setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
         setData(fetchedData);
-      } 
+      }
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
   }, [companyId, type, data]);
+
+  const deleteRowConfirmed = () => {
+    if (type === "products") {
+      deleteProductMutation.mutate(deleteRow.id);
+    } else {
+      deleteCustomerMutation.mutate(deleteRow.id);
+    }
+    setDeleteRow(null); // Reset delete row state after deletion
+    console.log("Delete", deleteRow.name);
+  };
+
+  const handleDelete = (row) => {
+    setDeleteRow(row);
+  };
 
   const {
     data: fetchedData,
@@ -109,7 +129,7 @@ const TableCreater = ({ companyId, data, type }) => {
       onSuccess: () => {
         queryClient.invalidateQueries(["api/products"]);
         fetchData();
-        dispatch(ActionCreators.removeProduct())
+        dispatch(ActionCreators.removeProduct());
       },
       onError: (error) => {
         console.error("Failed to delete product:", error);
@@ -123,7 +143,7 @@ const TableCreater = ({ companyId, data, type }) => {
       onSuccess: () => {
         queryClient.invalidateQueries(["api/customers", companyId]);
         fetchData();
-        dispatch(ActionCreators.removeCustomer())
+        dispatch(ActionCreators.removeCustomer());
       },
       onError: (error) => {
         console.error("Failed to delete customer:", error);
@@ -156,15 +176,6 @@ const TableCreater = ({ companyId, data, type }) => {
       },
     }
   );
-
-  const handleDelete = (row) => {
-    if (type === "products") {
-      deleteProductMutation.mutate(row.id);
-    } else {
-      deleteCustomerMutation.mutate(row.id);
-    }
-    console.log("Delete", row.name);
-  };
 
   const capitalizeFirstLetter = (str) => {
     if (typeof str === "string") {
@@ -215,7 +226,7 @@ const TableCreater = ({ companyId, data, type }) => {
                 <StyledTableRow key={row.id}>
                   {/* Exclude ID from rendering */}
                   {Headers.map((header) => (
-                    <TableCell align="left">
+                    <TableCell align="left" key={header}>
                       {capitalizeFirstLetter(row[header])}
                     </TableCell>
                   ))}
@@ -241,9 +252,8 @@ const TableCreater = ({ companyId, data, type }) => {
                         bgcolor: (theme) => theme.mycolors.secondary.main,
                         "&:hover": {
                           bgcolor: (theme) => theme.mycolors.secondary.main, // Keep the same color on hover
-                          boxShadow: '5px',
+                          boxShadow: "5px",
                           transform: "scale(1.05)", // Scale the button up by 10% on hover
-                          // transition: 'ease-in-out'
                         },
                       }}
                       onClick={() => handleDelete(row)}>
@@ -256,6 +266,30 @@ const TableCreater = ({ companyId, data, type }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={!!deleteRow}
+        onClose={() => setDeleteRow(null)}
+        aria-labelledby="responsive-dialog-title">
+        <DialogTitle id="responsive-dialog-title">
+          {"Confirm Deletion"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this{" "}
+            {type === "products" ? "product" : "customer"}? This action cannot
+            be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={() => setDeleteRow(null)}>
+            Cancel
+          </Button>
+          <Button onClick={deleteRowConfirmed} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };
