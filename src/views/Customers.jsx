@@ -5,6 +5,7 @@ import AddItem from "../components/AddItem";
 import { useSelector } from "react-redux";
 import CustomerForm from "../components/CustomerForm";
 import { tableActions } from "../config/Functions";
+import Loader from "../components/Loader";
 
 const Customers = () => {
   const companyId = useSelector((state) => state.company.data.id);
@@ -16,7 +17,7 @@ const Customers = () => {
     tableActions.fetchCustomers(companyId)
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (isError) return <div>Error fetching data</div>;
 
   return (

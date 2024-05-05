@@ -5,6 +5,7 @@ import TableCreater from "../components/TableCreater";
 import AddItem from "../components/AddItem";
 import axios from "../config/index";
 import { useSelector } from "react-redux";
+import Loader from "../components/Loader";
 
 const fetchProducts = async (companyId) => {
   try {
@@ -32,7 +33,7 @@ const ProductCatalogue = () => {
     isError,
   } = useQuery(["api/products", companyId], () =>  fetchProducts(companyId));
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (isError) return <div>Error fetching data</div>;
 
 

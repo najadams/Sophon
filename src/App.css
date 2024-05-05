@@ -4,9 +4,10 @@
   display: block;
   transition: width 0.5s ease;
   height: 100vh;
-  background-color: var(--sidebar-color);
-  color: whitesmoke;
-  /* color: white; */
+  /* background-color: var(--sidebar-color); */
+  background: #262626;
+  color:  #00eaff;
+  
 }
 
 .expanded {
@@ -52,7 +53,8 @@ nav .content {
 .sidebar .text {
   font-size: 18px;
   font-weight: 500;
-  color: var(--text-color);
+  /* color: var(--text-color); */
+  color: #00eaff;
   transition: var(--trans-05);
   white-space: nowrap;
   opacity: 1;
@@ -88,7 +90,8 @@ nav .content {
 
 .sidebar li .icon,
 .sidebar li .text {
-  color: var(--text-color);
+  /* color: var(--text-color); */
+  color: #00eaff;
   transition: var(--trans-04);
 }
 .sidebar li a {

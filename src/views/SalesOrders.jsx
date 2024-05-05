@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { tableActions } from "../config/Functions";
 import CollapsibleTable from "../components/CollapsibleTable";
 import axios from "../config";
+import Loader from "../components/Loader";
 
 const SalesOrders = () => {
   const companyId = useSelector((state) => state.company.data.id);
@@ -48,6 +49,8 @@ const SalesOrders = () => {
   } = useQuery(["receipts", companyId], fetchReceipts, {
     refetchOnWindowFocus: true,
   });
+
+  if(isLoading) return <Loader />
 
   return (
     <div className="page">
