@@ -45,7 +45,6 @@ const CustomerForm = ({ data, editMutation }) => {
           setSubmitting(true);
           try {
             let error;
-            let customer;
             if (data) {
               error = await tableActions.updateCustomer(values);
             } else {
@@ -56,8 +55,7 @@ const CustomerForm = ({ data, editMutation }) => {
               if (typeof result === "string") {
                 error = result;
               } else {
-                customer = result;
-                dispatch(ActionCreators.addCustomer(customer));
+                dispatch(ActionCreators.addCustomer());
                 setDone(true);
               }
             }

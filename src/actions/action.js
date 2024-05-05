@@ -34,9 +34,14 @@ export const initialStates = {
     error: null,
   },
   productState: {
-    products: [],
-    isLoading: false, // Loading state for products
+    numProducts: 0,
+    isLoading: true, // Loading state for products
     error: null, // Error state for products
+  },
+  customerState: {
+    numCustomers: 0,
+    isLoading: false, // Loading state for users
+    error: null, // Error state for users
   },
   cartState: {
     cart: [],
@@ -47,11 +52,6 @@ export const initialStates = {
   userState: {
     users: [],
     currentUser: null, // Current logged in user
-    isLoading: false, // Loading state for users
-    error: null, // Error state for users
-  },
-  customerState: {
-    customers: [],
     isLoading: false, // Loading state for users
     error: null, // Error state for users
   },
@@ -101,21 +101,17 @@ export const ActionCreators = {
     payload: error,
   }),
 
-  addProduct: (product) => ({
+  addProduct: () => ({
     type: ActionTypes.ADD_PRODUCT,
-    payload: product,
   }),
-  removeProduct: (productId) => ({
+  removeProduct: () => ({
     type: ActionTypes.REMOVE_PRODUCT,
-    payload: productId,
   }),
-  addCustomer: (customer) => ({
+  addCustomer: () => ({
     type: ActionTypes.ADD_CUSTOMER,
-    payload: customer,
   }),
-  removeCustomer: (customerId) => ({
+  removeCustomer: () => ({
     type: ActionTypes.REMOVE_CUSTOMER,
-    payload: customerId,
   }),
   addToCart: (item) => ({
     type: ActionTypes.ADD_TO_CART,

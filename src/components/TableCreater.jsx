@@ -17,6 +17,8 @@ import { useMediaQuery } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useQuery } from "react-query";
 import SearchField from "./SearchField";
+import { useDispatch } from "react-redux";
+import { ActionCreators } from "../actions/action";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,6 +46,7 @@ const TableCreater = ({ companyId, data, type }) => {
   const [searchTerm, setSearchTerm] = useState(""); // State to hold search term
   const isSmallScreen = useMediaQuery("(max-width:1120px)");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
+  const dispatch = useDispatch()
 
   const fetchData = useCallback(async () => {
     try {
@@ -57,8 +60,10 @@ const TableCreater = ({ companyId, data, type }) => {
           fetchedData = await tableActions.fetchProducts(companyId);
         }
       }
-      setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
-      setData(fetchedData);
+      if (fetchedData && fetchedData.length > 0) {
+        setHeaders(Object.keys(fetchedData[0]).filter((key) => key !== "id"));
+        setData(fetchedData);
+      } 
     } catch (error) {
       console.error("Failed to fetch data:", error);
     }
@@ -104,6 +109,7 @@ const TableCreater = ({ companyId, data, type }) => {
       onSuccess: () => {
         queryClient.invalidateQueries(["api/products"]);
         fetchData();
+        dispatch(ActionCreators.removeProduct())
       },
       onError: (error) => {
         console.error("Failed to delete product:", error);
@@ -117,6 +123,7 @@ const TableCreater = ({ companyId, data, type }) => {
       onSuccess: () => {
         queryClient.invalidateQueries(["api/customers", companyId]);
         fetchData();
+        dispatch(ActionCreators.removeCustomer())
       },
       onError: (error) => {
         console.error("Failed to delete customer:", error);

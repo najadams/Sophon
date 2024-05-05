@@ -57,6 +57,7 @@ const ProductForm = ({ data , editMutation }) => {
               } else {
                 product = result;
                 dispatch(ActionCreators.fetchInventorySuccess(product));
+                dispatch(ActionCreators.addProduct())
                 setDone(true);
               }
             }

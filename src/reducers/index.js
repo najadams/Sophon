@@ -32,14 +32,12 @@ const productsReducer = (state = initialStates.productState, action) => {
     case ActionTypes.ADD_PRODUCT:
       return {
         ...state,
-        products: [...state.products, action.payload],
+        numProducts: state.numProducts + 1,
       };
     case ActionTypes.REMOVE_PRODUCT:
       return {
         ...state,
-        products: state.products.filter(
-          (product) => product.id !== action.payload
-        ),
+       numProducts : state.numProducts  - 1
       };
     default:
       return state;
@@ -73,14 +71,12 @@ const customersReducer = (state = initialStates.customerState, action) => {
     case ActionTypes.ADD_CUSTOMER:
       return {
         ...state,
-        customers: [...state.customers, action.payload],
+        numCustomers: state.numCustomers + 1,
       };
     case ActionTypes.REMOVE_CUSTOMER:
       return {
         ...state,
-        customers: state.customers.filter(
-          (customer) => customer.id !== action.payload
-        ),
+        numCustomers: state.numCustomers - 1,
       };
     default:
       return state;
