@@ -159,8 +159,8 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                               const selectedProduct = Products.find(
                                 (p) => p.name === product.name
                               );
-                              if (value > selectedProduct?.onHand) {
-                                return "Quantity cannot exceed available stock";
+                              if (value > selectedProduct?.onhand) {
+                                return `Quantity cannot exceed available stock (${selectedProduct?.onHand})`;
                               }
                             }}
                             onChange={(event) => {
@@ -179,9 +179,20 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                                 newTotalPrice
                               );
                             }}
+                            onBlur={(event) => {
+                              const value = parseInt(event.target.value);
+                              const selectedProduct = Products.find(
+                                (p) => p.name === product.name
+                              );
+                              if (value > selectedProduct?.onhand) {
+                                alert(
+                                  `Quantity cannot exceed available stock (${selectedProduct?.onhand})`
+                                );
+                              }
+                            }}
                           />
                         </div>
-                        <div style={{ display: "flex", flex: 1, gap: 10, }}>
+                        <div style={{ display: "flex", flex: 1, gap: 10 }}>
                           <Field name={`products.${index}.price`}>
                             {({ field }) => (
                               <Input
@@ -227,7 +238,6 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                     type="button"
                     onClick={() => {
                       push({ name: "", quantity: '', totalPrice: 0, price: 0 });
-                      console.log("first");
                     }}
                     disabled={
                       values.products.length > 0 &&
