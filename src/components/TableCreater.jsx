@@ -248,14 +248,15 @@ const TableCreater = ({ companyId, data, type }) => {
                   <TableCell align="right">
                     <Button
                       variant="contained"
-                      sx={{
-                        bgcolor: (theme) => theme.mycolors.secondary.main,
-                        "&:hover": {
-                          bgcolor: (theme) => theme.mycolors.secondary.main, // Keep the same color on hover
-                          boxShadow: "5px",
-                          transform: "scale(1.05)", // Scale the button up by 10% on hover
-                        },
-                      }}
+                      color="error"
+                      // sx={{
+                      //   bgcolor: (theme) => theme.mycolors.secondary.main,
+                      //   "&:hover": {
+                      //     bgcolor: (theme) => theme.mycolors.secondary.main, // Keep the same color on hover
+                      //     boxShadow: "5px",
+                      //     transform: "scale(1.05)", // Scale the button up by 10% on hover
+                      //   },
+                      // }}
                       onClick={() => handleDelete(row)}>
                       Delete
                     </Button>

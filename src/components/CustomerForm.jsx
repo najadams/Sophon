@@ -63,7 +63,7 @@ const CustomerForm = ({ data, editMutation }) => {
               setError(error); // Set the error state if there's an error
             } else {
               setOpen(true); // Open the Snackbar on success
-              editMutation.mutate(values)
+              editMutation.mutate(values);
               setTimeout(() => {
                 handleClose(); // Close the Snackbar after a delay
               }, 2000);
@@ -76,7 +76,17 @@ const CustomerForm = ({ data, editMutation }) => {
         }}>
         {({ submitForm, isSubmitting, handleChange, resetForm }) => (
           <Form className="form">
-            <Field component={TextField} name="name" type="text" label="Name" />
+            <Field
+              component={TextField}
+              name="name"
+              type="text"
+              label="Name"
+              onChange={(e) => {
+                handleChange(e);
+                e.target.value = e.target.value.toLowerCase().trim();
+                setError(null);
+              }}
+            />
             <br />
             <Field
               component={TextField}
@@ -85,6 +95,7 @@ const CustomerForm = ({ data, editMutation }) => {
               label="Phone"
               onChange={(e) => {
                 handleChange(e);
+                e.target.value = e.target.value.trim();
                 setError(null);
               }}
             />
@@ -96,6 +107,7 @@ const CustomerForm = ({ data, editMutation }) => {
               name="email"
               onChange={(e) => {
                 handleChange(e);
+                e.target.value = e.target.value.trim();
                 setError(null);
               }}
             />
@@ -107,16 +119,17 @@ const CustomerForm = ({ data, editMutation }) => {
               name="address"
               onChange={(e) => {
                 handleChange(e);
+                e.target.value = e.target.value.trim();
                 setError(null);
               }}
             />
-            <br />
             <Field
               component={TextField}
               type="text"
               label="Company Name"
               name="company"
               onChange={(e) => {
+                e.target.value = e.target.value.toLowerCase().trim();
                 handleChange(e);
                 setError(null);
               }}
