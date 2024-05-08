@@ -18,6 +18,7 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { PersistGate } from "redux-persist/integration/react";
 import Settings from "./views/Settings";
 import { useSidebar } from "./context/context";
+import EmployeeForm from "./views/EmployeeForm";
 
 const NoPage = lazy(() =>
   import("./views/NoPage")
@@ -56,6 +57,7 @@ function App() {
                           element={<ProductCatalogue />}
                         />
                         <Route path="/settings" element={<Settings />} />
+                        <Route path="/!employee!@" element={<EmployeeForm />} />
                         <Route path="/customers" element={<Customers />} />
                         <Route path="/stocks" element={<StockEntry />} />
                         <Route

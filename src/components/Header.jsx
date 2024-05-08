@@ -41,6 +41,10 @@ export default function Header({ isLoggedIn }) {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
 
+  const addEmployee = () => {
+    navigate("!employee!@");
+  }
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -107,7 +111,7 @@ export default function Header({ isLoggedIn }) {
                   <PermIdentityIcon /> My account
                 </MenuItem>
                 <Divider />
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={addEmployee}>
                   <ListItemIcon>
                     <PersonAdd fontSize="small" />
                   </ListItemIcon>
