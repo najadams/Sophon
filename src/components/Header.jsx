@@ -42,6 +42,7 @@ export default function Header({ isLoggedIn }) {
   };
 
   const addEmployee = () => {
+    setAnchorEl(null);
     navigate("!employee!@");
   }
 

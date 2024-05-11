@@ -60,12 +60,12 @@ const CustomerForm = ({ data, editMutation }) => {
               }
             }
             if (error) {
-              setError(error); // Set the error state if there's an error
+              setError(error);
             } else {
-              setOpen(true); // Open the Snackbar on success
+              setOpen(true);
               editMutation.mutate(values);
               setTimeout(() => {
-                handleClose(); // Close the Snackbar after a delay
+                handleClose();
               }, 2000);
             }
           } catch (err) {
@@ -81,10 +81,11 @@ const CustomerForm = ({ data, editMutation }) => {
               name="name"
               type="text"
               label="Name"
-              onChange={(e) => {
-                handleChange(e);
-                e.target.value = e.target.value.toLowerCase().trim();
-                setError(null);
+              onBlur={(e) => {
+                const trimmedValue = e.target.value.trim(); // Trim leading and trailing whitespace
+                const lowercaseValue = trimmedValue.toLowerCase(); // Convert to lowercase
+                e.target.value = lowercaseValue; // Update the input value
+                handleChange(e); // Proceed with Formik's handleChange
               }}
             />
             <br />
@@ -93,11 +94,6 @@ const CustomerForm = ({ data, editMutation }) => {
               name="phone"
               type="number"
               label="Phone"
-              onChange={(e) => {
-                handleChange(e);
-                e.target.value = e.target.value.trim();
-                setError(null);
-              }}
             />
             <br />
             <Field
@@ -105,11 +101,6 @@ const CustomerForm = ({ data, editMutation }) => {
               type="email"
               label="Email"
               name="email"
-              onChange={(e) => {
-                handleChange(e);
-                e.target.value = e.target.value.trim();
-                setError(null);
-              }}
             />
             <br />
             <Field
@@ -117,25 +108,19 @@ const CustomerForm = ({ data, editMutation }) => {
               type="text"
               label="Address"
               name="address"
-              onChange={(e) => {
-                handleChange(e);
-                e.target.value = e.target.value.trim();
-                setError(null);
-              }}
             />
             <Field
               component={TextField}
               type="text"
               label="Company Name"
               name="company"
-              onChange={(e) => {
-                e.target.value = e.target.value.toLowerCase().trim();
-                handleChange(e);
-                setError(null);
+              onBlur={(e) => {
+                const trimmedValue = e.target.value.trim(); // Trim leading and trailing whitespace
+                const lowercaseValue = trimmedValue.toLowerCase(); // Convert to lowercase
+                e.target.value = lowercaseValue; // Update the input value
+                handleChange(e); // Proceed with Formik's handleChange
               }}
             />
-            <br />
-            {isSubmitting && <LinearProgress />}
             <br />
             {isSubmitting && <LinearProgress />}
             <br />

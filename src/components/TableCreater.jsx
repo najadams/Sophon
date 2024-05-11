@@ -82,7 +82,6 @@ const TableCreater = ({ companyId, data, type }) => {
       deleteCustomerMutation.mutate(deleteRow.id);
     }
     setDeleteRow(null); // Reset delete row state after deletion
-    console.log("Delete", deleteRow.name);
   };
 
   const handleDelete = (row) => {
@@ -199,7 +198,7 @@ const TableCreater = ({ companyId, data, type }) => {
         component={Paper}
         style={{
           overflowX: isMobile && "hidden",
-          maxHeight: isSmallScreen ? 400 : "auto", // Set max height for small screens
+          maxHeight: isSmallScreen ? '75vh' : "auto", // Set max height for small screens
           overflowY: isSmallScreen ? "auto" : "hidden", // Enable vertical scroll for small screens
         }}>
         <SearchField onSearch={setSearchTerm} /> {/* Search field */}
