@@ -51,9 +51,10 @@ const WorkerForm = () => {
             },
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
+          onSubmit={(values, { resetForm }) => {
             alert(JSON.stringify(values, null, 2));
             setOpen(true);
+            resetForm();
           }}>
           {({ values, setFieldValue, handleChange, errors }) => (
             <Form>
@@ -130,60 +131,85 @@ const WorkerForm = () => {
                   control={
                     <Switch
                       checked={values.privileges.makeSalesOnly}
-                      onChange={() =>
+                      onChange={() => {
                         setFieldValue(
                           "privileges.makeSalesOnly",
                           !values.privileges.makeSalesOnly
-                        )
-                      }
+                        );
+                        if (!values.privileges.makeSalesOnly) {
+                          // Turn off other switches if makeSalesOnly is turned on
+                          setFieldValue("privileges.addInventory", false);
+                          setFieldValue("privileges.editData", false);
+                          setFieldValue("privileges.accessData", false);
+                        }
+                      }}
                     />
                   }
                   label="Only Make Sales"
                 />
+
                 <FormControlLabel
                   control={
                     <Switch
                       checked={values.privileges.accessData}
                       disabled={
-                        values.privileges.addInventory ||
-                        values.privileges.editData
+                        values.privileges.makeSalesOnly ||
+                        (values.privileges.addInventory &&
+                          values.privileges.editData) || values.privileges.editData || values.privileges.addInventory
                       }
-                      onChange={() =>
+                      onChange={() => {
                         setFieldValue(
                           "privileges.accessData",
                           !values.privileges.accessData
                         )
                       }
+                      }
                     />
                   }
                   label="Access To Data"
                 />
+
                 <FormControlLabel
                   control={
                     <Switch
                       checked={values.privileges.addInventory}
                       disabled={values.privileges.makeSalesOnly}
-                      onChange={() =>
+                      onChange={() => {
                         setFieldValue(
                           "privileges.addInventory",
                           !values.privileges.addInventory
-                        )
-                      }
+                        );
+                        // Automatically turn on accessData if addInventory is turned on
+                        if (
+                          !values.privileges.accessData ||
+                          !values.privileges.editData
+                        ) {
+                          setFieldValue("privileges.accessData", true);
+                        }
+                      }}
                     />
                   }
                   label="Add New Data"
                 />
+
                 <FormControlLabel
                   control={
                     <Switch
                       checked={values.privileges.editData}
                       disabled={values.privileges.makeSalesOnly}
-                      onChange={() =>
+                      onChange={() => {
                         setFieldValue(
                           "privileges.editData",
                           !values.privileges.editData
-                        )
-                      }
+                        );
+                        // Automatically turn on accessData if editData is turned on
+                        if (
+                          !values.privileges.accessData &&
+                          !values.privileges.addInventory
+                        ) {
+                          setFieldValue("privileges.accessData", true);
+                        }
+                      }}
                     />
                   }
                   label="Edit Existing Data"
