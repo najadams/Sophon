@@ -53,7 +53,7 @@ const WorkerForm = () => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             alert(JSON.stringify(values, null, 2));
-            setOpen(true)
+            setOpen(true);
           }}>
           {({ values, setFieldValue, handleChange, errors }) => (
             <Form>
@@ -71,6 +71,12 @@ const WorkerForm = () => {
                       fullWidth
                       variant="outlined"
                       margin="normal"
+                      onBlur={(e) => {
+                        const trimmedValue = e.target.value.trim(); // Trim leading and trailing whitespace
+                        const lowercaseValue = trimmedValue.toLowerCase(); // Convert to lowercase
+                        e.target.value = lowercaseValue; // Update the input value
+                        handleChange(e); // Proceed with Formik's handleChange
+                      }}
                     />
                     <ErrorMessage name="name" component="div" />
                   </Grid>
@@ -82,6 +88,12 @@ const WorkerForm = () => {
                       fullWidth
                       variant="outlined"
                       margin="normal"
+                      onBlur={(e) => {
+                        const trimmedValue = e.target.value.trim(); // Trim leading and trailing whitespace
+                        const lowercaseValue = trimmedValue.toLowerCase(); // Convert to lowercase
+                        e.target.value = lowercaseValue; // Update the input value
+                        handleChange(e); // Proceed with Formik's handleChange
+                      }}
                     />
                     <ErrorMessage name="username" component="div" />
                   </Grid>
