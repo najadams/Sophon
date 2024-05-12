@@ -186,3 +186,12 @@ export const tableActions = {
     }
   },
 };
+
+export const capitalizeFirstLetter = (str) => {
+  if (typeof str === "string") {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+  }
+  return str;
+};

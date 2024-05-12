@@ -24,6 +24,7 @@ import { useQuery } from "react-query";
 import SearchField from "./SearchField";
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
+import { capitalizeFirstLetter } from "../config/Functions";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -175,13 +176,6 @@ const TableCreater = ({ companyId, data, type }) => {
       },
     }
   );
-
-  const capitalizeFirstLetter = (str) => {
-    if (typeof str === "string") {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-    return str;
-  };
 
   if (isError) {
     return { error };
