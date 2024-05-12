@@ -133,25 +133,33 @@ export const tableActions = {
   },
   addWorker: async ({
     companyId,
-    firstname,
-    lastname,
+    name,
+    username,
+    contact,
     password,
-    adminstatus,
+    privileges
   }) => {
     try {
-      const product = await axios.post(`/api/product/`, {
+      const response = await axios.post(`/addworker/`, {
         companyId,
-        adminstatus,
-        firstname,
-        lastname,
+        name,
+        username,
+        contact,
         password,
+        privileges
       });
-      if (product.status === 201) {
-        return product;
+
+      if (response.status === 201) {
+        // Return the data from the response
+        return response.data;
+      } else {
+        // Handle unexpected status codes
+        throw new Error(`Unexpected status code: ${response.status}`);
       }
     } catch (error) {
-      console.log(error);
-      return error.response?.data?.message || "An error occurred";
+      console.error(error);
+      // Throw the error so the calling function can handle it
+      throw error?.message;
     }
   },
 

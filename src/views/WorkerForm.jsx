@@ -14,12 +14,13 @@ import {
 import { TextField } from "formik-material-ui";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
+import { tableActions } from "../config/Functions";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Employee Name is required"),
   username: Yup.string().required("Username is required"),
   contact: Yup.string().required("Contact is required"),
-  email: Yup.string().email("Invalid Email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
   privileges: Yup.object().shape({
     makeSalesOnly: Yup.boolean(),
     addInventory: Yup.boolean(),
@@ -31,6 +32,7 @@ const validationSchema = Yup.object().shape({
 const WorkerForm = () => {
   const [open, setOpen] = useState(false)
   const companyId = useSelector(state => state.company.data.id)
+  const [error, setError] = useState(null)
   return (
     <div className="page">
       <Container maxWidth="lg">
@@ -42,7 +44,7 @@ const WorkerForm = () => {
             name: "",
             username: "",
             contact: "",
-            email: "",
+            password: "",
             privileges: {
               makeSalesOnly: false,
               addInventory: false,
@@ -51,10 +53,19 @@ const WorkerForm = () => {
             },
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { resetForm }) => {
-            alert(JSON.stringify(values, null, 2));
-            setOpen(true);
-            resetForm();
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
+            setSubmitting(true);
+            try {
+              await tableActions.addWorker({...values, companyId});
+              if (error) {
+                setError(error)
+              }
+              console.log(JSON.stringify(values, null, 2));
+              setOpen(true);
+              resetForm();
+            } catch (error) {
+              console.log(error);
+            }
           }}>
           {({ values, setFieldValue, handleChange, errors }) => (
             <Form>
@@ -112,13 +123,14 @@ const WorkerForm = () => {
                   <Grid item xs={12} sm={6}>
                     <Field
                       component={TextField}
-                      name="email"
-                      label="Email"
+                      type="password"
+                      name="password"
+                      label="Password"
                       fullWidth
                       variant="outlined"
                       margin="normal"
                     />
-                    <ErrorMessage name="email" component="div" />
+                    <ErrorMessage name="password" component="div" />
                   </Grid>
                 </Grid>
               </Paper>
@@ -155,15 +167,16 @@ const WorkerForm = () => {
                       disabled={
                         values.privileges.makeSalesOnly ||
                         (values.privileges.addInventory &&
-                          values.privileges.editData) || values.privileges.editData || values.privileges.addInventory
+                          values.privileges.editData) ||
+                        values.privileges.editData ||
+                        values.privileges.addInventory
                       }
                       onChange={() => {
                         setFieldValue(
                           "privileges.accessData",
                           !values.privileges.accessData
-                        )
-                      }
-                      }
+                        );
+                      }}
                     />
                   }
                   label="Access To Data"

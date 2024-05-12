@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AddItem from "../components/AddItem";
 import SalesOrderForms from "../components/SaleOrderForms";
-import SearchField from "../components/SearchField";
 import { useSelector } from "react-redux";
 import { useQuery } from "react-query";
 import { tableActions } from "../config/Functions";
@@ -58,7 +57,6 @@ const SalesOrders = () => {
         <div>
           <h1>Sales Order</h1>
         </div>
-        <SearchField />
         <AddItem>
           <SalesOrderForms
             customerOptions={customerOptions}
