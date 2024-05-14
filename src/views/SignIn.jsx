@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
+import { CircularProgress } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -185,7 +186,7 @@ const SignIn = ({ isLoggedIn }) => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                   disabled={loading}>
-                  {loading ? "Loading..." : "Sign In"}
+                  {loading ? <CircularProgress size={24} /> : "Sign In"}
                 </Button>
                 <Grid container>
                   <Grid item xs>

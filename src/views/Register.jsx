@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "../config/";
 import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -169,7 +170,7 @@ const Register = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                   disabled={loading}>
-                  {loading ? "Loading..." : "Sign Up"}
+                  {loading ? <CircularProgress size={24} /> : "Sign Up"}
                 </Button>
                 <Grid container>
                   <Grid item>

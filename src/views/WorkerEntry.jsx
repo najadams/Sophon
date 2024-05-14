@@ -13,6 +13,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "../config/";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { ActionCreators } from "../actions/action";
+import { CircularProgress } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -54,6 +56,7 @@ const WorkerEntry = () => {
         throw new Error("Something went wrong");
       } 
 
+      dispatch(ActionCreators.setCurrentUser(response.data))
       navigate("/dashboard");
       return response.data;
     } catch (error) {
@@ -143,7 +146,7 @@ const WorkerEntry = () => {
                   label="Name or UserName"
                   name="name"
                   onChange={() => setError(null)}
-                  //   autoComplete="email"
+                    autoComplete="name"
                   autoFocus
                 />
                 <TextField
@@ -164,7 +167,11 @@ const WorkerEntry = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                   disabled={loading}>
-                  {loading ? "Loading..." : "Sign Into Your Account"}
+                  {loading ? (
+                    <CircularProgress size={24} />
+                  ) : (
+                    "Sign Into Your Account"
+                  )}
                 </Button>
                 {error && (
                   <Typography variant="body2" color="red" align="center">
