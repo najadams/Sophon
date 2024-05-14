@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -14,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "../config/";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Copyright(props) {
   return (
@@ -37,20 +36,25 @@ const WorkerEntry = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+    const dispatch = useDispatch();
+    const companyId = useSelector(state => state.company.data.id)
   // Register function
-  const registration = async (companyname, email, password) => {
+  const accountSignin = async (companyId, name, password) => {
     try {
-      const response = await axios.post(`/register`, {
-        companyname,
-        email,
+      const response = await axios.post(`/account`, {
+        companyId,
+        name,
         password,
       });
 
-      if (response.status !== 200) {
-        throw new Error("Something went wrong. Try again later");
-      }
+      if (response.status === 400) {
+        throw new Error("Account doesn't exist");
+      } 
+      else if (response.status !== 200) {
+        throw new Error("Something went wrong");
+      } 
 
-      navigate("/login");
+      navigate("/dashboard");
       return response.data;
     } catch (error) {
       console.error(error.message);
@@ -67,17 +71,16 @@ const WorkerEntry = () => {
     event.preventDefault();
     setError(null);
     const data = new FormData(event.currentTarget);
-    const companyname = data.get("companyname");
-    const email = data.get("email");
+    const name = data.get("name");
     const password = data.get("password");
-    if (!companyname || !email || !password) {
+    if (!name ||  !password) {
       setError("fill all fields");
       setLoading(false);
       return;
     }
-    await registration(
-      companyname.toLowerCase().trim(),
-      email.trim(),
+    await accountSignin(
+      companyId,
+      name.toLowerCase().trim(),
       password
     );
     setLoading(false);
@@ -161,7 +164,7 @@ const WorkerEntry = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                   disabled={loading}>
-                  {loading ? "Loading..." : "Sign Up"}
+                  {loading ? "Loading..." : "Sign Into Your Account"}
                 </Button>
                 {error && (
                   <Typography variant="body2" color="red" align="center">

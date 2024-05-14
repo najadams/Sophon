@@ -45,11 +45,11 @@ const SignIn = ({ isLoggedIn }) => {
   const navigate = useNavigate()
 
   
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/dashboard");
-    }
-  }, [isLoggedIn, navigate]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigate("/account");
+  //   }
+  // }, [isLoggedIn, navigate]);
   
   // login function
  const login = async (companyname, password) => {
@@ -73,7 +73,7 @@ const SignIn = ({ isLoggedIn }) => {
       dispatch(ActionCreators.setAuthToken(token));
      window.localStorage.setItem("access_token", token);
      dispatch(ActionCreators.loginCompany())
-     navigate("/dashboard");
+     navigate("/account");
      
      // Dispatch fetchUserSuccess after setting the auth token and navigating
      dispatch(ActionCreators.fetchCompanySuccess(companydata))
