@@ -11,7 +11,7 @@ const SearchField = ({ onSearch }) => {
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      onSearch(searchTerm);
+      onSearch(searchTerm.trim());
     }
   };
 
