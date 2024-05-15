@@ -1,16 +1,6 @@
 import { lazy, Suspense } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {
-  Dashboard,
-  ProductCatalogue,
-  StockEntry,
-  SalesOrders,
-  InventoryReports,
-  Customers,
-  SignIn,
-  Register,
-} from "./views";
 import { Header, Sidebar } from "./components";
 import store, {persistor} from "./store/store";
 import { Provider, useSelector } from "react-redux";
@@ -19,6 +9,15 @@ import { PersistGate } from "redux-persist/integration/react";
 import Settings from "./views/Settings";
 import { useSidebar } from "./context/context";
 import WorkerForm from "./views/WorkerForm";
+import WorkerEntry from "./views/WorkerEntry";
+const SignIn = lazy(() => import("./views/SignIn"));
+const Register = lazy(() => import("./views/Register"));
+const Dashboard = lazy(() => import("./views/Dashboard"));
+const Customers = lazy(() => import("./views/Customers"));
+const ProductCatalogue = lazy(() => import("./views/ProductCatalogue"));
+const StockEntry = lazy(() => import("./views/StockEntry"));
+const SalesOrders = lazy(() => import("./views/SalesOrders"));
+const InventoryReports = lazy(() => import("./views/InventoryReports"));
 
 const NoPage = lazy(() =>
   import("./views/NoPage")
@@ -32,30 +31,38 @@ function App() {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
   const isLoggedIn = useSelector((state) => state.company.isLoggedIn);
+  const hasAccount = true;
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <div style={{ height: "100vh", display: "flex" }}>
-            <Router >
+            <Router>
               <Sidebar
                 isExpanded={isSidebarExpanded}
                 toggleSidebar={toggleSidebar}
               />
               <div style={{ flex: 1 }}>
-                <Header isLoggedIn={isLoggedIn} />
+                {isLoggedIn && hasAccount && <Header isLoggedIn={isLoggedIn} />}
                 <Suspense fallback={<div>Loading...</div>}>
                   <Routes>
-                    <Route  path="/" element={<SignIn isLoggedIn={isLoggedIn} />} />
-                    <Route  path="/login" element={<SignIn isLoggedIn={isLoggedIn} />} />
+                    <Route
+                      path="/"
+                      element={<SignIn isLoggedIn={isLoggedIn} />}
+                    />
+                    <Route
+                      path="/login"
+                      element={<SignIn isLoggedIn={isLoggedIn} />}
+                    />
                     <Route path="/register" element={<Register />} />
-                    {isLoggedIn ? (
+                    {isLoggedIn && hasAccount ? (
                       <>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route
                           path="/products"
                           element={<ProductCatalogue />}
                         />
+                        <Route path="/account" element={<WorkerEntry />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/!employee!@" element={<WorkerForm />} />
                         <Route path="/customers" element={<Customers />} />
@@ -67,7 +74,7 @@ function App() {
                         <Route path="/sales" element={<SalesOrders />} />
                       </>
                     ) : (
-                        <Route path="*" element={<SignIn />} />
+                      <Route path="*" element={<SignIn />} />
                     )}
                     {/* <Route element={<PrivateRoutes />} /> */}
                     <Route path="*" element={<NoPage />} />
