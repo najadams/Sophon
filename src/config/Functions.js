@@ -185,6 +185,17 @@ export const tableActions = {
       return error.response?.data?.message || "An error occurred";
     }
   },
+
+  fetchWorkers: async (companyId) => {
+    try {
+      const response = await axios.get(`api/workers/${companyId}`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      throw new Error("Failed to Fetch Workers");
+    }
+  }
 };
 
 export const capitalizeFirstLetter = (str) => {
