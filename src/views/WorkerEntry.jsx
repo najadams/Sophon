@@ -44,7 +44,7 @@ const WorkerEntry = () => {
   // Register function
   const accountSignin = async (companyId, name, password) => {
     try {
-      const response = await axios.post(`/account`, {
+      const response = await axios.post(`/api/account`, {
         companyId,
         name,
         password,
