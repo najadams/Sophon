@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const SearchField = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedTerm, setDebouncedTerm] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTerm(searchTerm);
+    }, 2000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (debouncedTerm) {
+      onSearch(debouncedTerm);
+    }
+  }, [debouncedTerm, onSearch]);
 
   const handleSearch = (event) => {
     event.preventDefault();
-    onSearch(searchTerm);
+    onSearch(searchTerm.trim());
   };
 
   const handleKeyDown = (event) => {
@@ -25,7 +42,7 @@ const SearchField = ({ onSearch }) => {
         borderRadius: 20,
         padding: 10,
         boxShadow: 1,
-        maxWidth : 200
+        maxWidth: 200,
       }}>
       <i
         className="bx bx-search-alt icon"
