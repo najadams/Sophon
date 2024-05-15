@@ -19,7 +19,7 @@ const EditButton = ({ children   }) => {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button variant="text" fullWidth onClick={handleClickOpen}>
         Edit
       </Button>
       <DialogContext.Provider value={handleClose}>

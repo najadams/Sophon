@@ -213,7 +213,7 @@ const TableCreater = ({ companyId, data, type }) => {
         component={Paper}
         style={{
           overflowX: isMobile && "hidden",
-          maxHeight: isSmallScreen ? "70vh" : "80vh", // Set max height for small screens
+          maxHeight: isSmallScreen ? "70vh" : "75vh", // Set max height for small screens
           overflowY: isSmallScreen ? "auto" : "auto", // Enable vertical scroll for small screens
         }}>
         <SearchField onSearch={setSearchTerm} /> {/* Search field */}

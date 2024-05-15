@@ -6,7 +6,6 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
 
   return (
     <nav className={`sidebar ${isExpanded ? "expanded" : "collapsed"}`}>
-
       {/* CODE FOR THE CHEVRON */}
 
       <div className="chevron" onClick={toggleSidebar}>
@@ -20,7 +19,11 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
 
       <div className="menu-bar">
         <div className="menu">
-          <ul className="menu-links" onClick={() => {isMobile && toggleSidebar()}}>
+          <ul
+            className="menu-links"
+            onClick={() => {
+              isMobile && toggleSidebar();
+            }}>
             <li className="nav-link">
               <NavLink to={"/dashboard"} activeclassname="active">
                 <i className="bx bxs-home icon"></i>
@@ -33,10 +36,10 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
                 <i className="bx bx-receipt icon"></i>
                 <span className="text nav-text">Make Sales</span>
               </NavLink>
-            </li>  
+            </li>
             <li className="nav-link">
               <NavLink to={"/customers"} activeclassname="active">
-                <i className="bx bxs-user-plus icon"></i>
+                <i class="bx bx-user-plus icon"></i>
                 <span className="text nav-text">Customers</span>
               </NavLink>
             </li>
@@ -44,6 +47,18 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
               <NavLink to={"/products"} activeclassname="active">
                 <i className="bx bx-cart-alt icon"></i>
                 <span className="text nav-text">Stock</span>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to={"/vendors"} activeclassname="active">
+                <i class="bx bxs-truck icon"></i>
+                <span className="text nav-text">Vendors</span>
+              </NavLink>
+            </li>
+            <li className="nav-link">
+              <NavLink to={"/transactions"} activeclassname="active">
+                <i class="bx bx-money-withdraw icon"></i>
+                <span className="text nav-text">Transactions</span>
               </NavLink>
             </li>
           </ul>

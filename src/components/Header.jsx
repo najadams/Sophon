@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,7 +15,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActionCreators } from "../actions/action";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
@@ -26,7 +26,7 @@ export default function Header({ isLoggedIn }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const { isSidebarExpanded, setIsSidebarExpanded } = useSidebar();
-
+  const user = useSelector((state) => state.workers.currentUser);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,13 +44,21 @@ export default function Header({ isLoggedIn }) {
   const addEmployee = () => {
     setAnchorEl(null);
     navigate("!employee!@");
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
+
+  useEffect(() => {
+    return () => {
+      // Reset anchorEl when component unmounts
+      setAnchorEl(null);
+      console.log(user)
+    };
+  }, [user]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -70,7 +78,7 @@ export default function Header({ isLoggedIn }) {
               aria-label="menu"
               onClick={() => toggleSidebar()}
               sx={{ mr: 2 }}>
-              <MenuIcon  />
+              <MenuIcon />
             </IconButton>
           )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -96,7 +104,7 @@ export default function Header({ isLoggedIn }) {
                   vertical: "top",
                   horizontal: "right",
                 }}
-                keepMounted
+                // keepMounted
                 transformOrigin={{
                   vertical: "top",
                   horizontal: "right",
@@ -109,7 +117,7 @@ export default function Header({ isLoggedIn }) {
                     display: "flex",
                     gap: 15,
                   }}>
-                  <PermIdentityIcon /> My account
+                  <PermIdentityIcon /> My account {/*({user.name})*/}
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={addEmployee}>
