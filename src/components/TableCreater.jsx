@@ -7,6 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditButton from "./EditButton";
 import ProductForm from "./ProductForm";
 import CustomerForm from "./CustomerForm";
@@ -51,6 +55,9 @@ const TableCreater = ({ companyId, data, type }) => {
   const [Data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // State to hold search term
   const [deleteRow, setDeleteRow] = useState(null); // State to hold row to delete
+  const [selectedRow, setSelectedRow] = useState(null); // State to hold selected row for edit
+  const [anchorEl, setAnchorEl] = useState(null); // State for managing menu anchor
+  // const setEditOpen = false // State for managing edit dialog
   const isSmallScreen = useMediaQuery("(max-width:1120px)");
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down("mymd"));
   const dispatch = useDispatch();
@@ -87,6 +94,20 @@ const TableCreater = ({ companyId, data, type }) => {
 
   const handleDelete = (row) => {
     setDeleteRow(row);
+  };
+
+  const handleMenuClick = (event, row) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedRow(row);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEditOpen = () => {
+    // setEditOpen = true;
+    handleMenuClose();
   };
 
   const {
@@ -192,8 +213,8 @@ const TableCreater = ({ companyId, data, type }) => {
         component={Paper}
         style={{
           overflowX: isMobile && "hidden",
-          maxHeight: isSmallScreen ? '75vh' : "auto", // Set max height for small screens
-          overflowY: isSmallScreen ? "auto" : "hidden", // Enable vertical scroll for small screens
+          maxHeight: isSmallScreen ? "70vh" : "80vh", // Set max height for small screens
+          overflowY: isSmallScreen ? "auto" : "auto", // Enable vertical scroll for small screens
         }}>
         <SearchField onSearch={setSearchTerm} /> {/* Search field */}
         <Table
@@ -209,50 +230,25 @@ const TableCreater = ({ companyId, data, type }) => {
                   {header.toUpperCase()}
                 </StyledTableCell>
               ))}
-              <StyledTableCell align="center">Edit</StyledTableCell>
-              <StyledTableCell align="center">Delete</StyledTableCell>
+              <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody className="table__body">
             {filteredData.map((row) => {
               return (
                 <StyledTableRow key={row.id}>
-                  {/* Exclude ID from rendering */}
                   {Headers.map((header) => (
                     <TableCell align="left" key={header}>
                       {capitalizeFirstLetter(row[header])}
                     </TableCell>
                   ))}
                   <TableCell align="center">
-                    <EditButton values={row}>
-                      {type === "products" ? (
-                        <ProductForm
-                          editMutation={editProductMutation}
-                          data={row}
-                        />
-                      ) : (
-                        <CustomerForm
-                          editMutation={editCustomerMutation}
-                          data={row}
-                        />
-                      )}
-                    </EditButton>
-                  </TableCell>
-                  <TableCell align="right">
-                    <Button
-                      variant="contained"
-                      color="error"
-                      // sx={{
-                      //   bgcolor: (theme) => theme.mycolors.secondary.main,
-                      //   "&:hover": {
-                      //     bgcolor: (theme) => theme.mycolors.secondary.main, // Keep the same color on hover
-                      //     boxShadow: "5px",
-                      //     transform: "scale(1.05)", // Scale the button up by 10% on hover
-                      //   },
-                      // }}
-                      onClick={() => handleDelete(row)}>
-                      Delete
-                    </Button>
+                    <IconButton
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={(event) => handleMenuClick(event, row)}>
+                      <MoreVertIcon />
+                    </IconButton>
                   </TableCell>
                 </StyledTableRow>
               );
@@ -260,26 +256,54 @@ const TableCreater = ({ companyId, data, type }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={!!deleteRow}
-        onClose={() => setDeleteRow(null)}
-        aria-labelledby="responsive-dialog-title">
-        <DialogTitle id="responsive-dialog-title">
-          {"Confirm Deletion"}
+
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}>
+        <MenuItem onClick={handleEditOpen}>
+          <EditButton>
+            {type === "products" ? (
+              <ProductForm
+                editMutation={editProductMutation}
+                data={selectedRow}
+              />
+            ) : (
+              <CustomerForm
+                editMutation={editCustomerMutation}
+                data={selectedRow}
+              />
+            )}
+          </EditButton>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleMenuClose();
+            handleDelete(selectedRow);
+          }}>
+          Delete
+        </MenuItem>
+      </Menu>
+
+      <Dialog open={Boolean(deleteRow)} onClose={() => setDeleteRow(null)}>
+        <DialogTitle>
+          {`Delete ${
+            type === "products" ? "Product" : "Customer"
+          } Confirmation`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete this{" "}
-            {type === "products" ? "product" : "customer"}? This action cannot
-            be undone.
+            {`Are you sure you want to delete this ${
+              type === "products" ? "product" : "customer"
+            }?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={() => setDeleteRow(null)}>
+          <Button onClick={() => setDeleteRow(null)} color="primary">
             Cancel
           </Button>
-          <Button onClick={deleteRowConfirmed} autoFocus>
+          <Button onClick={deleteRowConfirmed} color="primary" autoFocus>
             Delete
           </Button>
         </DialogActions>
