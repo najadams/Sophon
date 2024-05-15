@@ -46,11 +46,11 @@ const SignIn = ({ isLoggedIn }) => {
   const navigate = useNavigate()
 
   
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     navigate("/account");
-  //   }
-  // }, [isLoggedIn, navigate]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/account");
+    }
+  }, [isLoggedIn, navigate]);
   
   // login function
  const login = async (companyname, password) => {

@@ -26,7 +26,7 @@ function Copyright(props) {
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         Sophon
-      </Link>
+      </Link>{" "}
       {new Date().getFullYear()}
     </Typography>
   );
@@ -38,8 +38,9 @@ const WorkerEntry = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-    const dispatch = useDispatch();
-    const companyId = useSelector(state => state.company.data.id)
+  const dispatch = useDispatch();
+  const companyId = useSelector((state) => state.company.data.id);
+
   // Register function
   const accountSignin = async (companyId, name, password) => {
     try {
@@ -51,12 +52,10 @@ const WorkerEntry = () => {
 
       if (response.status === 400) {
         throw new Error("Account doesn't exist");
-      } 
-      else if (response.status !== 200) {
+      } else if (response.status !== 200) {
         throw new Error("Something went wrong");
-      } 
+      }
 
-      dispatch(ActionCreators.setCurrentUser(response.data))
       navigate("/dashboard");
       return response.data;
     } catch (error) {
@@ -66,6 +65,7 @@ const WorkerEntry = () => {
       } else {
         setError(error.message);
       }
+      throw error; // Ensure to rethrow the error to handle it appropriately
     }
   };
 
@@ -76,17 +76,25 @@ const WorkerEntry = () => {
     const data = new FormData(event.currentTarget);
     const name = data.get("name");
     const password = data.get("password");
-    if (!name ||  !password) {
-      setError("fill all fields");
+    if (!name || !password) {
+      setError("Please fill all fields");
       setLoading(false);
       return;
     }
-    await accountSignin(
-      companyId,
-      name.toLowerCase().trim(),
-      password
-    );
-    setLoading(false);
+    try {
+      const user = await accountSignin(
+        companyId,
+        name.toLowerCase().trim(),
+        password
+      );
+      dispatch(ActionCreators.setCurrentUser(user));
+    } catch (error) {
+      console.error("Error while signing in:", error);
+      // Handle error appropriately, e.g., display error message
+      setError("Failed to sign in. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -146,7 +154,7 @@ const WorkerEntry = () => {
                   label="Name or UserName"
                   name="name"
                   onChange={() => setError(null)}
-                    autoComplete="name"
+                  autoComplete="name"
                   autoFocus
                 />
                 <TextField
@@ -167,14 +175,10 @@ const WorkerEntry = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                   disabled={loading}>
-                  {loading ? (
-                    <CircularProgress size={24} />
-                  ) : (
-                    "Sign Into Your Account"
-                  )}
+                  {loading ? <CircularProgress size={24} /> : "Sign In"}
                 </Button>
                 {error && (
-                  <Typography variant="body2" color="red" align="center">
+                  <Typography variant="body2" color="error" align="center">
                     {error}
                   </Typography>
                 )}

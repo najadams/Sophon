@@ -90,7 +90,7 @@ const Settings = () => {
      data: workers,
      isLoading,
      error,
-   } = useQuery(["workers", companyId], () =>
+   } = useQuery(["api/workers", companyId], () =>
      tableActions.fetchWorkers(companyId)
    );
 
