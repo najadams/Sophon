@@ -41,10 +41,10 @@ const WorkerEntry = () => {
   const dispatch = useDispatch();
   const companyId = useSelector((state) => state.company.data.id);
 
-  // Register function
+  // 
   const accountSignin = async (companyId, name, password) => {
     try {
-      const response = await axios.post(`/api/account`, {
+      const response = await axios.post(`/account`, {
         companyId,
         name,
         password,
