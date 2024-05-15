@@ -16,7 +16,7 @@ const breakpoints = {
     md: 960,
     lg: 1280,
     xl: 1920,
-    custom: 2000, // Add your custom breakpoint
+    custom: 2000, 
     mymd: 1120,
   },
 };

@@ -50,8 +50,7 @@ export const initialStates = {
     error: null, // Error state for cart
   },
   userState: {
-    users: [],
-    currentUser: null, // Current logged in user
+    currentUser: {}, // Current logged in user
     isLoading: false, // Loading state for users
     error: null, // Error state for users
   },
