@@ -140,7 +140,7 @@ export const tableActions = {
     privileges
   }) => {
     try {
-      const response = await axios.post(`/addworker/`, {
+      const response = await axios.post(`/api/worker/`, {
         companyId,
         name,
         username,
@@ -157,9 +157,9 @@ export const tableActions = {
         throw new Error(`Unexpected status code: ${response.status}`);
       }
     } catch (error) {
-      console.error(error);
+      console.error(error.response?.data?.message);
       // Throw the error so the calling function can handle it
-      throw error?.message;
+      throw error?.response?.data?.message;
     }
   },
 

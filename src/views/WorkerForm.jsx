@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   Snackbar,
   Switch,
+  SnackbarContent,
 } from "@mui/material";
 import { TextField } from "formik-material-ui";
 import * as Yup from "yup";
@@ -31,8 +32,9 @@ const validationSchema = Yup.object().shape({
 
 const WorkerForm = () => {
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(null); // Manage error state
   const companyId = useSelector((state) => state.companyState.data.id);
-  const [error, setError] = useState(null);
+
   return (
     <div className="page">
       <Container maxWidth="lg">
@@ -55,16 +57,16 @@ const WorkerForm = () => {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
+            setError(null); // Reset error before submission
             try {
               await tableActions.addWorker({ ...values, companyId });
-              if (error) {
-                setError(error);
-              }
-              console.log(JSON.stringify(values, null, 2));
               setOpen(true);
               resetForm();
             } catch (error) {
+              setError("User already exists"); // Set error message
               console.log(error);
+            } finally {
+              setSubmitting(false);
             }
           }}>
           {({ values, setFieldValue, handleChange, errors }) => (
@@ -243,9 +245,31 @@ const WorkerForm = () => {
         open={open}
         autoHideDuration={5000}
         onClose={() => setOpen(false)}
-        message={"Employee successfully Added"}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      />
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+        <SnackbarContent
+          sx={{
+            backgroundColor: "green",
+            textAlign: "center",
+          }}
+          message="Employee successfully added"
+        />
+      </Snackbar>
+      {error && (
+        <Snackbar
+          open={true}
+          autoHideDuration={5000}
+          onClose={() => setError(null)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+          <SnackbarContent
+            sx={{
+              backgroundColor: "red",
+              // textAlign: "center",
+              // width: "100%",
+            }}
+            message={error}
+          />
+        </Snackbar>
+      )}
     </div>
   );
 };
