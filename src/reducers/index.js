@@ -1,31 +1,29 @@
 import { ActionTypes, initialStates } from "../actions/action";
+import { combineReducers } from "redux";
 
 const companyReducer = (state = initialStates.companyState, action) => {
   switch (action.type) {
     case ActionTypes.FETCH_COMPANY_SUCCESS:
       return {
         ...state,
-        data : action.payload
-      }
+        data: action.payload,
+      };
     case ActionTypes.FETCH_COMPANY_FAILURE:
       return {
         ...state,
-        error : action.payload
-      }
+        error: action.payload,
+      };
     case ActionTypes.LOGIN:
       return {
         ...state,
-        isLoggedIn : true
-      }
+        isLoggedIn: true,
+      };
     case ActionTypes.LOGOUT:
-      return {
-        ...state,
-        isLoggedIn : false
-      }
+      return initialStates.companyState;
     default:
-      return state
+      return state;
   }
-}
+};
 
 const productsReducer = (state = initialStates.productState, action) => {
   switch (action.type) {
@@ -47,7 +45,6 @@ const productsReducer = (state = initialStates.productState, action) => {
       return state;
   }
 };
-
 
 const cartReducer = (state = initialStates.cartState, action) => {
   switch (action.type) {
@@ -136,7 +133,7 @@ const usersReducer = (state = initialStates.userState, action) => {
     case ActionTypes.SET_CURRENT_USER:
       return {
         ...state,
-        currentUser: action.payload
+        currentUser: action.payload,
       };
     default:
       return state;
@@ -155,12 +152,40 @@ const receiptsReducer = (state = initialStates.receiptState, action) => {
   }
 };
 
-export {
-  productsReducer,
-  cartReducer,
-  customersReducer,
-  authReducer,
-  usersReducer,
-  receiptsReducer,
-  companyReducer
+const createResettableReducer = (reducer, initialState) => (state, action) => {
+  if (action.type === ActionTypes.LOGOUT) {
+    return initialState;
+  }
+  return reducer(state, action);
 };
+
+const rootReducer = combineReducers({
+  companyState: createResettableReducer(
+    companyReducer,
+    initialStates.companyState
+  ),
+  productState: createResettableReducer(
+    productsReducer,
+    initialStates.productState
+  ),
+  cartState: createResettableReducer(cartReducer, initialStates.cartState),
+  customerState: createResettableReducer(
+    customersReducer,
+    initialStates.customerState
+  ),
+  authState: createResettableReducer(authReducer, initialStates.authState),
+  userState: createResettableReducer(usersReducer, initialStates.userState),
+  receiptState: createResettableReducer(
+    receiptsReducer,
+    initialStates.receiptState
+  ),
+});
+
+const rootReducerWithReset = (state, action) => {
+  if (action.type === ActionTypes.LOGOUT) {
+    state = undefined;
+  }
+  return rootReducer(state, action);
+};
+
+export default rootReducerWithReset;
