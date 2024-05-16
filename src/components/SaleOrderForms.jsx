@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Formik, Field, FieldArray, Form } from "formik";
-import { Button, TextField, Typography, Snackbar } from "@mui/material";
+import { Button, TextField, Typography, Snackbar, CircularProgress } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { Input } from "@mui/material";
 import * as Yup from "yup";
@@ -28,6 +28,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery("(max-width:600px)");
+  const [loading, setLoading] = useState(false); 
 
   return (
     <div>
@@ -270,13 +271,25 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
               <Button
                 variant="contained"
                 color="success"
-                onClick={submitForm}
-                // type="submit"
+                onClick={() => {
+                  setLoading(true); // Set loading state to true
+                  submitForm(); // Trigger form submission
+                }}
+                disabled={loading || isSubmitting} // Disable button when loading or submitting
               >
-                Save
+                {loading ? <CircularProgress /> : "Save"}
               </Button>
 
-              <Button variant="contained" color="info" type="submit">
+              {/* Save & Print button */}
+              <Button
+                variant="contained"
+                color="info"
+                onClick={() => {
+                  setLoading(true); // Set loading state to true
+                  submitForm(); // Trigger form submission
+                }}
+                disabled={loading || isSubmitting} // Disable button when loading or submitting
+              >
                 Save & Print
               </Button>
             </div>
