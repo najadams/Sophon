@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const SalesOrderForms = ({ customerOptions, Products }) => {
-  const workerId = useSelector((state) => state.workers.currentUser);
+  const workerId = useSelector((state) => state.userState.currentUser);
   const companyId = useSelector((state) => state.companyState.data.id);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);

@@ -28,7 +28,6 @@ export default function Header() {
   const { isSidebarExpanded, setIsSidebarExpanded } = useSidebar();
   const user = useSelector((state) => state.userState.currentUser);
 
-  console.log(user)
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
