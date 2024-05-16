@@ -8,7 +8,7 @@ import { tableActions } from "../config/Functions";
 import Loader from "../components/Loader";
 
 const Customers = () => {
-  const companyId = useSelector((state) => state.company.data.id);
+  const companyId = useSelector((state) => state.companyState.data.id);
   const {
     data: customers,
     isLoading,

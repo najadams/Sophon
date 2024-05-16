@@ -1,5 +1,5 @@
 import { DialogContext } from "../context/context";
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Field, Form } from "formik";
 import { TextField } from "formik-material-ui";
 import { Typography, Snackbar } from "@mui/material";
@@ -9,7 +9,6 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useSelector, useDispatch } from "react-redux";
 import { ActionCreators } from "../actions/action";
 import { tableActions } from "../config/Functions";
-
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -23,7 +22,7 @@ const CustomerForm = ({ data, editMutation }) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
-  const companyId = useSelector((state) => state.company.data.id);
+  const companyId = useSelector((state) => state.companyState.data.id);
   const handleClose = useContext(DialogContext);
   const dispatch = useDispatch();
 

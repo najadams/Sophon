@@ -30,9 +30,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const WorkerForm = () => {
-  const [open, setOpen] = useState(false)
-  const companyId = useSelector(state => state.company.data.id)
-  const [error, setError] = useState(null)
+  const [open, setOpen] = useState(false);
+  const companyId = useSelector((state) => state.companyState.data.id);
+  const [error, setError] = useState(null);
   return (
     <div className="page">
       <Container maxWidth="lg">
@@ -56,9 +56,9 @@ const WorkerForm = () => {
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
             try {
-              await tableActions.addWorker({...values, companyId});
+              await tableActions.addWorker({ ...values, companyId });
               if (error) {
-                setError(error)
+                setError(error);
               }
               console.log(JSON.stringify(values, null, 2));
               setOpen(true);

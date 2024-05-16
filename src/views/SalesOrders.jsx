@@ -9,7 +9,7 @@ import axios from "../config";
 import Loader from "../components/Loader";
 
 const SalesOrders = () => {
-  const companyId = useSelector((state) => state.company.data.id);
+  const companyId = useSelector((state) => state.companyState.data.id);
   const [customerOptions, setCustomerOptions] = useState([]);
   const [productOptions, setProductOptions] = useState([]);
 
@@ -49,7 +49,7 @@ const SalesOrders = () => {
     refetchOnWindowFocus: true,
   });
 
-  if(isLoading) return <Loader />
+  if (isLoading) return <Loader />;
 
   return (
     <div className="page">

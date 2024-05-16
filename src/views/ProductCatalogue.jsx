@@ -12,7 +12,7 @@ const fetchProducts = async (companyId) => {
     const response = await axios.get(`/api/products/${companyId}`);
     const data = response.data.products.map((item, index) => ({
       id: item._id,
-      index : index + 1,
+      index: index + 1,
       name: item.name,
       costPrice: item.costprice,
       salesPrice: item.salesprice,
@@ -24,18 +24,16 @@ const fetchProducts = async (companyId) => {
   }
 };
 
-
 const ProductCatalogue = () => {
-  const companyId = useSelector((state) => state.company.data.id)
+  const companyId = useSelector((state) => state.companyState.data.id);
   const {
     data: products,
     isLoading,
     isError,
-  } = useQuery(["api/products", companyId], () =>  fetchProducts(companyId));
+  } = useQuery(["api/products", companyId], () => fetchProducts(companyId));
 
   if (isLoading) return <Loader />;
   if (isError) return <div>Error fetching data</div>;
-
 
   return (
     <div className="page">
@@ -50,10 +48,7 @@ const ProductCatalogue = () => {
 
       <div className="content">
         {products.length > 0 ? (
-          <TableCreater
-            companyId={companyId}
-            type="products"
-          />
+          <TableCreater companyId={companyId} type="products" />
         ) : (
           <div className="content">
             <h2>Add Products to Get Started</h2>

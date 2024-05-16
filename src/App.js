@@ -30,9 +30,9 @@ function App() {
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
-  const isLoggedIn = useSelector((state) => state.company.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.companyState.isLoggedIn);
   const hasAccount = useSelector(state => state.users?.currentUser !== null);
-  console.log(hasAccount)
+  console.log(isLoggedIn)
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>

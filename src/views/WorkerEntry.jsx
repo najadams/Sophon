@@ -39,7 +39,7 @@ const WorkerEntry = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const companyId = useSelector((state) => state.company.data.id);
+  const companyId = useSelector((state) => state.companyState.data.id);
 
   // 
   const accountSignin = async (companyId, name, password) => {
@@ -50,22 +50,19 @@ const WorkerEntry = () => {
         password,
       });
 
-      if (response.status === 400) {
-        throw new Error("Account doesn't exist");
-      } else if (response.status !== 200) {
-        throw new Error("Something went wrong");
-      }
+      
 
       navigate("/dashboard");
       return response.data;
     } catch (error) {
-      console.error(error.message);
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
-      } else {
-        setError(error.message);
-      }
-      throw error; // Ensure to rethrow the error to handle it appropriately
+      // setError(error.response.data.message);
+      // console.log(error.response)
+      setError(
+        error.response?.data?.message ||
+          "Failed to sign in. Please try again later."
+      );
+
+      throw new Error(error.response?.data);
     }
   };
 
@@ -87,11 +84,9 @@ const WorkerEntry = () => {
         name.toLowerCase().trim(),
         password
       );
-      dispatch(ActionCreators.setCurrentUser(user));
+      dispatch(ActionCreators.setCurrentUser(user.worker));
     } catch (error) {
-      console.error("Error while signing in:", error);
       // Handle error appropriately, e.g., display error message
-      setError("Failed to sign in. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -102,23 +97,6 @@ const WorkerEntry = () => {
       <ThemeProvider theme={defaultTheme}>
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
-          <Grid
-            item
-            xs={false}
-            sm={4}
-            md={7}
-            sx={{
-              backgroundImage:
-                "url(https://source.unsplash.com/random?wallpapers)",
-              backgroundRepeat: "no-repeat",
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
           <Grid
             item
             xs={12}
@@ -139,7 +117,7 @@ const WorkerEntry = () => {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign In to account
+                Sign In to An Account
               </Typography>
               <Box
                 component="form"
@@ -186,6 +164,23 @@ const WorkerEntry = () => {
               </Box>
             </Box>
           </Grid>
+          <Grid
+            item
+            xs={false}
+            sm={4}
+            md={7}
+            sx={{
+              backgroundImage:
+                "url(https://source.unsplash.com/random?wallpapers)",
+              backgroundRepeat: "no-repeat",
+              backgroundColor: (t) =>
+                t.palette.mode === "light"
+                  ? t.palette.grey[50]
+                  : t.palette.grey[900],
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
         </Grid>
       </ThemeProvider>
     </div>

@@ -21,13 +21,14 @@ import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import { useSidebar } from "../context/context";
 
-export default function Header({ isLoggedIn }) {
+export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const { isSidebarExpanded, setIsSidebarExpanded } = useSidebar();
-  const user = useSelector((state) => state.workers.currentUser);
+  const user = useSelector((state) => state.userState.currentUser);
 
+  console.log(user)
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,7 +57,6 @@ export default function Header({ isLoggedIn }) {
     return () => {
       // Reset anchorEl when component unmounts
       setAnchorEl(null);
-      console.log(user)
     };
   }, [user]);
 
@@ -84,7 +84,6 @@ export default function Header({ isLoggedIn }) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <h3>Sophon</h3>
           </Typography>
-          {isLoggedIn && (
             <div>
               <Tooltip title="Profile">
                 <IconButton
@@ -117,7 +116,7 @@ export default function Header({ isLoggedIn }) {
                     display: "flex",
                     gap: 15,
                   }}>
-                  <PermIdentityIcon /> My account {/*({user.name})*/}
+                  <PermIdentityIcon /> My account ({user.username ? user.username : user.name})
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={addEmployee}>
@@ -144,7 +143,6 @@ export default function Header({ isLoggedIn }) {
                 </MenuItem>
               </Menu>
             </div>
-          )}
         </Toolbar>
       </AppBar>
     </Box>

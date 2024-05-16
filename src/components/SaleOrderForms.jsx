@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
 
 const SalesOrderForms = ({ customerOptions, Products }) => {
   const workerId = useSelector((state) => state.workers.currentUser);
-  const companyId = useSelector((state) => state.company.data.id);
+  const companyId = useSelector((state) => state.companyState.data.id);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery("(max-width:600px)");
@@ -34,7 +34,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
       <Formik
         initialValues={{
           customerName: "",
-          products: [{ name: "", quantity: '', totalPrice: 0, price: 0 }],
+          products: [{ name: "", quantity: "", totalPrice: 0, price: 0 }],
           total: 0,
         }}
         validationSchema={validationSchema}
@@ -47,7 +47,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
           try {
             setSubmitting(true);
             await tableActions.addReceipt(values, companyId, workerId);
-            setOpen(true); 
+            setOpen(true);
           } catch (error) {
             console.log(error);
             setError(error);
@@ -237,7 +237,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                     color="secondary"
                     type="button"
                     onClick={() => {
-                      push({ name: "", quantity: '', totalPrice: 0, price: 0 });
+                      push({ name: "", quantity: "", totalPrice: 0, price: 0 });
                     }}
                     disabled={
                       values.products.length > 0 &&
@@ -271,7 +271,7 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
                 variant="contained"
                 color="success"
                 onClick={submitForm}
-              // type="submit"
+                // type="submit"
               >
                 Save
               </Button>

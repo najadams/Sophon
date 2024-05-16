@@ -1,5 +1,4 @@
-
-import { useState , useContext } from "react";
+import { useState, useContext } from "react";
 import { Formik, Field, Form } from "formik";
 import { TextField } from "formik-material-ui";
 import Button from "@mui/material/Button";
@@ -22,7 +21,7 @@ const ProductForm = ({ data, editMutation }) => {
   const [error, setError] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
-  const companyId = useSelector((state) => state.company.data.id);
+  const companyId = useSelector((state) => state.companyState.data.id);
   const handleClose = useContext(DialogContext);
   const dispatch = useDispatch();
 

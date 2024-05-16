@@ -81,22 +81,19 @@ const WorkerInfo = ({ workers }) => {
   );
 };
 
-
-
 const Settings = () => {
-  const companyId = useSelector(state => state.company.data.id)
-  const storename = useSelector(state => state.company.data.name)
-   const {
-     data: workers,
-     isLoading,
-     error,
-   } = useQuery(["api/workers", companyId], () =>
-     tableActions.fetchWorkers(companyId)
-   );
+  const companyId = useSelector((state) => state.companyState.data.id);
+  const storename = useSelector((state) => state.companyState.data.name);
+  const {
+    data: workers,
+    isLoading,
+    error,
+  } = useQuery(["api/workers", companyId], () =>
+    tableActions.fetchWorkers(companyId)
+  );
 
-   if (isLoading) return "Loading...";
+  if (isLoading) return "Loading...";
   if (error) return "An error has occurred: " + error.message;
-  
 
   return (
     <div className="page">
@@ -146,7 +143,7 @@ const Settings = () => {
             </Grid>
           </Grid>
         </Paper>
-        <Paper sx={{ p: 3 , mb: 3}}>
+        <Paper sx={{ p: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom>
             Notifications
           </Typography>
