@@ -31,7 +31,8 @@ function App() {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
   const isLoggedIn = useSelector((state) => state.company.isLoggedIn);
-  const hasAccount = true;
+  const hasAccount = useSelector(state => state.users?.currentUser !== null);
+  console.log(hasAccount)
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
@@ -55,14 +56,13 @@ function App() {
                       element={<SignIn isLoggedIn={isLoggedIn} />}
                     />
                     <Route path="/register" element={<Register />} />
-                    {isLoggedIn && hasAccount ? (
+                    {(isLoggedIn && hasAccount) ? (
                       <>
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route
                           path="/products"
                           element={<ProductCatalogue />}
                         />
-                        <Route path="/account" element={<WorkerEntry />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/!employee!@" element={<WorkerForm />} />
                         <Route path="/customers" element={<Customers />} />
@@ -71,10 +71,14 @@ function App() {
                           path="/inventory"
                           element={<InventoryReports />}
                         />
+                        <Route path="/account" element={<WorkerEntry />} />
                         <Route path="/sales" element={<SalesOrders />} />
                       </>
                     ) : (
-                      <Route path="*" element={<SignIn />} />
+                      <>
+                      <Route path="/account" element={<WorkerEntry />} />
+                        <Route path="*" element={<SignIn />} />
+                      </>
                     )}
                     {/* <Route element={<PrivateRoutes />} /> */}
                     <Route path="*" element={<NoPage />} />
