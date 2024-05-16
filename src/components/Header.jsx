@@ -84,65 +84,66 @@ export default function Header() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <h3>Sophon</h3>
           </Typography>
-            <div>
-              <Tooltip title="Profile">
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit">
-                  <AccountCircle />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                // keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}>
-                <MenuItem
-                  onClick={handleClose}
-                  style={{
-                    display: "flex",
-                    gap: 15,
-                  }}>
-                  <PermIdentityIcon /> My account ({user.username ? user.username : user.name})
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={addEmployee}>
-                  <ListItemIcon>
-                    <PersonAdd fontSize="small" />
-                  </ListItemIcon>
-                  Add an Employee account
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    navigate("/settings");
-                    handleClose();
-                  }}>
-                  <ListItemIcon>
-                    <Settings fontSize="small" />
-                  </ListItemIcon>
-                  Settings
-                </MenuItem>
-                <MenuItem onClick={() => logout()}>
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </div>
+          <div>
+            <Tooltip title="Profile">
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit">
+                <AccountCircle />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              // keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}>
+              <MenuItem
+                onClick={handleClose}
+                style={{
+                  display: "flex",
+                  gap: 15,
+                }}>
+                <PermIdentityIcon /> My account (
+                {user ? (user.username ? user.username : user.name) : ""})
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={addEmployee}>
+                <ListItemIcon>
+                  <PersonAdd fontSize="small" />
+                </ListItemIcon>
+                Add an Employee account
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/settings");
+                  handleClose();
+                }}>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                Settings
+              </MenuItem>
+              <MenuItem onClick={() => logout()}>
+                <ListItemIcon>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
     </Box>
