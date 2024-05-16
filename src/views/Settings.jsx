@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import { capitalizeFirstLetter } from "../config/Functions";
 import { tableActions } from "../config/Functions";
+import Loader from "../components/Loader";
 
 const WorkerInfo = ({ workers }) => {
   return (
@@ -92,7 +93,7 @@ const Settings = () => {
     tableActions.fetchWorkers(companyId)
   );
 
-  if (isLoading) return "Loading...";
+  
   if (error) return "An error has occurred: " + error.message;
 
   return (
@@ -158,7 +159,7 @@ const Settings = () => {
           />
         </Paper>
 
-        <WorkerInfo workers={workers} />
+        {isLoading ? <Loader /> : <WorkerInfo workers={workers} />}
 
         <Button variant="contained" color="primary" sx={{ mt: 3 }}>
           Save Settings

@@ -262,7 +262,8 @@ const WorkerForm = () => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}>
           <SnackbarContent
             sx={{
-              backgroundColor: "red",
+              // backgroundColor: "red",
+              color:"red",
               // textAlign: "center",
               // width: "100%",
             }}
