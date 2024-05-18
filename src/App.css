@@ -182,7 +182,8 @@ header .image-text .header-text {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  color: var(--body-color);
+  color: #262626;
+  z-index: 1000;
   font-size: 22px;
 }
 

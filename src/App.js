@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Header, Sidebar } from "./components";
 import store, {persistor} from "./store/store";
 import { Provider, useSelector } from "react-redux";
@@ -10,7 +10,9 @@ import Settings from "./views/Settings";
 import { useSidebar } from "./context/context";
 import WorkerForm from "./views/WorkerForm";
 import WorkerEntry from "./views/WorkerEntry";
-const SignIn = lazy(() => import("./views/SignIn"));
+import Loader from "./components/Loader";
+  const SignIn = lazy(() => import("./views/SignIn"));
+const LandingPage = lazy(() => import("./views/LandingPage"));
 const Register = lazy(() => import("./views/Register"));
 const Dashboard = lazy(() => import("./views/Dashboard"));
 const Customers = lazy(() => import("./views/Customers"));
@@ -39,20 +41,28 @@ function App() {
         <PersistGate loading={null} persistor={persistor}>
           <div style={{ height: "100vh", display: "flex" }}>
             <Router>
-              <Sidebar
-                isExpanded={isSidebarExpanded}
-                toggleSidebar={toggleSidebar}
-              />
+              {isLoggedIn && hasAccount && (
+                <Sidebar
+                  isExpanded={isSidebarExpanded}
+                  toggleSidebar={toggleSidebar}
+                />
+              )}
               <div style={{ flex: 1 }}>
                 {isLoggedIn && hasAccount !== undefined && hasAccount && (
                   <Header isLoggedIn={isLoggedIn} />
                 )}
 
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<Loader />}>
                   <Routes>
                     <Route
                       path="/"
-                      element={<SignIn isLoggedIn={isLoggedIn} />}
+                      element={
+                        isLoggedIn && hasAccount ? (
+                          <Navigate to="/dashboard" />
+                        ) : (
+                          <LandingPage isLoggedIn={isLoggedIn} />
+                        )
+                      }
                     />
                     <Route
                       path="/login"

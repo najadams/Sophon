@@ -50,18 +50,10 @@ function Row({ row }) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell
-          component="th"
-          scope="row"
-          style={{  width: "30%" }}
-        >
+        <TableCell component="th" scope="row" style={{ width: "30%" }}>
           {row.customerName}
         </TableCell>
-        <TableCell
-          align="left"
-          >
-          {row.workerName}
-        </TableCell>
+        <TableCell align="left">{row.workerName}</TableCell>
         <TableCell align="right">{row.total}</TableCell>
         <TableCell align="right">{row.detail.length}</TableCell>
       </TableRow>
@@ -75,9 +67,15 @@ function Row({ row }) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Total Price</TableCell>
+                    <TableCell>
+                      <strong>Name</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      <strong>Quantity</strong>
+                    </TableCell>
+                    <TableCell align="right">
+                      <strong>Total Price</strong>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
