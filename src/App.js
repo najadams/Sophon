@@ -52,7 +52,7 @@ function App() {
                   <Header isLoggedIn={isLoggedIn} />
                 )}
 
-                <Suspense fallback={<Loader />}>
+                {/* <Suspense fallback={<Loader />}> */}
                   <Routes>
                     <Route
                       path="/"
@@ -96,7 +96,7 @@ function App() {
                     {/* <Route element={<PrivateRoutes />} /> */}
                     <Route path="*" element={<NoPage />} />
                   </Routes>
-                </Suspense>
+                {/* </Suspense> */}
               </div>
             </Router>
           </div>
