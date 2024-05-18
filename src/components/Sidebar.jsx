@@ -39,7 +39,7 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
             </li>
             <li className="nav-link">
               <NavLink to={"/customers"} activeclassname="active">
-                <i class="bx bx-user-plus icon"></i>
+                <i className="bx bx-user-plus icon"></i>
                 <span className="text nav-text">Customers</span>
               </NavLink>
             </li>
@@ -51,13 +51,13 @@ const Sidebar = ({ isExpanded, toggleSidebar }) => {
             </li>
             <li className="nav-link">
               <NavLink to={"/vendors"} activeclassname="active">
-                <i class="bx bxs-truck icon"></i>
+                <i className="bx bxs-truck icon"></i>
                 <span className="text nav-text">Vendors</span>
               </NavLink>
             </li>
             <li className="nav-link">
               <NavLink to={"/transactions"} activeclassname="active">
-                <i class="bx bx-money-withdraw icon"></i>
+                <i className="bx bx-money-withdraw icon"></i>
                 <span className="text nav-text">Transactions</span>
               </NavLink>
             </li>
