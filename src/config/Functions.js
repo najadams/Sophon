@@ -195,7 +195,34 @@ export const tableActions = {
     } catch (error) {
       throw new Error("Failed to Fetch Workers");
     }
-  }
+  },
+  fetchCounts: async (companyId) => {
+    try {
+      const response = await axios.get(`/counts/${companyId}`)
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      throw new Error(error.response.data.message || "Failed to fetch counts")
+      
+    }
+  },
+  fetchSalesData : async () => {
+      try {
+        const response = await axios.get("/api/overall");
+        const { labels, data } = response.data;
+
+        // Combine labels and data into a single array of objects for Recharts
+        const chartData = labels.map((label, index) => ({
+          month: label,
+          totalSales: data[index],
+        }));
+
+        return chartData
+      } catch (error) {
+        console.error("Error fetching sales data", error);
+      }
+    }
 };
 
 export const capitalizeFirstLetter = (str) => {
