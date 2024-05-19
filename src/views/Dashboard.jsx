@@ -25,7 +25,7 @@ const DummyCard = ({ children, title, sx }) => {
   return (
     <Box
       sx={{
-        width: { xs: "100%", sm: "400px", md: "600px" },
+        width: { xs: "100%", sm: "400px", md: "500px" },
         height: { xs: "auto", sm: "400px" },
         margin: 2,
         flexGrow: 1,
@@ -49,7 +49,7 @@ const Widgets = ({ title, count }) => {
       sx={{
         width: { xs: "90px", sm: "120px", lg: "150px" },
         height: { xs: "auto", sm: "80px", lg: "100px" },
-        backgroundColor: "#c5c9d2",
+        // backgroundColor: "#c5c9d2",
         margin: 1,
         padding: 0,
       }}>
