@@ -8,6 +8,8 @@ import SlidingCard from "../components/SlidingCard";
 import { useQuery } from "react-query";
 import { tableActions } from "../config/Functions";
 import {
+  Bar,
+  BarChart,
   LineChart,
   Line,
   XAxis,
@@ -18,7 +20,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const DummyCard = ({ children, title }) => {
+
+const DummyCard = ({ children, title, sx }) => {
   return (
     <Box
       sx={{
@@ -26,6 +29,7 @@ const DummyCard = ({ children, title }) => {
         height: { xs: "auto", sm: "400px" },
         margin: 2,
         flexGrow: 1,
+        ...sx
       }}>
       <Card sx={{ width: "100%", height: "100%" }}>
         <CardContent>
@@ -66,9 +70,8 @@ const Dashboard = () => {
   const { data: counts } = useQuery(["counts", companyId], () =>
     tableActions.fetchCounts(companyId)
   );
-  const { data: overall, isLoading } = useQuery(
-    ["overall", companyId],
-    () => tableActions.fetchSalesData(companyId)
+  const { data: overall, isLoading } = useQuery(["overall", companyId], () =>
+    tableActions.fetchSalesData(companyId)
   );
 
   // Extract counts from the data
@@ -157,7 +160,34 @@ const Dashboard = () => {
           )}
         </DummyCard>
 
-        <DummyCard title={"Most Selling Product"} />
+        <DummyCard
+          title={"Most Selling Products"}
+          sx={{ width: { xs: "100%", sm: "400px", md: "800px" } }}>
+          {isLoading ? (
+            <Typography>Loading...</Typography>
+          ) : overall.topProducts.length === 0 ? (
+            <Typography>No product sales data available</Typography>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={overall.topProducts}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="quantity" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </DummyCard>
+
         <DummyCard title={"Customer Analysis"} />
         <SlidingCard />
       </div>

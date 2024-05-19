@@ -210,7 +210,7 @@ export const tableActions = {
   fetchSalesData : async (companyId) => {
       try {
         const response = await axios.get(`/api/overall/${companyId}`);
-        const { labels, salesData, profitData } = response.data;
+        const { labels, salesData, profitData, topProducts } = response.data;
 
         // Combine labels and data into a single array of objects for Recharts
         const sales = labels.map((label, index) => ({
@@ -221,9 +221,8 @@ export const tableActions = {
           month: label,
           totalProfit: profitData[index],
         }));
-        console.log(sales)
 
-        return {sales, profit}
+        return {sales, profit , topProducts}
       } catch (error) {
         console.error("Error fetching sales data", error);
       }
