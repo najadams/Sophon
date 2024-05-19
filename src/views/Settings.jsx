@@ -159,7 +159,13 @@ const Settings = () => {
           />
         </Paper>
 
-        {isLoading ? <Loader /> : <WorkerInfo workers={workers} />}
+        {isLoading ? (
+          <div style={{ height: 100 }}>
+            <Loader />
+          </div>
+        ) : (
+          <WorkerInfo workers={workers} />
+        )}
 
         <Button variant="contained" color="primary" sx={{ mt: 3 }}>
           Save Settings

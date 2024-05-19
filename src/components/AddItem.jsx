@@ -42,7 +42,9 @@ const AddItem = ({ children }) => {
           },
         }}>
         <DialogTitle>Add New Item</DialogTitle>
-        <DialogContent>{children}</DialogContent>
+        <DialogContent>
+          {React.cloneElement(children, { handleClose })}
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
         </DialogActions>

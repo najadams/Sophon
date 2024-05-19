@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
   total: Yup.number().required(),
 });
 
-const SalesOrderForms = ({ customerOptions, Products }) => {
+const SalesOrderForms = ({ customerOptions, Products , handleClose}) => {
   const workerId = useSelector((state) => state.userState.currentUser);
   const companyId = useSelector((state) => state.companyState.data.id);
   const [error, setError] = useState(null);
@@ -49,11 +49,15 @@ const SalesOrderForms = ({ customerOptions, Products }) => {
             setSubmitting(true);
             await tableActions.addReceipt(values, companyId, workerId);
             setOpen(true);
+            setTimeout(() => {
+              handleClose();
+            }, 5000);
           } catch (error) {
             console.log(error);
             setError(error);
           } finally {
             setSubmitting(false);
+            setLoading(false)
           }
         }}>
         {({ values, submitForm, setFieldValue, isSubmitting, resetForm }) => (

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy , Suspense} from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Header, Sidebar } from "./components";
@@ -34,7 +34,6 @@ function App() {
   };
   const isLoggedIn = useSelector((state) => state.companyState.isLoggedIn);
   const hasAccount = useSelector(state => state.users?.currentUser !==null );
-  console.log(hasAccount)
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
@@ -52,7 +51,7 @@ function App() {
                   <Header isLoggedIn={isLoggedIn} />
                 )}
 
-                {/* <Suspense fallback={<Loader />}> */}
+                <Suspense fallback={<Loader />}>
                   <Routes>
                     <Route
                       path="/"
@@ -96,7 +95,7 @@ function App() {
                     {/* <Route element={<PrivateRoutes />} /> */}
                     <Route path="*" element={<NoPage />} />
                   </Routes>
-                {/* </Suspense> */}
+                </Suspense>
               </div>
             </Router>
           </div>

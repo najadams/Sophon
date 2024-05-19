@@ -1,18 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-// import { ActionCreators } from "../actions/action";
 import { Box } from "@mui/material";
 import SlidingCard from "../components/SlidingCard";
+import { useQuery } from "react-query";
+import { tableActions } from "../config/Functions";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
-const DummyCard = ({children, title}) => {
+const DummyCard = ({ children, title }) => {
   return (
     <Box
       sx={{
-        width: { xs: "100%", sm: "400px" },
+        width: { xs: "100%", sm: "400px", md: "600px" },
         height: { xs: "auto", sm: "400px" },
         margin: 2,
         flexGrow: 1,
@@ -20,9 +30,9 @@ const DummyCard = ({children, title}) => {
       <Card sx={{ width: "100%", height: "100%" }}>
         <CardContent>
           <Typography variant="h5" component="div">
-           {title}
+            {title}
           </Typography>
-          <Typography variant="body2">Customer Analysis</Typography>
+          {children}
         </CardContent>
       </Card>
     </Box>
@@ -30,26 +40,17 @@ const DummyCard = ({children, title}) => {
 };
 
 const Widgets = ({ title, count }) => {
-  // const dispatch = useDispatch();
-  // const adminId = useSelector((state) => {
-  //   if (state?.company?.data?.workers) {
-  //     return state?.company?.data?.workers[0]?._id;
-  //   }
-  //   return null;
-  // });
-
-
   return (
     <Card
       sx={{
-        width: { xs: "90px", sm: "120px", lg : '150px' },
-        height: { xs: "auto", sm: "80px", lg : '100px' },
+        width: { xs: "90px", sm: "120px", lg: "150px" },
+        height: { xs: "auto", sm: "80px", lg: "100px" },
         backgroundColor: "#c5c9d2",
         margin: 1,
-        padding: 0
+        padding: 0,
       }}>
       <CardContent>
-        <Typography variant='body' component="div">
+        <Typography variant="body" component="div">
           {title}
         </Typography>
         <Typography variant="h4">{count}</Typography>
@@ -59,16 +60,21 @@ const Widgets = ({ title, count }) => {
 };
 
 const Dashboard = () => {
-  const productCount = useSelector((state) => state.productState?.numProducts);
-  const userCount = useSelector((state) => state.userState?.numUsers);
-  const customerCount = useSelector(
-    (state) => state.customerState?.numCustomers
+  const companyId = useSelector((state) => state.companyState.data.id);
+
+  // Fetch counts using react-query
+  const { data: counts } = useQuery(["counts", companyId], () =>
+    tableActions.fetchCounts(companyId)
+  );
+  const { data: overall, isLoading } = useQuery(
+    ["overall", companyId],
+    () => tableActions.fetchSalesData(companyId)
   );
 
-  useEffect(() => {
-    console.log(productCount)
-  },[productCount])
-  
+  // Extract counts from the data
+  const productCount = counts?.productCount || 0;
+  const userCount = counts?.workerCount || 0;
+  const customerCount = counts?.customerCount || 0;
 
   return (
     <div className="page">
@@ -88,10 +94,71 @@ const Dashboard = () => {
           <Widgets title={"Products"} count={productCount} />
           <Widgets title={"Customers"} count={customerCount} />
         </div>
-        <DummyCard title={"Overall Sales Analysis"} />
+
+        <DummyCard title={"Overall Sales Analysis"}>
+          {isLoading ? (
+            <Typography>Loading...</Typography>
+          ) : overall.sales.length === 0 ? (
+            <Typography>No Sales made this month</Typography>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={overall.sales}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="totalSales"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </DummyCard>
+
+        <DummyCard title={"Profit Analysis"}>
+          {isLoading ? (
+            <Typography>Loading...</Typography>
+          ) : overall.profit.length === 0 ? (
+            <Typography>No Profit data available</Typography>
+          ) : (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={overall.profit}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="totalProfit"
+                  stroke="#82ca9d"
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </DummyCard>
+
         <DummyCard title={"Most Selling Product"} />
-        <DummyCard title={" Customer Analysis"} />
-        <DummyCard title={"Profit Analysis"} />
+        <DummyCard title={"Customer Analysis"} />
         <SlidingCard />
       </div>
     </div>
