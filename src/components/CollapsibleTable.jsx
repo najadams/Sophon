@@ -5,7 +5,7 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, {tableCellClasses} from "@mui/material/TableCell";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -13,14 +13,16 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import {styled } from '@mui/material/styles'
-
+import { styled } from "@mui/material/styles";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     fontSize: "16px",
+    position: "sticky",
+    top: 0,
+    zIndex: 1,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: "14px",
@@ -66,7 +68,7 @@ function Row({ row }) {
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
-                  <TableRow>
+                  <StyledTableRow>
                     <TableCell>
                       <strong>Name</strong>
                     </TableCell>
@@ -76,7 +78,7 @@ function Row({ row }) {
                     <TableCell align="right">
                       <strong>Total Price</strong>
                     </TableCell>
-                  </TableRow>
+                  </StyledTableRow>
                 </TableHead>
                 <TableBody>
                   {row.detail.map((item) => (
@@ -98,16 +100,14 @@ function Row({ row }) {
   );
 }
 
-
 Row.propTypes = {
   row: PropTypes.object.isRequired,
 };
 
-export default function CollapsibleTable({ receipts}) {
-  
+export default function CollapsibleTable({ receipts }) {
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
+    <TableContainer component={Paper} sx={{ maxHeight: "75vh" }}>
+      <Table stickyHeader aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
